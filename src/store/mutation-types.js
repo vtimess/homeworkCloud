@@ -1,0 +1,6 @@
+export const SET_ID = 'SET_ID'
+export const SET_USER_INFO = 'SET_USER_INFO'
+export const PUSH_FORM_ID = 'PUSH_FORM_ID'
+export const REMOVE_ALL_FORM_ID = 'REMOVE_ALL_FORM_ID'
+export const SET_TOKEN = 'SET_TOKEN'
+export const REMOVE_TOKEN = 'REMOVE_TOKEN'
