@@ -7,6 +7,7 @@ app.$mount()
 export default{
     config: {
         navigationBarTitleText: '云作业',
-        navigationBarBackgroundColor: '#fff'
+        navigationBarBackgroundColor: '#fff',
+        navigationStyle:'custom'
     }
 }

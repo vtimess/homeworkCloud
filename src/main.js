@@ -25,33 +25,22 @@ export default {
       navigationBarTitleText: 'HomeWork',
       navigationBarTextStyle: 'black',
     },
-    tabBar: {
-      color:"#707070",
-      selectedColor:"#2c2c2c",//#64dcdb
-      backgroundColor:"#fff",
-    list:[
-      {
-        pagePath:"pages/quora/main",
-        text:"话题广场",
-        iconPath:"/static/images/homework.png",
-        selectedIconPath:"/static/images/selectHomework.png"
-      },
-      {
-        text:"云作业",
-        pagePath:"pages/homework/main",
-        iconPath:"/static/images/work.png",
-        selectedIconPath:"/static/images/work.png"
-      },
-      {
-        pagePath:"pages/my/main",
-        text:"个人中心",
-        iconPath:"/static/images/my.png",
-        selectedIconPath:"/static/images/selectMy.png"
-
-      }
-    ]
-
-    }
+    // tabBar:{
+    //   list:[
+    //     {
+    //       pagePath:"pages/quora/main",
+    //       text:"话题"
+    //     },
+    //     {
+    //       pagePath:"pages/homework/main",
+    //       text:"作业"
+    //     },
+    //     {
+    //       pagePath:"pages/my/main",
+    //       text:"话题"
+    //     }
+    //   ]
+    // }
 
   }
 }
