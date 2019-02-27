@@ -18,7 +18,6 @@
                 <input type="number" maxlength="11" value="17721570251"/></li>
                 <li class="after"><span>座右铭</span></li>
                 <textarea class="motto" maxlength="36" adjust-position="true"  />
-                
             </ul>
         </div>
         <MyButton :btn='btn'></MyButton>

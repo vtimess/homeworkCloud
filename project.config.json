@@ -9,7 +9,7 @@
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
-	"appid": "wx07c2f70bc511f031",
+	"appid": "wxaa5ec51c6c3a5d36",
 	"projectname": "homeworkCloud",
 	"condition": {
 		"search": {
@@ -54,7 +54,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 11,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -128,6 +128,13 @@
 					"id": -1,
 					"name": "quora",
 					"pathName": "pages/quora/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "myWrong",
+					"pathName": "pages/myWrong/main",
 					"scene": null
 				}
 			]
