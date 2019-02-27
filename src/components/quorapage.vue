@@ -5,15 +5,15 @@
     <div class="add" @click="click">
         <img src="/static/images/edit.png" >
     </div>
-   
 </div>
 </template>
 <script>
 import WaterFallView from "@/components/WaterFallView"
+import bottom from '@/components/bottom.vue'
 export default {
     components:{
+        bottom,
         WaterFallView,
-
     },
 onPullDownRefresh(){
     this.$refs.callchild.callchild(true,this.listData)
@@ -47,14 +47,13 @@ data(){
     }
 },
 methods:{
-
 },
  
 
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../static/css/app.css'
+@import '../../static/css/app.css'
 .quora
     width 100%
     height 100%

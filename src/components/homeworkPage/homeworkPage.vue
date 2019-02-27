@@ -1,17 +1,6 @@
 <template>
     <div class="body">
-      <div>
-      <div class="mainView" v-if="tabIndex == 0" key="0">
-        <quorapage ></quorapage>
-      </div>
-      <div class="mainView" v-if="tabIndex == 1" key="1">
-        <homeworkpage></homeworkpage>
-      </div>
-      <div class="mainView" v-if="tabIndex == 2" key="2">
-        <mypage></mypage>
-      </div>
-      </div>
-      <!-- <div class="head">
+      <div class="head">
         <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" interval="4000" duration="600" 
         indicator-color="rgba(255, 255, 255, .3)" indicator-active-color="rgba(255, 255, 255, .8)">
           <block v-for="item in imgUrls" :key="item.index">
@@ -31,37 +20,24 @@
       </div>
       <div class="add">
         <img src="/static/images/add.png" @click="join">
-      </div> -->
+      </div>
           <!-- <span class="classid" @click="classgroup">什么是班群号？</span> -->
       <!-- <div class="goTop" >
         <img src="/static/images/backtotop.png"  @click="goTop" >
       </div> -->
-    <bottom :tabIndex="tabIndex" @toggleTab="toggleTab"></bottom>
     </div>
 </template>
 
 <script>
 import HomeworksList from '@/components/HomeworksList'
-import bottom from '@/components/bottom.vue'
-import quorapage from '@/components/quorapage.vue'
-import homeworkpage from '@/components/homeworkpage/homeworkpage.vue'
-import mypage from '@/components/mypage.vue'
 import MyButton from '@/components/MyButton'
 export default {
   components:{
       HomeworksList,
-      bottom,
       MyButton,
-      quorapage,
-      homeworkpage,
-      mypage
-  },
-  onReady(){
-    wx.hideTabBar()
   },
   data () {
     return {
-      tabIndex:1,
       imgUrls: [
       {src:'/static/images/first.jpg'},
       {src:'/static/images/second.jpg'},
@@ -81,10 +57,6 @@ export default {
   created () {
   },
   methods: {
-    toggleTab(e){
-      this.tabIndex = e;
-      console.log(this.tabIndex)
-    },
     getData:async function(){
        
       let result = await this.$http.get('/student/homework',{page:0,size:2})
