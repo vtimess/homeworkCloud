@@ -1,41 +1,66 @@
 <template>
     <div class="auth" >
+        
         <open-data type="userAvatarUrl" class="useravatar"></open-data>
         <open-data type="userNickName" class="username"></open-data>
         <!-- 需要使用 button 来授权登录 -->
-        <button class="loginbutton" v-if="canIUse" open-type="getUserInfo" @getuserinfo="onGetUserInfo">授权登录</button>
+        <button class="loginbutton" v-if="canIUse" open-type="getUserInfo" @getuserinfo="onGetUserInfo">点击进入</button>
         <view style="text-align:center" wx:else>请升级微信版本</view>
+        <div v-show="show" class="flex-xc form">
+            <div class="flex-yc all">
+                <view class="flex-xc-yc teacher" @click="occupation(1)">
+                    <span>教师</span>
+                </view>
+                <view class="flex-xc-yc teacher" @click="occupation(2)">
+                    <span>学生</span>
+                </view>
+            </div>
+        </div>
+        
     </div>
 </template>
 
 <script>
 import config from '@/config/index'
 import { mapState, mapMutations } from 'vuex'
-import { SET_USER_INFO,SET_TOKEN} from '@/store/mutation-types'
+import { SET_STATUS,SET_USER_INFO,SET_TOKEN} from '@/store/mutation-types'
 
 export default {
     data(){
         return {
             canIUse: wx.canIUse('button.open-type.getUserInfo'),//判断小程序的API，回调，参数，组件等是否在当前版本可用。
-            auth:true
+            auth:true,
+            show:true,
+            occupation:"",
+            stdLgUrl:'/student/login',
+            stdVerifyLgUrl:'/student/verifylogin',
+            tchLgUrl:'/teacher/login',
+            tchVerifyLgUrl:'/teacher/verifylogin'
         }
     },
     created() {
+        if(this.show){
+            wx.setNavigationBarTitle({
+                title:"请选择您的职业"
+            })
+        }
         if(this.token){
-            if(this.userInfo){
-               this.gotoIndex();
-            }else{
-                this.getUserInfo();
-            }
+            this.verifyLogin()
+            // if(this.userInfo){
+            //    this.gotoIndex();
+            // }else{
+            //     this.getUserInfo();
+            // }
         }else{
-            //this.login()
+            this.login()
         }
     },
     computed: {
-        ...mapState([
+        ...mapState([   //分发store中的数据到当前组件
             // 'id',
             'userInfo',
-            'token'
+            'token',
+            'status',
         ])
     },
     methods: {
@@ -43,10 +68,38 @@ export default {
             //  setId : SET_ID,
              setUserInfo : SET_USER_INFO,
              setToken : SET_TOKEN,
+             setStatus : SET_STATUS,
         }),
-        login:function(){
+        //验证登录
+        verifyLogin(){
             let that = this
-             wx.login({
+            let url = this.occupation == '1'? tchVerifyLgUrl : stdVerifyLgUrl;
+            // 发起网络请求
+            wx.request({
+                url: config.host+url,
+                method:'post',
+                data: {
+                    token: that.token,
+                },
+                success:function(res){
+                    let result = res.data;
+                    if(result.code === 0){
+                        that.gotoIndex()
+                    }else{
+                    }
+                },
+                fail:function(err){
+                    wx.showToast({
+                        title:result.errMsg
+                    })
+                }
+            })
+                   
+        },
+        login(){
+            let that = this
+            let url  = that.status == "1" ?1:2;
+            wx.login({
                 success: function(res) {
                     if (res.code) {
                     console.log(res.code);
@@ -69,7 +122,7 @@ export default {
                                 wx.showToast({
                                     title:result.errMsg
                                 })
-                              
+                                
                             }
                         },
                         fail:function(err){
@@ -80,15 +133,15 @@ export default {
                         console.log('登录失败！' + res.errMsg)
                     }
                 }
-             })
+            })
         },
-        getUserInfo:function(token){
+        getUserInfo(token){
             let that = this
              //从服务器中拿userInfo
             wx.request({
                 url: config.host +'/student/info',
                 data: {
-                    token: that.token
+                    token: token
                 },
                 success: function(res) {
                     console.log(res)
@@ -105,7 +158,7 @@ export default {
                 }
             })
         },
-        gotoIndex:function(){
+        gotoIndex(){
              setTimeout(()=>{
                     console.log('跳转')
                     wx.reLaunch({url: '../homework/main'})
@@ -128,18 +181,47 @@ export default {
                 })
             }
             
+        },
+        occupation(val){
+            this.setStatus = val
+            this.occupation = val
+            setTimeout(()=>{
+                this.show = false
+                wx.setNavigationBarTitle({
+                    title:"Homework"
+                })
+            },500)
+            console.log(val)
         }
     }
 }
 </script>
 <style lang="stylus" scoped>
+@import '../../../static/css/app.css'
 .auth
-    
     width 100%
     height 100%
     position absolute
     top 0px
     left 0px
+    .form
+        width 100%
+        height 100%
+        background #fff
+        position absolute
+        top 0rpx
+        left 0rpx
+        .all
+            height auto
+            color #fff
+            font-size 64rpx
+            .teacher
+                width 300rpx
+                height 300rpx
+                background #ffcccc
+                border-radius 150rpx
+                margin-bottom 100rpx
+            
     .useravatar 
         display block
         width 200rpx

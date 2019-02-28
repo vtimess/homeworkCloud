@@ -10,6 +10,7 @@ export default new Vuex.Store({
     state,
     mutations,
     plugins: [
+        //将vuex中的数据持久化到本地
         createPersistedState({
             storage: {
                 getItem: key => wx.getStorageSync(key),
