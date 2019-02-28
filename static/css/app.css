@@ -31,7 +31,10 @@
     display: flex;
     justify-content: center;
 }
-/* 垂直居中 */
+/* 垂直对齐 */
 .flex-yc{
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

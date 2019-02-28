@@ -8,6 +8,9 @@ const mutations={
     [types.SET_TOKEN] (state, v) {
         state.token = v;
     },
+    [types.SET_STATUS] (state, v) {
+        state.status = v;
+    },
     [types.SET_ID] (state, v) {
         state.id = v;
     },
@@ -22,8 +25,10 @@ const mutations={
         state.formId=[];
     },
     [types.REMOVE_TOKEN] (state){
-        // state.formId.splice(0,state.formId.length)
         state.token="";
+    },
+    [types.REMOVE_STATUS] (state){
+        state.status="";
     },
 
 }
