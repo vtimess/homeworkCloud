@@ -4,7 +4,10 @@
         <open-data type="userAvatarUrl" class="useravatar"></open-data>
         <open-data type="userNickName" class="username"></open-data>
         <!-- 需要使用 button 来授权登录 -->
-        <button class="loginbutton" v-if="canIUse" open-type="getUserInfo" @getuserinfo="onGetUserInfo">点击进入</button>
+        <form report-submit='true'>
+            <button formType="submit" @click="login">提交</button>
+        </form>
+            <button  class="loginbutton" v-if="canIUse" open-type="getUserInfo" @getuserinfo="onGetUserInfo">点击进入</button>
         <view style="text-align:center" wx:else>请升级微信版本</view>
         <div v-show="show" class="flex-xc form">
             <div class="flex-yc all">
@@ -31,7 +34,6 @@ export default {
             canIUse: wx.canIUse('button.open-type.getUserInfo'),//判断小程序的API，回调，参数，组件等是否在当前版本可用。
             auth:true,
             show:true,
-            occupation:"",
             stdLgUrl:'/student/login',
             stdVerifyLgUrl:'/student/verifylogin',
             tchLgUrl:'/teacher/login',
@@ -39,11 +41,11 @@ export default {
         }
     },
     created() {
-        if(this.show){
-            wx.setNavigationBarTitle({
-                title:"请选择您的职业"
-            })
-        }
+        // if(this.show){
+        //     wx.setNavigationBarTitle({
+        //         title:"请选择您的职业"
+        //     })
+        // }
         if(this.token){
             this.verifyLogin()
             // if(this.userInfo){
@@ -52,7 +54,7 @@ export default {
             //     this.getUserInfo();
             // }
         }else{
-            this.login()
+            // this.login()
         }
     },
     computed: {
@@ -120,7 +122,7 @@ export default {
                                 that.getUserInfo(token)
                             }else{
                                 wx.showToast({
-                                    title:result.errMsg
+                                    title:'result.errMsg'
                                 })
                                 
                             }
@@ -165,23 +167,24 @@ export default {
             },1000)
         },
         //授权
-        onGetUserInfo:function(e){
-            let wxUserInfo = e.mp.detail.userInfo;
-            let userInfo = {}
-            userInfo.nid = ""
-            userInfo.sex = ""
-            userInfo.name = wxUserInfo.nickName
-            userInfo.avatarUrl = wxUserInfo.avatarUrl
-            userInfo.phone = ""
+        // onGetUserInfo:function(e){
+        //     console.log(e)
+        //     let wxUserInfo = e.mp.detail.userInfo;
+        //     let userInfo = {}
+        //     userInfo.nid = ""
+        //     userInfo.sex = ""
+        //     userInfo.name = wxUserInfo.nickName
+        //     userInfo.avatarUrl = wxUserInfo.avatarUrl
+        //     userInfo.phone = ""
             
-            this.setUserInfo(userInfo);
-            if(this.token){
-                wx.reLaunch({
-                    url: '../homework/main'
-                })
-            }
+        //     this.setUserInfo(userInfo);
+        //     if(this.token){
+        //         wx.reLaunch({
+        //             url: '../homework/main'
+        //         })
+        //     }
             
-        },
+        // },
         occupation(val){
             this.setStatus = val
             this.occupation = val
