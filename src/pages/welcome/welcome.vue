@@ -100,15 +100,14 @@ export default {
         },
         login(){
             let that = this
-            let url  = that.status == "1" ?1:2;
             wx.login({
                 success: function(res) {
                     if (res.code) {
                     console.log(res.code);
                     // 发起网络请求
                     wx.request({
-                        url: config.host+'/student/login',
-                        method:'get',
+                        url: config.host+'/s/login',
+                        method:'post',
                         data: {
                             code: res.code,
                         },
@@ -141,7 +140,7 @@ export default {
             let that = this
              //从服务器中拿userInfo
             wx.request({
-                url: config.host +'/student/info',
+                url: config.host +'/ss/info',
                 data: {
                     token: token
                 },

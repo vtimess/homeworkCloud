@@ -8,6 +8,6 @@ export default{
     config: {
         navigationBarTitleText: '云作业',
         navigationBarBackgroundColor: '#fff',
-        navigationStyle:'custom'
+        enablePullDownRefresh:true,
     }
 }
