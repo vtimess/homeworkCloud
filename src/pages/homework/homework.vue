@@ -87,7 +87,7 @@ export default {
     },
     getData:async function(){
        
-      let result = await this.$http.get('/student/homework',{page:0,size:2})
+      let result = await this.$http.get('/s/homework',{page:0,size:2})
       if(result){
         this.homeworkData = result
         if(result.length < 1){

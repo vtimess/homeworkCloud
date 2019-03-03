@@ -4,17 +4,16 @@
         <open-data type="userAvatarUrl" class="useravatar"></open-data>
         <open-data type="userNickName" class="username"></open-data>
         <!-- 需要使用 button 来授权登录 -->
-        <form report-submit='true'>
-            <button formType="submit" @click="login">提交</button>
+        <form @submit='getFormId' report-submit='true'>
+            <button formType="submit" class="loginbutton" v-if="canIUse" open-type="getUserInfo" @getuserinfo="getUserInfo" >点击进入</button>
+            <view style="text-align:center" wx:else>请升级微信版本</view>
         </form>
-            <button  class="loginbutton" v-if="canIUse" open-type="getUserInfo" @getuserinfo="onGetUserInfo">点击进入</button>
-        <view style="text-align:center" wx:else>请升级微信版本</view>
         <div v-show="show" class="flex-xc form">
             <div class="flex-yc all">
-                <view class="flex-xc-yc teacher" @click="occupation(1)">
+                <view  class="flex-xc-yc teacher" @click="occupation(1)" >
                     <span>教师</span>
                 </view>
-                <view class="flex-xc-yc teacher" @click="occupation(2)">
+                <view  class="flex-xc-yc teacher" @click="occupation(2)" >
                     <span>学生</span>
                 </view>
             </div>
@@ -34,27 +33,22 @@ export default {
             canIUse: wx.canIUse('button.open-type.getUserInfo'),//判断小程序的API，回调，参数，组件等是否在当前版本可用。
             auth:true,
             show:true,
-            stdLgUrl:'/student/login',
-            stdVerifyLgUrl:'/student/verifylogin',
-            tchLgUrl:'/teacher/login',
-            tchVerifyLgUrl:'/teacher/verifylogin'
+            register:"",
+            formId:"",
+            nickName:"",
+            gender:"",
+            avatarUrl:"",
         }
     },
+    onLoad(){
+
+    },
     created() {
-        // if(this.show){
-        //     wx.setNavigationBarTitle({
-        //         title:"请选择您的职业"
-        //     })
-        // }
-        if(this.token){
-            this.verifyLogin()
-            // if(this.userInfo){
-            //    this.gotoIndex();
-            // }else{
-            //     this.getUserInfo();
-            // }
+        
+        if(this.status){
+            this.next(false)
         }else{
-            // this.login()
+            this.next(true)
         }
     },
     computed: {
@@ -72,93 +66,86 @@ export default {
              setToken : SET_TOKEN,
              setStatus : SET_STATUS,
         }),
-        //验证登录
-        verifyLogin(){
-            let that = this
-            let url = this.occupation == '1'? tchVerifyLgUrl : stdVerifyLgUrl;
-            // 发起网络请求
-            wx.request({
-                url: config.host+url,
-                method:'post',
-                data: {
-                    token: that.token,
-                },
-                success:function(res){
-                    let result = res.data;
-                    if(result.code === 0){
-                        that.gotoIndex()
-                    }else{
-                    }
-                },
-                fail:function(err){
-                    wx.showToast({
-                        title:result.errMsg
-                    })
-                }
-            })
-                   
+        next(val){
+            this.show = val
         },
-        login(){
-            let that = this
+        
+        login:async function(wxCode){
+            let result = await this.$http.post('/s/login',
+                {
+                    code: wxCode,
+                    formId:this.formId,
+                    nickName: this.nickName,
+                    avatarUrl: this.avatarUrl,
+                    gender: this.gender,
+                });
+            if(result){
+                console.log(result,"token")
+                this.setToken(result);
+                this.gotoIndex();
+                console.log(this.token,"token")
+                // this.getUserInfo(this.token);
+            }
+        },
+        getFormId(e){
+            this.formId = e.mp.detail.formId;
+            console.log(e,"formId")
+        },
+        getUserInfo(e){
+            console.log(e,'getUserInfo')
+            if (e.mp.detail.rawData){
+                this.nickName = e.mp.detail.userInfo.nickName;
+                this.avatarUrl = e.mp.detail.userInfo.avatarUrl;
+                this.gender = e.mp.detail.userInfo.gender;
+                this.wxLogin()
+            } else {
+                wx.showToast({
+                    icon:'none',
+                    title:'请授权登录小程序'
+                })
+            }
+        },
+        wxLogin(){
+            let that = this;
             wx.login({
                 success: function(res) {
                     if (res.code) {
-                    console.log(res.code);
-                    // 发起网络请求
-                    wx.request({
-                        url: config.host+'/s/login',
-                        method:'post',
-                        data: {
-                            code: res.code,
-                        },
-                        success:function(res){
-                            let result = res.data;
-                            if(result.code === 0){
-                                let token = result.data
-                                console.log(token,64)
-                                that.setToken(token)
-                                // that.setId(id)
-                                that.getUserInfo(token)
-                            }else{
-                                wx.showToast({
-                                    title:'result.errMsg'
-                                })
-                                
-                            }
-                        },
-                        fail:function(err){
-                            console.log("连接服务失败")
-                        }
-                    })
-                    } else {
-                        console.log('登录失败！' + res.errMsg)
-                    }
-                }
-            })
-        },
-        getUserInfo(token){
-            let that = this
-             //从服务器中拿userInfo
-            wx.request({
-                url: config.host +'/ss/info',
-                data: {
-                    token: token
-                },
-                success: function(res) {
-                    console.log(res)
-                    let result = res.data
-                    if(result.code === 0){
-                        let userInfo = result.data
-                        if(userInfo){
-                            that.setUserInfo(userInfo)                            
-                            that.gotoIndex()
-                        }
+                        console.log(res.code);
+                        that.login(res.code);
                     }else{
-                       console.log(res)
+                        wx.showToast({
+                            icon:'none',
+                            title:'登录失败'+res.msg
+                        })
                     }
                 }
             })
         },
+        syncUserInfo(){
+        },
+        // syncUserInfo(token){
+        //     let that = this
+        //      //从服务器中拿userInfo
+        //     wx.request({
+        //         url: config.host +'/s/info',
+        //         data: {
+        //             token: token
+        //         },
+        //         success: function(res) {
+        //             console.log(res)
+        //             let result = res.data
+        //             if(result.code === 0){
+        //                 let userInfo = result.data
+        //                 if(userInfo){
+        //                     that.setUserInfo(userInfo)                            
+        //                     that.gotoIndex()
+        //                 }
+        //             }else{
+        //                console.log(res)
+        //             }
+        //         }
+        //     })
+        // },
         gotoIndex(){
              setTimeout(()=>{
                     console.log('跳转')
@@ -185,8 +172,8 @@ export default {
             
         // },
         occupation(val){
-            this.setStatus = val
-            this.occupation = val
+            this.setStatus(2);
+            this.occupation = val;
             setTimeout(()=>{
                 this.show = false
                 wx.setNavigationBarTitle({
