@@ -25,11 +25,15 @@
             <button plain="true" @click="joinin">{{joinState}}</button>
         </div>
         <div class="flex-xc nothing">
-        <div class="flex-y">
-          <img v-if="!classInfo" src="/static/images/searchTip.png"  @click="join" >
-          <span class="classid" @click="classgroup">什么是班群号？</span>
+            <div class="flex-y">
+            <img v-if="!classInfo" src="/static/images/searchTip.png"  @click="join" >
+            <span class="classid" @click="classgroup">什么是班群号？</span>
+            </div>
         </div>
-      </div>
+        <div class="password" v-show="show">
+            <title>请输入班群密码</title>
+            <input type="number">
+        </div>
     </div>
 </template>
 
@@ -38,11 +42,13 @@ import config from '@/config/index'
 export default {
     data() {
         return {
+            show:true,
             classId:"",
             classInfo:null,
             defaulteImage:'/static/images/header.png',
             imgError:false,
             State:''
+
         }
      },
     computed: {
@@ -59,11 +65,11 @@ export default {
     },
     methods:{
         error(e){
-           this.imgError = true
+           this.imgError = true;
         },
         setValue(){
-            this.classId = ''
-            this.classInfo = null
+            this.classId = '';
+            this.classInfo = null;
         },
         async search(){
             let result = await this.$http.get('/student/class',{
@@ -71,39 +77,40 @@ export default {
             })
             console.log(result)
             if(result){
-                this.classInfo = result
+                this.classInfo = result;
                 console.log(result)
             }
         },
         async joinin(){
-            if(this.State === '已加入'){
-                wx.showToast({
-                    title:'不能重复加入',
-                    icon:'none'
-                }), setTimeout(function(){
-                    wx.hideToast()
-                },500)
-                return 0
-            }
+            this.show = true;
+            // if(this.State === '已加入'){
+            //     wx.showToast({
+            //         title:'不能重复加入',
+            //         icon:'none'
+            //     }), setTimeout(function(){
+            //         wx.hideToast()
+            //     },500)
+            //     return 0
+            // }
             
-            let result = await this.$http.put('/student/class',{
-                classId:this.classId
-            })
-            if(result){
-                if(result.code == 0){
-                    this.classInfo.status=1
-                    wx.showToast({
-                        title:'成功'
-                    }),
-                    setTimeout(function(){
-                        wx.hideToast()
-                    },500)
-                console.log("",result)
-                }else{
-                    console.log("22",result)
-                }
+            // let result = await this.$http.put('/student/class',{
+            //     classId:this.classId
+            // })
+            // if(result){
+            //     if(result.code == 0){
+            //         this.classInfo.status=1
+            //         wx.showToast({
+            //             title:'成功加入'
+            //         }),
+            //         setTimeout(function(){
+            //             wx.hideToast()
+            //         },500)
+            //     console.log("",result)
+            //     }else{
+            //         console.log("22",result)
+            //     }
                  
-            }
+            // }
         }
     }
 
@@ -118,6 +125,12 @@ export default {
     bottom 0
     right 0
     background-color #f3f7f9
+    .password
+        width 400rpx
+        height 300rpx
+        background #fff
+        position absolute
+        margin 0 auto
     .search-input
         width 670rpx
         height 80rpx
