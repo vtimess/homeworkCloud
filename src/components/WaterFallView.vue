@@ -1,117 +1,94 @@
 <template>
-    <div class='fall-container'>
-        <div class="fall-left">
-            <block v-for="item in leftData" :key="item.index">
-                <image 
-                    class='card-img' 
-                    mode='aspectFill' 
-                    :style="{width:'20px',height:'20px'}"
-                    :src='item.imgUrl' 
-                    lazy-load>
-                </image>
-            </block>
+    <div class="body">
+        <div class="flex-xf-yc header">
+            <img src="/static/images/headimg.png">
+            <div class="flex-yf">
+                <span class="name">不屑灯笼酷爱洗澡</span>
+                <span class="time">56分钟前</span>
+            </div>
         </div>
-        <div class="fall-right">
-            <span>{{this.gg}}</span>
-            <block v-for="item in rightData" :key="item.index">
-                <image 
-                    class='card-img' 
-                    mode='aspectFill' 
-                    :style="{width:'20px',height:'20px'}"
-                    :src='item.imgUrl' 
-                    lazy-load>
-                </image>
-            </block>
+        <div class="title">
+            <span >对象类型直接复制,只是将引用指向同一个地址</span>
+        </div>
+        <div class="flex-xc images">
+            <img src="/static/images/headimg.png">
+            <img src="/static/images/headimg.png">
+            <img src="/static/images/headimg.png">
+        </div>
+        <div class="footer">
+            <ul class="flex-x">
+                <li class="flex-xc">
+                    <img src="/static/images/share.png" >
+                    <span>分享</span>
+                </li>
+                <li>
+                    <img src="/static/images/message.png">
+                    <span>回复</span>
+                </li>
+                <li>
+                    <img src="/static/images/zan.png" >
+                    <span>1</span>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
 <script>
 export default {
     props:{
-        listData:Array,
+        listData:Object
     },
-    
     data(){
-
         return{
-            leftHight: 0,
-            rightHight:0,
-            itemWidth: 0,
-            maxHeight: 0,
-            leftList:[],  //左侧集合
-            rightList:[],  //右侧集合
-            leftData:[],
-            rightData:[],
-            gg:"13245"
+
         }
     },
-    created(){
-        console.log("456")
-        this.callchild(false, this.listData);
-        this.attached()
-    },
-    
     methods:{
-        attached(){
-            wx.getSystemInfo({
-                success: (res) => {
-                    let percentage = 750 / res.windowWidth;     //750rpx/屏幕宽度
-                    let margin = 20 / percentage;               //计算瀑布流间距    
-                    this.itemWidth = (res.windowWidth - margin) / 2; //计算 瀑布流展示的宽度
-                    this.maxHeight = this.itemWidth / 0.8                 //计算瀑布流的最大高度，防止长图霸屏
-                    console.log(this.itemWidth,this.maxHeight,"666")
-                }
-            });
-        },
-        callchild(isPull, listData) {
-            // if (isPull) { //是否下拉刷新，是的话清除之前的数据
-            //     this.leftList.length = 0;
-            //     this.rightList.length = 0;
-            //     this.leftHight = 0;
-            //     this.rightHight = 0;
-            // }
-            for (let i = 0, len = listData.length; i < len; i++) {
-                console.log(listData.length)
-                let tmp = listData[i];
-                    tmp.width = parseInt(tmp.width);
-                    tmp.height = parseInt(tmp.height);
-                    tmp.itemWidth = this.itemWidth
-                let per = tmp.width / tmp.itemWidth;
-                    tmp.itemHeight = tmp.height / per;
-                if (tmp.itemHeight > this.maxHeight) {
-                    tmp.itemHeight = this.maxHeight;
-                }
-                if (this.leftHight == this.rightHight) {
-                    this.leftList.push(tmp);
-                    this.leftHight = this.leftHight + tmp.itemHeight;
-                } else if (this.leftHight < this.rightHight) {
-                    this.leftList.push(tmp);
-                    this.leftHight = this.leftHight + tmp.itemHeight;
-                } else {
-                    this.rightList.push(tmp);
-                    this.rightHight = this.rightHight + tmp.itemHeight;
-                }
-            }
-            console.log("777")
-            this.leftData = this.leftList;
-            this.rightData = this.rightList;
-            console.log(this.leftData,this.rightData,"123")
-        }
+
     }
 }
 </script>
 <style lang="stylus" scoped>
-.fall-container 
+@import '../../static/css/app.css'
+.body
     width 100%
     height auto
+    max-height 600rpx
     background #fff
-    display flex
-    .fall-left
-        display flex
-        flex-direction column
-    .fall-right
-        display flex
-        flex-direction column
-        margin-left 20rpx
-    
+    .header
+        width 100%
+        height 100rpx
+        padding 20rpx
+        color #2c2c2c
+        border-bottom 1rpx solid #e6e6e6
+        img 
+            width 100rpx
+            height 100rpx
+            border-radius 50%
+            margin-right 20rpx
+    .images
+        height auto
+        img
+            float left
+            width 200rpx
+            height 200rpx
+            padding 5rpx
+    .title
+        width 600rpx
+        font-size 32rpx
+        color #707070
+        overflow hidden
+        padding 20rpx
+        text-overflow ellipsis
+        display -webkit-box
+        -webkit-line-clamp 2
+        -webkit-box-orient vertical
+    .footer
+        font-size 24rpx
+        img
+            width 64rpx
+            height 64rpx
+ 
+
+
 </style>

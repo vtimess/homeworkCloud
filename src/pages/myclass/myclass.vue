@@ -13,7 +13,7 @@ export default {
     },
     data(){
         return{
-            page:0,
+            page:1,
             totalPages:1,
             ClassData:[],
         }
@@ -33,7 +33,6 @@ export default {
                     title:'尚未加入班级',
                     })
                 }else{
-                    this.page = this.page + 1;
                     this.ClassData = [...this.ClassData,...data];
                 }
                 
@@ -43,11 +42,10 @@ export default {
         
     },
     onPullDownRefresh:function(){
-        this.page = 0
-        this.totalPages = 1
-        this.ClassData = []
-        
-        this.getData(wx.stopPullDownRefresh)
+        this.page = 1;
+        this.totalPages = 1;
+        this.ClassData = [];
+        this.getData();
         
 
     },
@@ -57,10 +55,12 @@ export default {
                 title:'已加载全部',
             })
             return 
-        }
+        }else{
+            this.page = this.page+1
             this.getData()
-
         }
+    }
+            
 }
 </script>
 <style lang="stylus" scoped>

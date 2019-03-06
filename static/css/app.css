@@ -26,6 +26,10 @@
     flex-direction: column;
     align-items: center;
   }
+.flex-yf{
+    display: flex;
+    flex-direction: column;
+}
 /* 水平居中 */
 .flex-xc{
     display: flex;

@@ -1,12 +1,8 @@
 <template>
-
-<div class="quora">
-    <WaterFallView ref="callchild" :listData="listData" id='waterFallView' @click="click"></WaterFallView>
-    <div class="add" @click="click">
-        <img src="/static/images/edit.png" >
+    <div class="quora">
+        <WaterFallView></WaterFallView>
+        <!-- <WaterFallView v-for="item in listData" :key="item" :listData="item"></WaterFallView> -->
     </div>
-   
-</div>
 </template>
 <script>
 import WaterFallView from "@/components/WaterFallView"
@@ -19,46 +15,98 @@ onPullDownRefresh(){
     this.$refs.callchild.callchild(true,this.listData)
     //wx.stopPullDownRefresh()
 },
-onReachBottom() {   
-    console.log("123456")
-    this.$refs.callchild.callchild(true,this.listData)  
- },
+// onReachBottom() {   
+//     console.log("123456")
+//     this.$refs.callchild.callchild(true,this.listData)  
+//  },
+onShow: function () {
+    this.list2 = JSON.parse(JSON.stringify(this.list));
+    console.log(this.list2,2)
+},
+
+onReachBottom: function () {
+    var vm = this;
+    vm.pageStatus = true
+    setTimeout(function () {
+        vm.pageNo = vm.pageNo + 1;
+        var list =  JSON.parse(JSON.stringify(vm.list2));
+        vm.list = vm.list.concat(list);
+        vm.pageStatus = false;
+    }, 2000);
+},
 data(){
     return{
-        listData:[
+        list:[
             {
-                imgUrl:'/static/images/home.png',
-                name:'知乎',
-            },{
-                imgUrl:'/static/images/home.png',
-                name:'知乎',
-            },{
-                imgUrl:'/static/images/home.png',
-                name:'知乎',
-            },{
-                imgUrl:'/static/images/home.png',
-                name:'知乎',
-            },{
-                imgUrl:'/static/images/home.png',
-                name:'知乎',
+                title: '/static/images/example0.png',
+                name: '《虫师》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example1.png',
+                name: '《loading》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example2.png',
+                name: '《冰与火之歌》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example3.png',
+                name: '《鹿丸》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example4.png',
+                name: '《星空》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example0.png',
+                name: '《虫师》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example1.png',
+                name: '《loading》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example2.png',
+                name: '《冰与火之歌》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example3.png',
+                name: '《鹿丸》',
+                time:'2019/4/25 09:17'
+            },
+            {
+                url: '/static/images/example4.png',
+                name: '《星空》',
+                time:'2019/4/25 09:17'
             }
-        ]
+        ],
+       
     
     }
 },
 methods:{
-
+    
 },
  
 
 }
 </script>
-<style lang="stylus" scoped>
-@import '../../../static/css/app.css'
+<style <style lang="stylus" scoped>
 .quora
-    width 100%
-    height 100%
-    background #ff0000
+    position absolute
+    left 0
+    top 0
+    right 0
+    bottom 0
+    background #e6e6e6
     .add
         position fixed
         right 80rpx
@@ -66,19 +114,7 @@ methods:{
         img
             width 64rpx
             height 64rpx
-    .nav img 
-        width 40rpx
-        height 40rpx
-        margin-bottom 10rpx
-    .nav
-        position fixed
-        bottom 0
-        left 0
-        width 100%
-        height 100rpx
-        padding-bottom 10rpx
-        background #fff
-        font-size 20rpx
-        color #515151
-        align-items flex-end
+
+
+
 </style>
