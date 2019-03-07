@@ -10,14 +10,14 @@
             </div>
             <span class="title">{{title}}</span>
             <div class="flex-x-y images">
-                <img src="/static/images/headimg.png">
-                <img src="/static/images/headimg.png">
-                <img src="/static/images/headimg.png">
+                <img @click="preview" mode="aspectFill" src="/static/images/headimg.png">
+                <img @click="preview" mode="aspectFill" src="/static/images/headimg.png">
+                <img @click="preview" mode="aspectFill" src="/static/images/headimg.png">
             </div>
             <div class="footer">
                 <ul class="flex-x">
                     <li class="flex-xf-yc">
-                        <img src="/static/images/share.png" >
+                        <img  src="/static/images/share.png" >
                         <span>分享</span>
                     </li>
                     <li class="flex-xf-yc">
@@ -32,6 +32,7 @@
             </div>
             <div class="bottom"></div>
         </div>
+        
         
     </div>
 </template>
@@ -58,59 +59,8 @@ onReachBottom: function () {
 },
 data(){
     return{
-        listData:[
-            {
-                title: '/static/images/example0.png',
-                name: '《虫师》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example1.png',
-                name: '《loading》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example2.png',
-                name: '《冰与火之歌》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example3.png',
-                name: '《鹿丸》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example4.png',
-                name: '《星空》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example0.png',
-                name: '《虫师》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example1.png',
-                name: '《loading》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example2.png',
-                name: '《冰与火之歌》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example3.png',
-                name: '《鹿丸》',
-                time:'2019/4/25 09:17'
-            },
-            {
-                url: '/static/images/example4.png',
-                name: '《星空》',
-                time:'2019/4/25 09:17'
-            }
-        ],
-      title:"#RNG超话#2020年LOL世界赛决赛RNG 3:0 GRF 完虐!",
+        
+      title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
        
     
     }
@@ -118,6 +68,16 @@ data(){
 methods:{
     click(e){
         console.log(e)
+    },
+    preview(){
+        wx.previewImage({
+            current: '/static/images/example0.png', // 当前显示图片的http链接
+            urls: [
+                '',
+                '',
+                ''
+                ] // 需要预览的图片http链接列表
+        })
     }
 },
  
@@ -166,11 +126,11 @@ methods:{
             -webkit-line-clamp 2
             -webkit-box-orient vertical
         .footer
-            font-size 24rpx
+            font-size 22rpx
             padding 0rpx 0rpx 10rpx 0rpx
             img
-                width 64rpx
-                height 64rpx
+                width 48rpx
+                height 48rpx
         .bottom
             height 20rpx
             background #f1f1f1

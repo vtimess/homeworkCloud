@@ -73,18 +73,12 @@
 <script>
 import HomeworksList from '@/components/HomeworksList'
 import bottom from '@/components/bottom.vue'
-import quorapage from '@/components/quorapage.vue'
-import homeworkpage from '@/components/homeworkpage/homeworkpage.vue'
-import mypage from '@/components/mypage.vue'
 import MyButton from '@/components/MyButton'
 export default {
   components:{
       HomeworksList,
       bottom,
       MyButton,
-      quorapage,
-      homeworkpage,
-      mypage
   },
   data () {
     return {
@@ -109,7 +103,7 @@ export default {
         goTop_show: true
       },
       homeworkData:null,
-      title:"#RNG超话#2020年LOL世界赛决赛RNG 3:0 GRF 完虐!",
+      title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
       status:true,
       show:false
     }
@@ -129,9 +123,15 @@ export default {
         // }
   },
   methods: {
-    toggleTab(e){
-      this.tabIndex = e;
-      console.log(this.tabIndex)
+    // toggleTab(e){
+    //   this.tabIndex = e;
+    //   console.log(this.tabIndex)
+    // },
+    hwShow:function(e){
+      console.log(e)
+      // wx.navigateTo({
+      //   url:'/pages/homeworkInfo/main?listData='+this.listData
+      // })
     },
     getData:async function(){
         
