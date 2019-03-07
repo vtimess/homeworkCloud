@@ -6,6 +6,7 @@ app.$mount()
 
 export default{
     config: {
-        navigationBarTitleText: '班群信息'
+        navigationBarTitleText: '班群信息',
+        navigationBarBackgroundColor: '#64dcdb',
     }
 }

@@ -1,28 +1,50 @@
 <template>
-    <div class="quora">
-        <WaterFallView></WaterFallView>
-        <!-- <WaterFallView v-for="item in listData" :key="item" :listData="item"></WaterFallView> -->
+    <div class="body">
+        <div class="model">
+            <div class="flex-xf-yc header">
+                <img src="/static/images/headimg.png">
+                <div class="flex-yf header-title">
+                    <span class="name">不屑灯笼酷爱洗澡</span>
+                    <span class="time">56分钟前</span>
+                </div>
+            </div>
+            <span class="title">{{title}}</span>
+            <div class="flex-x-y images">
+                <img src="/static/images/headimg.png">
+                <img src="/static/images/headimg.png">
+                <img src="/static/images/headimg.png">
+            </div>
+            <div class="footer">
+                <ul class="flex-x">
+                    <li class="flex-xf-yc">
+                        <img src="/static/images/share.png" >
+                        <span>分享</span>
+                    </li>
+                    <li class="flex-xf-yc">
+                        <img src="/static/images/message.png">
+                        <span>回复</span>
+                    </li>
+                    <li class="flex-xf-yc">
+                        <img src="/static/images/zan.png" >
+                        <span>1</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="bottom"></div>
+        </div>
+        
     </div>
 </template>
 <script>
-import WaterFallView from "@/components/WaterFallView"
 export default {
-    components:{
-        WaterFallView,
-
-    },
 onPullDownRefresh(){
-    this.$refs.callchild.callchild(true,this.listData)
+    // this.$refs.callchild.callchild(true,this.listData)
     //wx.stopPullDownRefresh()
 },
 // onReachBottom() {   
 //     console.log("123456")
 //     this.$refs.callchild.callchild(true,this.listData)  
 //  },
-onShow: function () {
-    this.list2 = JSON.parse(JSON.stringify(this.list));
-    console.log(this.list2,2)
-},
 
 onReachBottom: function () {
     var vm = this;
@@ -36,7 +58,7 @@ onReachBottom: function () {
 },
 data(){
     return{
-        list:[
+        listData:[
             {
                 title: '/static/images/example0.png',
                 name: '《虫师》',
@@ -88,33 +110,68 @@ data(){
                 time:'2019/4/25 09:17'
             }
         ],
+      title:"#RNG超话#2020年LOL世界赛决赛RNG 3:0 GRF 完虐!",
        
     
     }
 },
 methods:{
-    
+    click(e){
+        console.log(e)
+    }
 },
  
 
 }
 </script>
 <style <style lang="stylus" scoped>
-.quora
-    position absolute
-    left 0
-    top 0
-    right 0
-    bottom 0
-    background #e6e6e6
-    .add
-        position fixed
-        right 80rpx
-        bottom 100rpx
-        img
-            width 64rpx
-            height 64rpx
-
-
-
+@import '../../../static/css/app.css'
+.body
+    width 100%
+    height auto
+    max-height 600rpx
+    background #fff
+    .model
+        .header
+            width 100%
+            height 100rpx
+            color #2c2c2c
+            padding 20rpx 20rpx 0rpx 20rpx
+            img 
+                width 100rpx
+                height 100rpx
+                border-radius 50%
+                margin-right 20rpx
+            .header-title
+                .name
+                    font-size 28rpx
+                .time
+                    color #707070
+                    font-size 24rpx
+        .images
+            height auto
+            padding 0rpx 20rpx 20rpx 20rpx
+            img
+                float left
+                width 220rpx
+                height 200rpx
+        .title
+            width 600rpx
+            font-size 30rpx
+            color #707070
+            overflow hidden
+            padding 20rpx 10rpx 10rpx 30rpx
+            text-overflow ellipsis
+            display -webkit-box
+            -webkit-line-clamp 2
+            -webkit-box-orient vertical
+        .footer
+            font-size 24rpx
+            padding 0rpx 0rpx 10rpx 0rpx
+            img
+                width 64rpx
+                height 64rpx
+        .bottom
+            height 20rpx
+            background #f1f1f1
 </style>

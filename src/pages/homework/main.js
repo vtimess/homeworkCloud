@@ -7,7 +7,7 @@ app.$mount()
 export default{
     config: {
         navigationBarTitleText: '云作业',
-        navigationBarBackgroundColor: '#fff',
+        navigationBarBackgroundColor: '#64dcdb',
         enablePullDownRefresh:true,
     }
 }

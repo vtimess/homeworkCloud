@@ -2,19 +2,25 @@
 .flex-x{
     display: flex;
     justify-content: space-around;
+
+}
+.flex-x-y{
+    display: flex;
+    align-items:center;
+    justify-content: space-around;
 }
 /* 水平看起点对齐排列  */
 .flex-xf{
     display: flex;
     justify-content: flex-start;
 }
-/* 水平主轴看起点对齐排列  交叉轴居中排列*/
+/* 水平主轴 从起点排列  主轴居中对齐排列*/
 .flex-xf-yc{
     display: flex;
     justify-content: flex-start;
     align-items:center;
 }
-/* 水平主轴看居中对齐排列  交叉轴居中排列*/
+/* 水平主轴 看居中对齐排列  主轴居中排列*/
 .flex-xc-yc{
     display: flex;
     justify-content: center;

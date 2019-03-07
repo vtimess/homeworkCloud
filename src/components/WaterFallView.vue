@@ -44,7 +44,10 @@ export default {
         }
     },
     methods:{
-
+        callchild(status,val){
+            this.$emit("click", val);
+            console.log(val)
+        }
     }
 }
 </script>

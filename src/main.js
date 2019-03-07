@@ -2,9 +2,9 @@ import Vue from 'vue'
 import App from './App'
 import store from './store' 
 import http from '@/utils/http'
-import http from '@/http/api'
+// import http from '@/http/api'
 
-Vue.prototype.$api = api
+// Vue.prototype.$api = api
 Vue.prototype.$http=http
 
 Vue.config.productionTip = false
@@ -27,22 +27,30 @@ export default {
       navigationBarTitleText: 'HomeWork',
       navigationBarTextStyle: 'black',
     },
-    // tabBar:{
-    //   list:[
-    //     {
-    //       pagePath:"pages/quora/main",
-    //       text:"话题"
-    //     },
-    //     {
-    //       pagePath:"pages/homework/main",
-    //       text:"作业"
-    //     },
-    //     {
-    //       pagePath:"pages/my/main",
-    //       text:"话题"
-    //     }
-    //   ]
-    // }
+    tabBar:{
+      selectedColor:'#707070',
+      list:[
+        {
+          pagePath:"pages/quora/main",
+          text:"话题",
+          iconPath:  '/static/images/tab-home.png',
+          selectedIconPath: '/static/images/tab-home-on.png'
+        },
+        {
+          iconPath:  '/static/images/tab-home.png',
+          selectedIconPath: '/static/images/tab-home-on.png',
+          pagePath:"pages/homework/main",
+          text:"作业"
+          
+        },
+        {
+          iconPath:  '/static/images/tab-user.png',
+          selectedIconPath:  '/static/images/tab-user-on.png',
+          pagePath:"pages/my/main",
+          text:"个人中心"
+        }
+      ]
+    }
 
   }
 }
