@@ -1,12 +1,19 @@
-/* 水平对齐 两端间距是中间一半 */
+/* 水平主轴对齐 两端间距是中间一半 */
 .flex-x{
     display: flex;
     justify-content: space-around;
 }
+/* 水平主轴 水平对齐 两端间距是中间一半 */
 .flex-x-y{
     display: flex;
     align-items:center;
     justify-content: space-around;
+}
+/* 水平主轴 水平对齐 两端排列 */
+.flex-x-sb{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 /* 水平看起点对齐排列  */
 .flex-xf{

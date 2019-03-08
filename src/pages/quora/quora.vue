@@ -1,6 +1,6 @@
 <template>
     <div class="body">
-        <div class="model">
+        <div class="model" @click="details">
             <div class="flex-xf-yc header">
                 <img src="/static/images/headimg.png">
                 <div class="flex-yf header-title">
@@ -26,13 +26,15 @@
                     </li>
                     <li class="flex-xf-yc">
                         <img src="/static/images/zan.png" >
-                        <span>1</span>
+                        <span>点赞</span>
                     </li>
                 </ul>
             </div>
             <div class="bottom"></div>
         </div>
-        
+        <div class="release">
+        <img src="/static/images/edit.png" @click="release">
+        </div>
         
     </div>
 </template>
@@ -51,9 +53,9 @@ onReachBottom: function () {
     var vm = this;
     vm.pageStatus = true
     setTimeout(function () {
-        vm.pageNo = vm.pageNo + 1;
-        var list =  JSON.parse(JSON.stringify(vm.list2));
-        vm.list = vm.list.concat(list);
+        // vm.pageNo = vm.pageNo + 1;
+        // var list =  JSON.parse(JSON.stringify(vm.list2));
+        // vm.list = vm.list.concat(list);
         vm.pageStatus = false;
     }, 2000);
 },
@@ -66,9 +68,11 @@ data(){
     }
 },
 methods:{
-    click(e){
+    //跳转详情页面
+    details(e){
         console.log(e)
     },
+    //预览图片
     preview(){
         wx.previewImage({
             current: '/static/images/example0.png', // 当前显示图片的http链接
@@ -78,7 +82,13 @@ methods:{
                 ''
                 ] // 需要预览的图片http链接列表
         })
-    }
+    },
+    //跳转发布帖子页面
+    release(){
+      wx.navigateTo({
+        url:'/pages/release/main'
+      })
+    },
 },
  
 
@@ -134,4 +144,11 @@ methods:{
         .bottom
             height 20rpx
             background #f1f1f1
+    .release
+        position fixed
+        right 80rpx
+        bottom 100rpx
+        img
+            width 64rpx
+            height 64rpx
 </style>

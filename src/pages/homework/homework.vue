@@ -24,7 +24,7 @@
       <div class="flex-x-y navbar">
         <li>签到</li>
         <li>我的帖子</li>
-        <li>微视频</li>
+        <li>加入班群</li>
       </div>
       <div style="height:20rpx;background:#f1f1f1;"></div>
       <div class="homewrok">
@@ -50,22 +50,25 @@
         </div>
         
         <!-- <HomeworksList  v-for="homework in homeworkData" :key="homework.id" :homework="homework" ></HomeworksList> -->
-        <div class="flex-xc nothing">
+        <div v-if="homeworkData" class="flex-xc nothing">
           <div class="flex-y">
-            <img v-if="!homeworkData" src="/static/images/nothing.png"  @click="join" >
+            <img  src="/static/images/nothing.png"  @click="join" >
             <span class="tip">阿欧,还没有班群,快去加入吧！</span>
             <span class="tip">阿欧,尚未发布作业哦!</span>
           </div>
         </div>
       </div>
+      <view class="loading_box">
+        <view class="loading_fade_circle"></view>
+      </view>
       
-      <div class="add">
+      <!-- <div class="add">
         <img src="/static/images/add.png" @click="join">
-      </div>
-          <!-- <span class="classid" @click="classgroup">什么是班群号？</span> -->
-      <!-- <div class="goTop" >
-        <img src="/static/images/backtotop.png"  @click="goTop" >
       </div> -->
+          <!-- <span class="classid" @click="classgroup">什么是班群号？</span> -->
+      <div class="goTop" >
+        <img src="/static/images/backtotop.png"  @click="goTop" >
+      </div>
     <!-- <bottom :tabIndex="tabIndex" @toggleTab="toggleTab"></bottom> -->
     </div>
 </template>
@@ -277,5 +280,32 @@ export default {
     img
       width 64rpx
       height 64rpx
+  .loading_box
+    width 100%
+    text-align center
+    padding 100rpx 0
+    .loading_fade_circle
+      width 30rpx
+      height 30rpx
+      background #1ab394
+      border-radius 50%
+      animation fading_circle 1s ease-out infinite alternate
+      @keyframes fading_circle {
+        0%{
+          transform:scale(1.5);
+        }
+        100%{
+          
+        }
+      }
+        // @keyframes fading_circle
+        //   0%
+        //     transform: scale(1.5)
+        //     opacity: 0.2
+        //   100%  
+        //     transform scale(0.1)
+        //     opacity 1
+      
+
 </style>
 
