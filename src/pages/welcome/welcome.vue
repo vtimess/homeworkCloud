@@ -1,50 +1,43 @@
 <template>
     <div class="auth" >
-        
+        <i-tabs v-if="show" :current="current" color="#64dcdb" @change="handleChange">
+            <i-tab key="1" title="学生登录"></i-tab>
+            <i-tab key="2" title="教师登录"></i-tab>
+        </i-tabs>
         <open-data type="userAvatarUrl" class="useravatar"></open-data>
         <open-data type="userNickName" class="username"></open-data>
         <!-- 需要使用 button 来授权登录 -->
-        <form @submit='getFormId' report-submit='true'>
-            <button formType="submit" class="loginbutton" v-if="canIUse" open-type="getUserInfo" @getuserinfo="getUserInfo" >点击进入</button>
-            <view style="text-align:center" wx:else>请升级微信版本</view>
-        </form>
-        <div v-show="show" class="flex-xc form">
-            <div class="flex-yc all">
-                <view  class="flex-xc-yc teacher" @click="occupation(1)" >
-                    <span>教师</span>
-                </view>
-                <view  class="flex-xc-yc teacher" @click="occupation(2)" >
-                    <span>学生</span>
-                </view>
-            </div>
-        </div>
-        
+        <MyButton  openType="getUserInfo" @getuserinfo="getUserInfo">授权登录</MyButton>
     </div>
 </template>
 
 <script>
+import MyButton  from '@/components/MyButton.vue'
 import config from '@/config/index'
 import { mapState, mapMutations } from 'vuex'
 import { SET_STATUS,SET_USER_INFO,SET_TOKEN} from '@/store/mutation-types'
 
 export default {
+    components:{
+      MyButton,
+    },
     data(){
         return {
             canIUse: wx.canIUse('button.open-type.getUserInfo'),//判断小程序的API，回调，参数，组件等是否在当前版本可用。
             auth:true,
             show:true,
             register:"",
-            formId:"",
             nickName:"",
             gender:"",
             avatarUrl:"",
+            current: '1',
+            current_scroll: '1'
         }
     },
     onLoad(){
 
     },
     created() {
-        
         if(this.status){
             this.next(false)
         }else{
@@ -69,30 +62,42 @@ export default {
         next(val){
             this.show = val
         },
-        
-        login:async function(wxCode){
-            let result = await this.$http.post('/s/login',
-                {
-                    code: wxCode,
-                    formId:this.formId,
-                    nickName: this.nickName,
-                    avatarUrl: this.avatarUrl,
-                    gender: this.gender,
-                });
-            if(result){
-                console.log(result,"token")
-                this.setToken(result);
-                this.gotoIndex();
-                console.log(this.token,"token")
-                // this.getUserInfo(this.token);
-            }
+        handleChange ({ mp }) {
+            this.setStatus(mp.detail.key)
+            this.current = mp.detail.key
         },
-        getFormId(e){
-            this.formId = e.mp.detail.formId;
-            console.log(e,"formId")
+        handleChangeScroll ({ mp }) {
+            this.current_scroll = mp.detail.key
+        },
+        
+        login(wxCode){
+            this.$api.login({
+                code: wxCode,
+                type:this.status||1,
+                nickName: this.nickName,
+                avatarUrl: this.avatarUrl,
+                gender: this.gender,
+            }).then(token => {
+                this.setToken(token);
+                console.log("登录成功")
+                this.setStatus(this.userTypeData)
+                let url
+                if(this.status == 2){
+                    this.setStatus("2")
+                    url = "/pages/teacher/main"
+                }else{
+                    this.setStatus("1")
+                    url = "/pages/student/main"
+                }
+                wx.reLaunch({
+                    url:url
+                })
+            })
+            
         },
         getUserInfo(e){
             console.log(e,'getUserInfo')
+
             if (e.mp.detail.rawData){
                 this.nickName = e.mp.detail.userInfo.nickName;
                 this.avatarUrl = e.mp.detail.userInfo.avatarUrl;
@@ -121,67 +126,23 @@ export default {
                 }
             })
         },
-        syncUserInfo(){
-        },
-        // syncUserInfo(token){
-        //     let that = this
-        //      //从服务器中拿userInfo
-        //     wx.request({
-        //         url: config.host +'/s/info',
-        //         data: {
-        //             token: token
-        //         },
-        //         success: function(res) {
-        //             console.log(res)
-        //             let result = res.data
-        //             if(result.code === 0){
-        //                 let userInfo = result.data
-        //                 if(userInfo){
-        //                     that.setUserInfo(userInfo)                            
-        //                     that.gotoIndex()
-        //                 }
-        //             }else{
-        //                console.log(res)
-        //             }
-        //         }
-        //     })
+        // gotoIndex(){
+        //      setTimeout(()=>{
+        //             console.log('跳转')
+        //             wx.reLaunch({url: '../homework/main'})
+        //     },1000)
         // },
-        gotoIndex(){
-             setTimeout(()=>{
-                    console.log('跳转')
-                    wx.reLaunch({url: '../homework/main'})
-            },1000)
-        },
-        //授权
-        // onGetUserInfo:function(e){
-        //     console.log(e)
-        //     let wxUserInfo = e.mp.detail.userInfo;
-        //     let userInfo = {}
-        //     userInfo.nid = ""
-        //     userInfo.sex = ""
-        //     userInfo.name = wxUserInfo.nickName
-        //     userInfo.avatarUrl = wxUserInfo.avatarUrl
-        //     userInfo.phone = ""
-            
-        //     this.setUserInfo(userInfo);
-        //     if(this.token){
-        //         wx.reLaunch({
-        //             url: '../homework/main'
+        // occupation(val){
+        //     this.setStatus(2);
+        //     this.occupation = val;
+        //     setTimeout(()=>{
+        //         this.show = false
+        //         wx.setNavigationBarTitle({
+        //             title:"Homework"
         //         })
-        //     }
-            
-        // },
-        occupation(val){
-            this.setStatus(2);
-            this.occupation = val;
-            setTimeout(()=>{
-                this.show = false
-                wx.setNavigationBarTitle({
-                    title:"Homework"
-                })
-            },500)
-            console.log(val)
-        }
+        //     },500)
+        //     console.log(val)
+        // }
     }
 }
 </script>
@@ -193,24 +154,7 @@ export default {
     position absolute
     top 0px
     left 0px
-    .form
-        width 100%
-        height 100%
-        background #fff
-        position absolute
-        top 0rpx
-        left 0rpx
-        .all
-            height auto
-            color #fff
-            font-size 64rpx
-            .teacher
-                width 300rpx
-                height 300rpx
-                background #ffcccc
-                border-radius 150rpx
-                margin-bottom 100rpx
-            
+
     .useravatar 
         display block
         width 200rpx

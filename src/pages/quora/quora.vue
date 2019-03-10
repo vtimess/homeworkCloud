@@ -1,10 +1,10 @@
 <template>
     <div class="body">
-        <div class="model" @click="details">
+        <div class="model" v-for="item in postList" :key="item" @click="details">
             <div class="flex-xf-yc header">
                 <img src="/static/images/headimg.png">
                 <div class="flex-yf header-title">
-                    <span class="name">不屑灯笼酷爱洗澡</span>
+                    <span class="name">{{item.username}}</span>
                     <span class="time">56分钟前</span>
                 </div>
             </div>
@@ -63,11 +63,33 @@ data(){
     return{
         
       title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
-       
+       page:0,
+       size:5,
+       postList:[]
     
     }
 },
+created() {
+    this.getData()
+},
+computed: {
+    postListData:function(){
+        let newPostList = [];
+        this.postList.map((item) => {
+                newTempFile.push()
+            })
+        return newPostList;
+    }
+},
 methods:{
+    getData(){
+        this.$api.getPost({
+            page:this.page,
+            size:this.size
+        }).then(result=>{
+            this.postList = [...this.postList,...result.data]
+        })
+    },
     //跳转详情页面
     details(e){
         console.log(e)

@@ -12,11 +12,19 @@ const http = (url,method,data,title) => {
         if(title === 1){
             title:'玩命加载中...'
         }
-        mpvue.showLoading({
+        wx.showLoading({
             title:title
         })
     }
-
+    /** 收集formid */
+    let formId = store.state.formId;
+    if(formId){
+        if(data === undefined){
+            data = {}
+        }
+        data.formId = formId;
+    }
+    
     /** 把token设置到请求头中 */
     let header = {
         'Authorization':store.state.token
@@ -29,16 +37,16 @@ const http = (url,method,data,title) => {
 
     /** 请求 */
     return new Promise((resolve,reject) => {
-        mpvue.request({
+        wx.request({
             url:host + url,
             method:method,
             header:header,
             data:data,
             success:function(res){
-                mpvue.hideLoading()
+                wx.hideLoading()
                 /** 网络请求状态不为200 */
                 if (res.statusCode != 200) {
-                    mpvue.showToast({
+                    wx.showToast({
                         title: "网络出错，稍后再试",
                         icon: "none"
                     });
@@ -54,13 +62,13 @@ const http = (url,method,data,title) => {
                     /** 清空token */
                     store.commit(SET_TOKEN,"")
                     /** 跳转登录页面 */
-                    mpvue.reLaunch({
-                        url:'/pages/login'
+                    wx.reLaunch({
+                        url:'/pages/welcome/main'
                     })
                     return
                 }
                 if(result.code !== 0){
-                    mpvue.showToast({
+                    wx.showToast({
                         title: result.msg,
                         icon: "none"
                     })
@@ -71,8 +79,8 @@ const http = (url,method,data,title) => {
                 resolve(result.data)
             },
             fail: function (error) {
-                mpvue.hideLoading()
-                mpvue.showToast({
+                wx.hideLoading()
+                wx.showToast({
                     title: "网络出错，稍后再试",
                     icon: "none"
                 });

@@ -9,5 +9,6 @@ export default{
         navigationBarTitleText: '云作业',
         navigationBarBackgroundColor: '#64dcdb',
         enablePullDownRefresh:true,
+        
     }
 }

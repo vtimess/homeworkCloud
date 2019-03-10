@@ -6,6 +6,11 @@ app.$mount()
 
 export default{
     config: {
-        navigationBarBackgroundColor: '#64dcdb'
+        navigationBarBackgroundColor: '#64dcdb',
+        usingComponents: {
+            "i-tabs": "../../iView/tabs/index",
+            "i-tab": "../../iView/tab/index"
+        }
     }
+    
 }

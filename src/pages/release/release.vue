@@ -5,7 +5,7 @@
             <textarea class="textarea" v-model="content" placeholder="来吧,尽情发挥吧..." auto-focus show-confirm-bar></textarea>    
         </div>
         <div class="flex-xf-yc image">
-            <div class="flex-xf-yc imageFile" v-for="(item, index) in tempFile" :key="index">
+            <div class="flex-xf-yc imageFile" v-for="(item, index) in imageList" :key="index">
                 <img class="images" mode="aspectFill" :src="item" >
                 <img @click="del(index)" class="del" src="/static/images/image_del.png">
             </div>
@@ -19,7 +19,11 @@
     </div>
 </template>
 <script>
+import store from '../../store/'
+import { devHost as host } from '../../http/config'
+
 export default {
+    
     data(){
         return{
             title:"",
@@ -32,9 +36,26 @@ export default {
             tempFile:[],              //图片列表
         }
     },
+    created(){
+        this.hostImg = host
+    },
+    computed: {
+        imageList:function(){
+            let newTempFile = []
+            this.tempFile.map((item) => {
+                newTempFile.push(this.hostImg+item)
+            })
+            return newTempFile;
+        }
+    },
     methods:{
         sub(){
             if(this.content){
+                this.$api.release({
+                    title:this.title || null,
+                    content:this.content,
+                    image:this.tempFile
+                })
                 //请求
             }else{
                 wx.showToast({
@@ -60,6 +81,7 @@ export default {
         addImage(){
             var vm = this
             let counts = vm.tempFile.length;
+            var imageFile = [];
             console.log(counts)
             if(counts<3){
                 wx.chooseImage({
@@ -67,9 +89,51 @@ export default {
                     sizeType: ['original', 'compressed'],
                     sourceType: ['album', 'camera'],
                     success(res) {
-                        console.log(res)
+                        var uploadImgCount = 0;
+                        console.log(res.tempFilePaths)
+                        console.log(res.tempFilePaths.length)
+                        for (var i = 0,length = res.tempFilePaths.length; i < length; i++) {
+                            wx.uploadFile({
+                                url: 'http://bd.liukang666.cn:57358/upload/image', 
+                                filePath: res.tempFilePaths[i],
+                                name: 'file',
+                                header:{
+                                    'token':store.state.token,
+                                },
+                                formData:{
+                                    'type': 'post'
+                                },
+                                success: (res) => {
+                                    uploadImgCount++;
+                                    var result = JSON.parse(res.data)
+                                    console.log(JSON.parse(res.data))
+                                    if(result.code == 0){
+                                        if (uploadImgCount == length) {  
+                                            wx.showToast({
+                                                title: '图片上传成功',
+                                                icon: 'success',
+                                                duration: 2000
+                                                })
+                                        }
+                                        vm.tempFile.push(result.data)
+                                    }else{
+                                        wx.showToast({
+                                            title: '上传图片失败',
+                                            icon: 'none',
+                                            duration: 2000
+                                        }) 
+                                    }
+                                    
+                                },
+                                
+                                })
+                        }
+                        console.log(imageFile)
                         // tempFilePath可以作为img标签的src属性显示图片
-                        vm.tempFile = [...vm.tempFile,...res.tempFilePaths]
+                        // console.log(res.tempFilePaths)
+                        // vm.tempFile = [...vm.tempFile,...res.tempFilePaths]
+                        // vm.tempFile = [...vm.tempFile,...imageFile]
+                        console.log(vm.tempFile)
                     }
                  })
             }else{

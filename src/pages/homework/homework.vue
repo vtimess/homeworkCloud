@@ -148,7 +148,10 @@ export default {
         }
       }
     },
-    
+    animate(){
+      var animate = wx.createAnimation();
+      animate
+    },
     join:function(){
       wx.navigateTo({
         url:'/pages/search/main'
@@ -290,14 +293,6 @@ export default {
       background #1ab394
       border-radius 50%
       animation fading_circle 1s ease-out infinite alternate
-      @keyframes fading_circle {
-        0%{
-          transform:scale(1.5);
-        }
-        100%{
-          
-        }
-      }
         // @keyframes fading_circle
         //   0%
         //     transform: scale(1.5)
