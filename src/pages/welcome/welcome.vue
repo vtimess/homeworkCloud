@@ -132,17 +132,7 @@ export default {
         //             wx.reLaunch({url: '../homework/main'})
         //     },1000)
         // },
-        // occupation(val){
-        //     this.setStatus(2);
-        //     this.occupation = val;
-        //     setTimeout(()=>{
-        //         this.show = false
-        //         wx.setNavigationBarTitle({
-        //             title:"Homework"
-        //         })
-        //     },500)
-        //     console.log(val)
-        // }
+ 
     }
 }
 </script>

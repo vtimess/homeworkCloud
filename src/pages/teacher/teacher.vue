@@ -7,18 +7,11 @@
       <div class="mainView" v-if="tabIndex == 1" key="1">
             <div>1</div>
       </div>
-      <div class="mainView" v-if="tabIndex == 2" key="2">
-            <div>2</div>
-      </div>
-      <div class="mainView" v-if="tabIndex == 3" key="3">
-            <div>3</div>
-      </div>
+      
       </div>
       <i-tab-bar class="tabbar" :current="current" color="#64dcdb" @change="handleChange">
         <i-tab-bar-item key="0" icon="homepage" current-icon="homepage_fill" title="广场"></i-tab-bar-item>
-        <i-tab-bar-item key="1" icon="activity" current-icon="activity_fill" title="作业"></i-tab-bar-item>
-        <i-tab-bar-item key="2" icon="group" current-icon="group_fill" title="班级"></i-tab-bar-item>
-        <i-tab-bar-item key="3" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
+        <i-tab-bar-item key="1" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
       </i-tab-bar>
     </div>
 </template>

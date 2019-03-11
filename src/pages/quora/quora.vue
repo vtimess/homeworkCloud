@@ -70,16 +70,26 @@ data(){
     }
 },
 created() {
+    
+},
+onLoad(){
     this.getData()
 },
 computed: {
-    postListData:function(){
-        let newPostList = [];
-        this.postList.map((item) => {
-                newTempFile.push()
-            })
-        return newPostList;
-    }
+    // postListData:function(){
+    //     let newPostList = [];
+    //     this.postList.map((item) => {
+    //             newTempFile.push()
+    //         })
+    //     return newPostList;
+    // },
+    // end(){
+        //     let nowtime = new Date()
+        //     return nowtime > this.homeworkData.endTime ? '(已截止)':''
+        // },
+        // date(){
+        //     return utils.formatTime(this.homework.endTime)
+        // }
 },
 methods:{
     getData(){
