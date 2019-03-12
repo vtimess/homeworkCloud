@@ -15,7 +15,7 @@
             <span @click="addOrhidden">{{titleTip}}</span>
             <span @click="hiddenOrshow">{{allHidden}}</span>
         </div>
-        <button class="btn" @click="sub">发  布</button>
+        <button styleType="defult" @click="sub">发  布</button>
     </div>
 </template>
 <script>
@@ -49,7 +49,7 @@ export default {
         }
     },
     methods:{
-        sub(){
+        sub(e){
             if(this.content){
                 this.$api.release({
                     title:this.title || null,
@@ -128,12 +128,6 @@ export default {
                                 
                                 })
                         }
-                        console.log(imageFile)
-                        // tempFilePath可以作为img标签的src属性显示图片
-                        // console.log(res.tempFilePaths)
-                        // vm.tempFile = [...vm.tempFile,...res.tempFilePaths]
-                        // vm.tempFile = [...vm.tempFile,...imageFile]
-                        console.log(vm.tempFile)
                     }
                  })
             }else{
@@ -212,13 +206,4 @@ export default {
             border-radius 20rpx
             color #2c2c2c
             font-size 24rpx
-    .btn
-        position fixed
-        left 20rpx
-        right 20rpx
-        bottom 10rpx
-        color #B22222
-        font-weight 580
-    .btn::after
-        border none
 </style>

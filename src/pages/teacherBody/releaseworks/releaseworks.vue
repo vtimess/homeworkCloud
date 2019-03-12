@@ -10,18 +10,27 @@
                 <img class="images" mode="aspectFill" :src="item" >
                 <img @click="del(index)" class="del" src="/static/images/image_del.png">
             </div>
-            <img @click="addImage" src="/static/images/release_add.png">
+            <img @click="addImage" src="/static/images/releaseWorks_add.png">
         </div>
     </div>
     <div style="height:20rpx;background:#f1f1f1"></div>
-    <div class="flex-x-sb footer">
+    <div class="footer">
         <ul>
-            <li>
-                <span>最多允许补交作业次数</span>
-                <input type="text">
+            <li class="flex-x-sb">
+                <span>允许补交作业次数
+                <span style="font-size:24rpx;color:#707070">(设置为'0'则不允许补交)</span>
+                </span>
+
+                <view class="section">
+                    <picker @change="timesrChange" :value="timesIndex" :range="times">
+                        <view class="picker">
+                        {{times[timesIndex]+"次"}}
+                        </view>
+                    </picker>
+                </view>
             </li>
-            <li>
-                <span>科目</span>
+            <li class="flex-x-sb">
+                <span>选择科目</span>
                 <view class="section">
                     <picker @change="pickerChange" :value="index" :range="array">
                         <view class="picker">
@@ -30,20 +39,19 @@
                     </picker>
                 </view>
             </li>
-            <li>
+            <li class="flex-x-sb">
                 <span>同步到我的其他班群</span>
+                <div @click="toClassGroup" style="display:flex;align-items:center;">
+                    <span style="font-size:24rpx;color:#707070">Mighty等两个群</span>
+                    <image style="width:32rpx;height:32rpx;margin-right:-20rpx" src="/static/images/back.png"/>
+                </div>
             </li>
-            <li>
+            <li class="flex-x-sb">
                 <span>设置截止时间</span>
-                <!-- <view class="body-view">
-                    <switch checked @change="switchChange" />
-                </view> -->
                 <view class="section">
                     <picker
                         mode="date"
                         :value="timeData"
-                        start="2015-09-01"
-                        end="2017-09-01"
                         @change="dateChange"
                     >
                         <view class="picker">
@@ -51,37 +59,73 @@
                         </view>
                     </picker>
                 </view>
+                <view class="section">
+                    <picker
+                        mode="time"
+                        :value="time"
+                        @change="timeChange"
+                    >
+                        <view class="picker">
+                        {{time}}
+                        </view>
+                    </picker>
+                </view>
             </li>
         </ul>
     </div>
+    <div style="height:20rpx;background:#f1f1f1"></div>
     <button class="btn" @click="sub">发布作业</button>
     </div>
 </template>
 <script>
-import { formatTime } from '@/utils/index.js'
+import {formatNumber,formatTime} from '@/utils/index.js'
 export default {
     data(){
         return{
+            times:['0','1','2'],
             array:['数学','英语','语文','其他'],
             index:3,
-            timeData:'asdsad',
+            timesIndex:0,
+            time:'18:30',
+            timeData:'',
         }
     },
+    onLoad(){
+        var dateTime = new Date();
+        const year = dateTime.getFullYear();
+        const month = dateTime.getMonth()+1;
+        const date = dateTime.getDate();
+        this.timeData = [year,month,date].map(formatNumber).join('/');
+        console.log(this.timeData)
+
+    },
     methods:{
+        timesrChange({ mp }){
+            this.timesIndex = mp.detail.value
+        },
         pickerChange({ mp }){
             this.index = mp.detail.value
         },
         switchChange({ mp }){
 
         },
+        timeChange({ mp }){
+            this.time = mp.detail.value
+            console.log(this.time)
+        },
         dateChange({ mp }){
-            var datatime = new Date()
-            console.log(formatTime(datatime))
+            this.timeData = mp.detail.value.replace(/-/g,'/')
+        },
+        toClassGroup(){
+            wx.navigateTo({
+                url: '/pages/teacherBody/syncClass/main'
+            })
         }
     }
 }
 </script>
 <style lang="stylus" scoped>
+@import '../../../../static/css/app.css'
 .body
     position absolute
     top 0rpx
@@ -125,6 +169,16 @@ export default {
             padding 10rpx 20rpx 10rpx 20rpx
             color #2c2c2c
             font-size 28rpx
+        ul
+            padding 0rpx 0rpx 0rpx 20rpx
+            li
+                font-size 34rpx
+                color #2c2c2c
+                padding 10rpx 40rpx 10rpx 10rpx
+                border-bottom 1rpx solid #f1f1f1
+            .section
+                font-size 30rpx
+                color #707070
     .btn
         position fixed
         left 20rpx

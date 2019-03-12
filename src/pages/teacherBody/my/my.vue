@@ -8,25 +8,41 @@
 
         <div class="navList">
             <ul class="flex-x-m">
-                <li class="flex-xc-yc nav-1">我的班级</li>
-                <li class="flex-xc-yc nav-1">作业管理</li>
-                <li class="flex-xc-yc nav-1">布置作业</li>
-                <li class="flex-xc-yc nav-2">学习Echart</li>
-                <li class="flex-xc-yc nav-1">通知</li>
+                <li class="flex-xc-yc nav-1" @click="navigateTo(classUrl)">班群管理</li>
+                <li class="flex-xc-yc nav-1" @click="navigateTo(worksUrl)">作业管理</li>
+                <li class="flex-xc-yc nav-1" @click="navigateTo(releaseUrl)">布置作业</li>
+                <li class="flex-xc-yc nav-2" @click="navigateTo(learnUrl)">学习Echart</li>
+                <li class="flex-xc-yc nav-1" @click="navigateTo(createUrl)">创建班群</li>
                 <li class="flex-yc nav-1">
                     <img src="/static/images/teacher_edit.png"> 
                     <span>意见反馈</span>
                     </li>
                 <li class="flex-xc-yc nav-2">退出登录</li>
-                
             </ul>
-
             <div class="flex-xc footer">-HEO技术支持-</div>
         </div>
     </div>
 </template>
 <script>
 export default {
+    data(){
+        return{
+            releaseUrl:'/pages/teacherBody/releaseworks/main',
+            worksUrl:'',
+            classUrl:'',
+            learnUrl:'',
+            createUrl:'/pages/teacherBody/createClass/main',
+
+        }
+    },
+    methods:{
+        navigateTo(val){
+            wx.navigateTo({
+                url: val
+            })
+        }
+    }
+    
     
 }
 </script>

@@ -55,7 +55,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 19,
+			"current": 22,
 			"list": [
 				{
 					"id": -1,
@@ -185,6 +185,27 @@
 					"id": -1,
 					"name": "teacherBody/my",
 					"pathName": "pages/teacherBody/my/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "syncClass",
+					"pathName": "pages/teacherBody/syncClass/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "createClass",
+					"pathName": "pages/teacherBody/createClass/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "classGroup",
+					"pathName": "pages/teacherBody/classGroup/main",
 					"query": "",
 					"scene": null
 				}
