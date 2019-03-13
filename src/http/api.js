@@ -21,6 +21,11 @@ const release = (params) => http('/s/post',POST,params,"发布中...")
  */
 const getPost = (params) => http('/s/post',GET,params,"正在加载...")
 
+
+
+
+
+
 /** 创建班群api
  */
 const createClass = (params) => http('',POST,params,"创建中...")
@@ -29,12 +34,17 @@ const createClass = (params) => http('',POST,params,"创建中...")
  */
 const releaseWorks = (params) => http('',POST,params,"发布中...")
 
+/** 获取班群列表api
+ */
+const getClassPost = (params) => http('/s/post',GET,params,"正在加载...")
+
 const api = {
     login,
     release,
     getPost,
     createClass,
     releaseWorks,
+    getClassPost,
 }
 
 export default api

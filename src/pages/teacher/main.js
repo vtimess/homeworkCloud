@@ -7,7 +7,7 @@ app.$mount()
 export default{
     config: {
         navigationBarBackgroundColor: '#64dcdb',
-        navigationBarTitleText: '云作业',
+        navigationBarTitleText: '',
         enablePullDownRefresh:true,
         usingComponents: {
             "i-tab-bar": "../../iView/tab-bar/index",

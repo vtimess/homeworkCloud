@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './classGroup'
+import App from './worksManage'
 
 const app = new Vue(App)
 app.$mount()
@@ -7,8 +7,8 @@ app.$mount()
 export default{
     config: {
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '班群列表',
-        
+        navigationBarTitleText: '作业管理',
+       
     }
     
 }

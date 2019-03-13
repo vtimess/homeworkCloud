@@ -17,7 +17,7 @@
             </i-radio>
         </i-cell>
         <i-panel title="班群密码:">
-            <i-input :value="password" placeholder="请输入班群加入密码(6位数字)" />
+            <i-input :value="password" maxlength="6" placeholder="请输入班群加入密码(6位数字)" />
         </i-panel>
         <i-panel title="班群LOGO:" hide-border>
             <div class="flex-xf-yc image">

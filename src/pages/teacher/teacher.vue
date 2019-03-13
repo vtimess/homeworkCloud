@@ -2,10 +2,10 @@
     <div class="body">
       <div>
       <div class="mainView" v-if="tabIndex == 0" key="0">
-            <div>0</div>
+            <div>1</div>
       </div>
       <div class="mainView" v-if="tabIndex == 1" key="1">
-            <div>1</div>
+            <MyCenter></MyCenter>
       </div>
       
       </div>
@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import MyButton from '@/components/MyButton'
+import MyCenter from '@/components/teacherCenter'
 export default {
   components:{
-      MyButton,
+      MyCenter,
   },
   data () {
     return {
@@ -37,6 +37,9 @@ export default {
     }
   },
   onLoad(){
+    wx.setNavigationBarTitle({
+      title: '话题广场'
+    })
   },
   created () {
   },
@@ -44,8 +47,18 @@ export default {
   },
   methods:{
     handleChange ({ mp }) {
-        this.tabIndex = mp.detail.key;
-        this.current = mp.detail.key;
+        let key = mp.detail.key
+        if(key == 0){
+          wx.setNavigationBarTitle({
+            title: '话题广场'
+          })
+        }else{
+          wx.setNavigationBarTitle({
+            title: '个人中心'
+          })
+        }
+        this.tabIndex = key;
+        this.current = key;
     }
     
   },

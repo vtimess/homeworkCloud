@@ -5,7 +5,6 @@
             <open-data type="userNickName" class="username"></open-data>
             <span class="motto">-愿望是半个生命,淡漠是半个死亡</span>
         </div>
-
         <div class="navList">
             <ul class="flex-x-m">
                 <li class="flex-xc-yc nav-1" @click="navigateTo(classUrl)">班群管理</li>
@@ -43,12 +42,10 @@ export default {
             })
         }
     }
-    
-    
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../../static/css/app.css'
+@import '../../static/css/app.css'
 .self
     width 100%
     height 100%
@@ -57,9 +54,8 @@ export default {
     left 0px
     background-color #fff
     .user
-        position absolute
-        left 50%
-        transform translate(-50%,0)
+        justify-content center
+        margin-top 100rpx
         align-items center
         .useravatar 
             width 140rpx
@@ -81,7 +77,7 @@ export default {
             text-overflow ellipsis
             white-space nowrap
     .navList
-        margin-top 340rpx
+        margin-top 60rpx
         font-size 28rpx
         color #2c2c2c
         padding 5rpx
