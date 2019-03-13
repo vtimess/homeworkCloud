@@ -1,7 +1,7 @@
 <template>
     <div class="body">
         <i-panel title="班群名称:">
-            <i-input :value="className" placeholder="给班群起个名字" />
+            <i-input :value="name" placeholder="给班群起个名字" />
         </i-panel>
         <i-panel title="选择科目:" hide-border>
             <view class="section">
@@ -17,7 +17,7 @@
             </i-radio>
         </i-cell>
         <i-panel title="班群密码:">
-            <i-input :value="password" maxlength="6" placeholder="请输入班群加入密码(6位数字)" />
+            <i-input type="number" v-model="password" maxlength="6" placeholder="请输入班群加入密码(6位数字)" />
         </i-panel>
         <i-panel title="班群LOGO:" hide-border>
             <div class="flex-xf-yc image">
@@ -40,11 +40,15 @@ export default {
     },
     data(){
         return{
+            name:null,
+            password:'',
+            subject:'',
+            avatarUrl:'',
+            desc:null,
             array:['语文','数学','外语','物理','化学','JAVA','其他'],
             index:6,
-            className:'',
-            password:'',
             image:'',
+            tempFile:[],
             
         }
     },
@@ -53,12 +57,64 @@ export default {
             console.log("333")
         },
         addImage(){
-
+            var vm = this
+            let counts = vm.tempFile.length;
+            var imageFile = [];
+            console.log(counts)
+            if(counts<1){
+                wx.chooseImage({
+                    count: 1,
+                    sizeType: ['original', 'compressed'],
+                    sourceType: ['album', 'camera'],
+                    success(res) {
+                        var uploadImgCount = 0;
+                        wx.uploadFile({
+                            url: 'http://bd.liukang666.cn:57358/upload/image', 
+                            filePath: res.tempFilePaths,
+                            name: 'file',
+                            header:{
+                                'token':store.state.token,
+                            },
+                            formData:{
+                                'type': 'post'
+                            },
+                            success: (res) => {
+                                uploadImgCount++;
+                                var result = JSON.parse(res.data)
+                                console.log(JSON.parse(res.data))
+                                if(result.code == 0){
+                                    wx.showToast({
+                                        title: '图片上传成功',
+                                        icon: 'success',
+                                        duration: 2000
+                                    })
+                                    vm.tempFile.push(result.data)
+                                }else{
+                                    wx.showToast({
+                                        title: '上传图片失败',
+                                        icon: 'none',
+                                        duration: 2000
+                                    }) 
+                                }
+                                
+                            },
+                                
+                        })
+                    }
+                 })
+            }else{
+                wx.showToast({
+                    title: '限制只能上传1张图片!',
+                    icon: 'none',
+                    duration: 2000
+                })
+            }
         },
         create(e){
-            console.log(e)
+            console.log(this.password)
         },
         pickerChange({ mp }){
+            console.log(mp)
             this.index = mp.detail.value
         }
         

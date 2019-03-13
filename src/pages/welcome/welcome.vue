@@ -71,7 +71,9 @@ export default {
         },
         
         login(wxCode){
-            this.$api.login({
+            this.$api.login(
+                this.status==2?'/t/login':'/s/login',
+                {
                 code: wxCode,
                 type:this.status||1,
                 nickName: this.nickName,

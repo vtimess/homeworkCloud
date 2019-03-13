@@ -11,7 +11,7 @@ const DELETE = 'DELETE'
  */
 /** 首页登录api
  */
-const login = (params) => http('/s/login',POST,params,"正在登录中...")
+const login = (params) => http(url,POST,params,"正在登录中...")
 
 /** 发布帖子api
  */
@@ -28,7 +28,7 @@ const getPost = (params) => http('/s/post',GET,params,"正在加载...")
 
 /** 创建班群api
  */
-const createClass = (params) => http('',POST,params,"创建中...")
+const createClass = (params) => http('/t/class',POST,params,"创建中...")
 
 /** 发布作业api
  */

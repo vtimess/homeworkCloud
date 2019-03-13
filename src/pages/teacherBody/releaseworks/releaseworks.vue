@@ -88,6 +88,8 @@ export default {
             timesIndex:0,
             time:'18:30',
             timeData:'',
+            title:'',
+            content:''
         }
     },
     onLoad(){
@@ -100,6 +102,9 @@ export default {
 
     },
     methods:{
+        sub(){
+            console.log(this.title,this.content)
+        },
         timesrChange({ mp }){
             this.timesIndex = mp.detail.value
         },
