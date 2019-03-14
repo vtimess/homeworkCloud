@@ -2,7 +2,7 @@
     <div class="body">
         <div v-for="(item, index) in classData" :key="index">
         <div style="margin-top:20rpx"></div>
-        <div class="card" @click="toClassDetail">
+        <div class="card" @click="toClassDetail(item)">
             <div class="flex-x-sb card-title">
                 <div class="flex-xc-yc">
                     <img class="image" :src="item.classAvatarUrl">
@@ -11,11 +11,11 @@
                         <span style="color:#707070;font-size:26rpx;margin-top:10rpx">班群号:{{item.classId}}</span>
                     </div>
                 </div>
-                <span class="manage" @click="delClass">删除</span>
+                <span class="manage" @click="delClass">解散</span>
             </div>
             <div class="card-footer">
-                <span>创建时间：{{createTime}}</span>
-                <span>班群人数: {{studentNum}} 人</span>
+                <span>创建时间：{{item.createTime}}</span>
+                <span>班群人数: {{item.studentNum||0}} 人</span>
             </div>
         </div>   
         </div>     
@@ -23,6 +23,8 @@
 </template>
 <script>
 import {formatNumber,formatTime} from '@/utils/index.js'
+import { devHost as host } from '../../../http/config'
+
 export default {
     data(){
         return{
@@ -40,14 +42,25 @@ export default {
             this.$api.getClassList({})
             .then( data =>{
                 data.map((item)=>{
-                    item.createTime = formatTime(item.createTime)
+                    if(item.createTime){
+                        item.createTime = formatTime(item.createTime);
+
+                    }
+                    if(item.classAvatarUrl){
+                        item.classAvatarUrl = host + item.classAvatarUrl ;
+                    }
                 })
+                console.log(data)
                 this.classData = data
             })
         },
-        toClassDetail(){
+        toClassDetail(val){
+            console.log(val)
+            let data = JSON.stringify(val)
+            console.log(data)
+
             wx.navigateTo({
-                url: '/pages/teacherBody/classDetail/main'
+                url: '/pages/teacherBody/classDetail/main?data='+val
             })
         },
         //删除班群
@@ -105,8 +118,9 @@ export default {
                 letter-spacing 5rpx
         .card-footer
             padding-top 20rpx
-            padding-right 20rpx
             color #8a8a8a
             font-size 24rpx
+            span 
+                padding-right 20rpx
 
 </style>

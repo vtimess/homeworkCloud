@@ -81,12 +81,13 @@ export default {
                             filePath: res.tempFilePaths[0],
                             name: 'file',
                             header:{
-                                'token':store.state.token,
+                                'Authorization':store.state.token,
                             },
                             formData:{
                                 'type': 'post'
                             },
                             success: (res) => {
+                                console.log(res)
                                 var result = JSON.parse(res.data)
                                 if(result.code == 0){
                                     wx.showToast({
@@ -94,7 +95,7 @@ export default {
                                         icon: 'success',
                                         duration: 2000
                                     })
-                                    this.image = host+result.data;
+                                    vm.image = host+result.data;
                                     vm.tempFile.push(result.data);
                                 }else{
                                     wx.showToast({

@@ -98,7 +98,7 @@ export default {
                                 filePath: res.tempFilePaths[i],
                                 name: 'file',
                                 header:{
-                                    'token':store.state.token,
+                                    'Authorization':store.state.token,
                                 },
                                 formData:{
                                     'type': 'post'

@@ -8,6 +8,7 @@ export default{
     config: {
         navigationBarBackgroundColor: '#fff',
         navigationBarTitleText: '班群列表',
+        enablePullDownRefresh:true,
         
     }
     

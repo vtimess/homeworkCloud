@@ -25,6 +25,11 @@ export default {
     components:{
       MyButton,
     },
+    onLoad(options){
+        console.log(options)
+        let val = JSON.parse(options)
+        console.log(val)
+    },
     data(){
         return{
             className:"刘jj的日常",
