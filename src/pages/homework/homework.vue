@@ -77,6 +77,7 @@
 import HomeworksList from '@/components/HomeworksList'
 import bottom from '@/components/bottom.vue'
 import MyButton from '@/components/MyButton'
+import store from '../../store/'
 export default {
   components:{
       HomeworksList,
@@ -112,9 +113,21 @@ export default {
     }
   },
   onLoad(){
-    this.getData()
+    this.$nextTick(() => {
+        this.getData();
+    });
   },
   created () {
+    console.log(store.state.status)
+    if(store.state.status == 2){
+      wx.reLaunch({
+          url:'/pages/teacher/main'
+      })
+    }else if(!store.state.status){
+      wx.reLaunch({
+        url:'/pages/welcome/main'
+      })
+    }
   },
   computed: {
         // end(){
@@ -137,16 +150,17 @@ export default {
       // })
     },
     getData:async function(){
-        
-      let result = await this.$http.get('/s/homework',{page:0,size:2})
-      if(result){
-        this.homeworkData = result
-        if(result.length < 1){
-            this.show = false
+      this.$api.gethomework({
+        page:0,
+        size:4
+      }).then((data)=>{
+        if(data){
+          this.homeworkData = data
+          this.show = false
         }else{
           this.show = true
         }
-      }
+      })
     },
     animate(){
       var animate = wx.createAnimation();

@@ -64,6 +64,7 @@ export default {
         },
         handleChange ({ mp }) {
             this.setStatus(mp.detail.key)
+            console.log(this.status)
             this.current = mp.detail.key
         },
         handleChangeScroll ({ mp }) {
@@ -82,17 +83,15 @@ export default {
             }).then(token => {
                 this.setToken(token);
                 console.log("登录成功")
-                this.setStatus(this.userTypeData)
-                let url
+                var mainUrl = "/pages/teacher/main"
                 if(this.status == 2){
                     this.setStatus("2")
-                    url = "/pages/teacher/main"
                 }else{
                     this.setStatus("1")
-                    url = "/pages/student/main"
+                    mainUrl = "/pages/student/main"
                 }
                 wx.reLaunch({
-                    url:url
+                    url:mainUrl
                 })
             })
             

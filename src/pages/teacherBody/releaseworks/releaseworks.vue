@@ -2,8 +2,8 @@
     <div class="body">
     <div style="padding: 20rpx;">
         <div class="content">
-            <input class="input"  v-model="title" placeholder="加个标题哟~" type="text" auto-focus @input="totast" :maxlength="maxlength">
-            <textarea class="textarea" v-model="content" placeholder="来吧,尽情地布置作业吧..." auto-focus show-confirm-bar></textarea>    
+            <input  class="input"  v-model="title" placeholder="加个标题哟~" type="text" auto-focus @input="totast" :maxlength="maxlength">
+            <textarea class="textarea" maxlength="200" v-model="content" placeholder="来吧,尽情地布置作业吧..." auto-focus show-confirm-bar></textarea>    
         </div>
         <div class="flex-xf-yc image">
             <div class="flex-xf-yc imageFile" v-for="(item, index) in imageList" :key="index">
@@ -89,7 +89,8 @@ export default {
             time:'18:30',
             timeData:'',
             title:'',
-            content:''
+            content:'',
+            maxlength:20,
         }
     },
     onLoad(){
@@ -102,6 +103,15 @@ export default {
 
     },
     methods:{
+        totast({ mp }){
+            if(mp.detail.value.length > this.maxlength){
+                wx.showToast({
+                    title: '标题超过20个字的限制',
+                    icon: 'none',
+                    duration: 1000
+                })
+            }
+        },
         sub(){
             console.log(this.title,this.content)
         },

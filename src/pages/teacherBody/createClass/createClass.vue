@@ -1,7 +1,7 @@
 <template>
     <div class="body">
         <i-panel title="班群名称:">
-            <i-input :value="name" placeholder="给班群起个名字" />
+            <i-input name="className" type="text" @blur="getclassName"  v-model="name" maxlength="20" placeholder="给班群起个名字" />
         </i-panel>
         <i-panel title="选择科目:" hide-border>
             <view class="section">
@@ -17,7 +17,7 @@
             </i-radio>
         </i-cell>
         <i-panel title="班群密码:">
-            <i-input type="number" v-model="password" maxlength="6" placeholder="请输入班群加入密码(6位数字)" />
+            <i-input type="number" @blur="getpassword" v-model="password" maxlength="6" placeholder="请输入班群加入密码(6位数字)" />
         </i-panel>
         <i-panel title="班群LOGO:" hide-border>
             <div class="flex-xf-yc image">
@@ -28,19 +28,21 @@
                 <img @click="addImage" src="/static/images/releaseWorks_add.png">
             </div>
         </i-panel>
-        
         <MyButton styleType="defult" @click="create">立即创建</MyButton>
     </div>
 </template>
 <script>
 import MyButton  from '@/components/MyButton.vue'
+import { devHost as host } from '../../../http/config'
+import store from '../../../store/'
+
 export default {
     components:{
       MyButton,
     },
     data(){
         return{
-            name:null,
+            name:'',
             password:'',
             subject:'',
             avatarUrl:'',
@@ -49,12 +51,19 @@ export default {
             index:6,
             image:'',
             tempFile:[],
+            desc:null,
             
         }
     },
     methods:{
         del(){
             console.log("333")
+        },
+        getclassName({ mp }){
+            this.name = mp.detail.detail.value
+        },
+        getpassword({ mp }){
+            this.password = mp.detail.detail.value
         },
         addImage(){
             var vm = this
@@ -67,10 +76,9 @@ export default {
                     sizeType: ['original', 'compressed'],
                     sourceType: ['album', 'camera'],
                     success(res) {
-                        var uploadImgCount = 0;
                         wx.uploadFile({
-                            url: 'http://bd.liukang666.cn:57358/upload/image', 
-                            filePath: res.tempFilePaths,
+                            url: 'http://localhost:8080/upload/image', 
+                            filePath: res.tempFilePaths[0],
                             name: 'file',
                             header:{
                                 'token':store.state.token,
@@ -79,16 +87,15 @@ export default {
                                 'type': 'post'
                             },
                             success: (res) => {
-                                uploadImgCount++;
                                 var result = JSON.parse(res.data)
-                                console.log(JSON.parse(res.data))
                                 if(result.code == 0){
                                     wx.showToast({
                                         title: '图片上传成功',
                                         icon: 'success',
                                         duration: 2000
                                     })
-                                    vm.tempFile.push(result.data)
+                                    this.image = host+result.data;
+                                    vm.tempFile.push(result.data);
                                 }else{
                                     wx.showToast({
                                         title: '上传图片失败',
@@ -111,7 +118,41 @@ export default {
             }
         },
         create(e){
-            console.log(this.password)
+            let reg = /^\d{6}$/;
+            if(!reg.test(this.password)){
+                wx.showToast({
+                    icon:'none',
+                    title:'请输入六位数字'
+                });
+                return 0
+            }
+            if(this.name&&this.image){
+                var vm = this
+                this.$api.createClass(
+                    {
+                        name:vm.name,
+                        subject:vm.array[vm.index],
+                        avatarUrl:vm.tempFile,
+                        password:vm.password,
+                        desc:vm.desc
+                    }
+                ).then(msg =>{
+                    wx.showToast({
+                        icon:'success',
+                        title:'创建'+msg
+                    })
+                    wx.navigateBack({
+                        url:'/pages/teacherBody/worksManage/main'
+                    })
+                })
+                
+            }else{
+                let message = this.name?'请上传班群图片':'班群名称未填写';
+                wx.showToast({
+                    icon:'none',
+                    title: message
+                })
+            }
         },
         pickerChange({ mp }){
             console.log(mp)

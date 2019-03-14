@@ -1,29 +1,32 @@
 <template>
     <div class="body">
+        <div v-for="(item, index) in classData" :key="index">
         <div style="margin-top:20rpx"></div>
         <div class="card" @click="toClassDetail">
             <div class="flex-x-sb card-title">
                 <div class="flex-xc-yc">
-                    <img class="image" src="/static/images/headimg.png">
+                    <img class="image" :src="item.classAvatarUrl">
                     <div class="flex-yf className">
-                        <span>刘康康的日常</span>
-                        <span style="color:#707070;font-size:26rpx;margin-top:10rpx">班群号:668565</span>
+                        <span>{{item.name}}</span>
+                        <span style="color:#707070;font-size:26rpx;margin-top:10rpx">班群号:{{item.classId}}</span>
                     </div>
                 </div>
-                <span class="manage" @click="toClassDetail">管理</span>
+                <span class="manage" @click="delClass">删除</span>
             </div>
             <div class="card-footer">
-                <span>创建时间：2019-03-18\t</span>
-                <span>班群人数: 32 人</span>
+                <span>创建时间：{{createTime}}</span>
+                <span>班群人数: {{studentNum}} 人</span>
             </div>
-        </div>        
+        </div>   
+        </div>     
     </div>
 </template>
 <script>
+import {formatNumber,formatTime} from '@/utils/index.js'
 export default {
     data(){
         return{
-
+            classData:[],
         }
     },
     mounted() {
@@ -34,11 +37,31 @@ export default {
     methods:{
         //请求 获取班群列表
         getData(){
-
+            this.$api.getClassList({})
+            .then( data =>{
+                data.map((item)=>{
+                    item.createTime = formatTime(item.createTime)
+                })
+                this.classData = data
+            })
         },
         toClassDetail(){
             wx.navigateTo({
                 url: '/pages/teacherBody/classDetail/main'
+            })
+        },
+        //删除班群
+        delClass(){
+            wx.showModal({
+                title: '提示',
+                content: '确定要删除该班群吗?',
+                success(res) {
+                    if (res.confirm) {
+                    console.log('用户点击确定')
+                    } else if (res.cancel) {
+                    console.log('用户点击取消')
+                    }
+                }
             })
         }
     }
@@ -82,6 +105,7 @@ export default {
                 letter-spacing 5rpx
         .card-footer
             padding-top 20rpx
+            padding-right 20rpx
             color #8a8a8a
             font-size 24rpx
 

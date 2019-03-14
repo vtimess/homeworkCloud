@@ -55,7 +55,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 24,
+			"current": 25,
 			"list": [
 				{
 					"id": -1,
@@ -220,6 +220,13 @@
 					"id": -1,
 					"name": "worksManage",
 					"pathName": "pages/teacherBody/worksManage/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "release",
+					"pathName": "pages/release/main",
 					"scene": null
 				}
 			]

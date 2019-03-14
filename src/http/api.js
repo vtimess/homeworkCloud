@@ -11,7 +11,7 @@ const DELETE = 'DELETE'
  */
 /** 首页登录api
  */
-const login = (params) => http(url,POST,params,"正在登录中...")
+const login = (url,params) => http(url,POST,params,"正在登录中...")
 
 /** 发布帖子api
  */
@@ -19,7 +19,7 @@ const release = (params) => http('/s/post',POST,params,"发布中...")
 
 /** 首页作业列表获取api
  */
-const getPost = (params) => http('/s/post',GET,params,"正在加载...")
+const gethomework = (params) => http('/s/homework',GET,params,"正在加载...")
 
 
 
@@ -36,15 +36,15 @@ const releaseWorks = (params) => http('',POST,params,"发布中...")
 
 /** 获取班群列表api
  */
-const getClassPost = (params) => http('/s/post',GET,params,"正在加载...")
+const getClassList = (params) => http('/t/class',GET,params,"正在加载...")
 
 const api = {
     login,
     release,
-    getPost,
+    gethomework,
     createClass,
     releaseWorks,
-    getClassPost,
+    getClassList,
 }
 
 export default api
