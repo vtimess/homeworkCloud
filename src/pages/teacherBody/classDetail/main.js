@@ -11,7 +11,9 @@ export default{
         usingComponents: {
             "i-input": "../../../iView/input/index",
             "i-panel": "../../../iView/panel/index",
-            "i-cell": "../../../iView/cell/index"
+            "i-collapse": "../../../iView/collapse/index",
+            "i-collapse-item": "../../../iView/collapse-item/index",
+            
         }
     }
     

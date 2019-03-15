@@ -86,7 +86,7 @@ export default {
             array:['数学','英语','语文','其他'],
             index:3,
             timesIndex:0,
-            time:'18:30',
+            time:'22:30',
             timeData:'',
             title:'',
             content:'',

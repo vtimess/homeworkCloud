@@ -119,15 +119,15 @@ export default {
   },
   created () {
     console.log(store.state.status)
-    if(store.state.status == 2){
-      wx.reLaunch({
-          url:'/pages/teacher/main'
-      })
-    }else if(!store.state.status){
-      wx.reLaunch({
-        url:'/pages/welcome/main'
-      })
-    }
+    // if(store.state.status == 2){
+    //   wx.reLaunch({
+    //       url:'/pages/teacher/main'
+    //   })
+    // }else if(!store.state.status){
+    //   wx.reLaunch({
+    //     url:'/pages/welcome/main'
+    //   })
+    // }
   },
   computed: {
         // end(){
