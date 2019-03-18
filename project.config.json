@@ -55,7 +55,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 24,
+			"current": 26,
 			"list": [
 				{
 					"id": -1,
@@ -221,6 +221,19 @@
 					"name": "classDetail",
 					"pathName": "pages/teacherBody/classDetail/main",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "sdtDetail",
+					"pathName": "pages/teacherBody/sdtDetail/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "loading",
+					"pathName": "pages/loading/main",
 					"scene": null
 				}
 			]

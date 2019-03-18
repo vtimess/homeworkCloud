@@ -9,18 +9,22 @@
         <div class="selfinfo">
             <ul>
                 <li class="before"><span>昵称</span>
-                <input type="text" :value="myData.name"/></li>
+                <input type="text" v-model="myData.nickname"/></li>
                 <li class="before"><span>学号</span>
-                <input type="number" value="15131125"/></li>
+                <input type="number" v-model="myData.nid"/></li>
                 <li class="before"><span>性别</span>
-                <input type="text" value="男"/></li>
+                <picker style="float:right;font-size:30rpx;color:#8a8a8a" @change="pickerChange" :value="index" :range="array">
+                    <view class="picker">
+                    {{array[index]}}
+                    </view>
+                </picker></li>
                 <li class="before"><span>手机号码</span>
-                <input type="number" maxlength="11" value="17721570251"/></li>
+                <input type="number" maxlength="11" v-model="myData.phone"/></li>
                 <li class="after"><span>座右铭</span></li>
-                <textarea class="motto" maxlength="36" adjust-position="true"  />
+                <textarea class="motto" v-model="myData.motto" maxlength="36" adjust-position="true"  />
             </ul>
         </div>
-        <MyButton :btn='btn'></MyButton>
+        <MyButton styleType="defult" @click="update">确认修改</MyButton>
     </div>
 </template>
 
@@ -33,35 +37,41 @@ export default {
     data() {
         return {
             myData:{
-                name:'',
+                nickname:'未填写',
                 nid:'未填写',
-                sex:'未填写',
-                phone:'未填写'
+                sex:'男神',
+                phone:'未填写',
+                motto:''
             },
             btn:'保 存',
+            index:'0',
+            array:['男神','女神'],
         }
     },
-    onLoad(){
-         this.getData()
-    },
+    // onLoad(){
+    //      this.getData()
+    // },
     methods: {
-        getData:async function(){ 
-            let result = await this.$http.get('/student/info',{})
-            if(result){
-                this.myData = result
-                console.log(this.myData) 
-            }
+        pickerChange({ mp }){
+            this.index = mp.detail.value
         },
-        myClick:async function(){
-            let result = await this.$http.post('/student/info',{})
-            if(result){
-                if(result.code == 0){
-                    this.myData = result
-                }else{
-                    console.log(result.msg)
+        getData(){ 
+            this.$api.getProfile({})
+            .then( data =>{
+                this.myData = data;
+            })
+        },
+        myClick(){
+            var vm = this
+            vm.$api.modifyProfile(
+                vm.myData
+            ).then(code=>{
+                if(code == 0){
+                    wx.navigateBack({
+                        delta: 1
+                    })
                 }
-                 
-            }
+            })
         }
     }
 }

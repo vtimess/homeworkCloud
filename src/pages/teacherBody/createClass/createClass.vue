@@ -57,6 +57,7 @@ export default {
     },
     methods:{
         del(){
+            this.tempFile.splice(0,1)
             console.log("333")
         },
         getclassName({ mp }){
@@ -68,7 +69,6 @@ export default {
         addImage(){
             var vm = this
             let counts = vm.tempFile.length;
-            var imageFile = [];
             console.log(counts)
             if(counts<1){
                 wx.chooseImage({

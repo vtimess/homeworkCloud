@@ -18,69 +18,43 @@
         <i-panel title="班群LOGO:" hide-border>
             <div class="flex-xf-yc image">
                 <div v-if="form.classAvatarUrl" class="flex-xf-yc imageFile" >
-                    <img class="images" mode="aspectFill" :src="form.classAvatarUrl" >
+                    <img class="images" mode="aspectFill" :src="image" >
                     <img @click="del" class="del" src="/static/images/image_del.png">
                 </div>
                 <img @click="addImage" src="/static/images/releaseWorks_add.png">
             </div>
         </i-panel>
-        <div class="stu">
         <i-panel title="班群成员:" hide-border >
-            <i-collapse name="name1" class="student" >
-                <i-collapse-item :title="form.studentNum?form.studentNum+'名同学':'尚无同学加入'" name="name1">
-                    <view class="flex-x-m" slot="content">
-                        <li  class="flex-y stuImage" >
-                            <img class="images" mode="aspectFill" src="/static/images/headimg.png" >
-                            <span>张申然</span>
-                            <img @click="del" class="del" src="/static/images/image_del.png">
-                        </li>
-                        <li  class="flex-y stuImage" >
-                            <img class="images" mode="aspectFill" src="/static/images/headimg.png" >
-                            <span>张申然</span>
-                            <img @click="del" class="del" src="/static/images/image_del.png">
-                        </li>
-                        <li  class="flex-y stuImage" >
-                            <img class="images" mode="aspectFill" src="/static/images/headimg.png" >
-                            <span>张申然</span>
-                            <img @click="del" class="del" src="/static/images/image_del.png">
-                        </li>
-                        <li  class="flex-y stuImage" >
-                            <img class="images" mode="aspectFill" src="/static/images/headimg.png" >
-                            <span>初一三班张申然</span>
-                            <img @click="del" class="del" src="/static/images/image_del.png">
-                        </li>
-                        
-                    </view>
-                </i-collapse-item>
-            </i-collapse>
+            <i-cell :title="form.studentNum?form.studentNum+'位同学已加入':'尚无同学加入'" value="查看详情" @click="toStudent" ></i-cell>
         </i-panel>
-        </div>
-        
-
         <MyButton styleType="defult" @click="update">修改班群信息</MyButton>
     </div>
 </template>
 <script>
 import MyButton  from '@/components/MyButton.vue'
+import { devHost as host } from '../../../http/config'
+
 export default {
     components:{
       MyButton,
     },
     // onLoad(options){
-    //     this.form = JSON.parse(options.data)
+    //     this.form = JSON.parse(options.data);
+    //     this.image = host + this.form.classAvatarUrl;
     // },
     data(){
         return{
             form:{
-                classAvatarUrl:null,
-                classDesc:null,
                 classId:null,
                 name:null,
                 password:null,
-                studentNum:0,
                 subject:null,
+                studentNum:0,
+                classAvatarUrl:null,
+                classDesc:null,
+
             },
-            className:"刘jj的日常",
+            image:'',
             subject:"物理",
             password:"664532",
             array:['语文','数学','外语','物理','化学','JAVA','其他'],
@@ -89,21 +63,77 @@ export default {
     },
     methods:{
         del(){
-
+            this.form.classAvatarUrl = '';
         },
         pickerChange({ mp }){
-            this.form.subject = array[mp.detail.value]
+            this.form.subject = array[mp.detail.value];
         },
         toStudent(){
             wx.navigateTo({
-                url:''
+                url:'/pages/teacherBody/sdtDetail/main'
             })
         },
         addImage(){
-
+            var vm = this
+            let counts = vm.form.classAvatarUrl?1:0;
+            console.log(counts)
+            if(counts<1){
+                wx.chooseImage({
+                    count: 1,
+                    sizeType: ['original', 'compressed'],
+                    sourceType: ['album', 'camera'],
+                    success(res) {
+                        wx.uploadFile({
+                            url: 'http://localhost:8080/upload/image', 
+                            filePath: res.tempFilePaths[0],
+                            name: 'file',
+                            header:{
+                                'Authorization':store.state.token,
+                            },
+                            formData:{
+                                'type': 'post'
+                            },
+                            success: (res) => {
+                                console.log(res)
+                                var result = JSON.parse(res.data)
+                                if(result.code == 0){
+                                    wx.showToast({
+                                        title: '图片上传成功',
+                                        icon: 'success',
+                                        duration: 2000
+                                    })
+                                    vm.image = host+result.data;
+                                    vm.form.classAvatarUrl = result.data;
+                                }else{
+                                    wx.showToast({
+                                        title: '上传图片失败',
+                                        icon: 'none',
+                                        duration: 2000
+                                    }) 
+                                }
+                                
+                            },
+                                
+                        })
+                    }
+                 })
+            }else{
+                wx.showToast({
+                    title: '限制只能上传1张图片!',
+                    icon: 'none',
+                    duration: 2000
+                })
+            }
         },
         update(){
-
+            var vm = this
+            vm.$api.updateClass(
+                vm.form
+                ).then(data =>{
+                    wx.navigateBack({
+                        delta: 1
+                    })
+                })
         }
     }
 }
@@ -142,37 +172,7 @@ export default {
         img 
             width 154rpx
             height 160rpx
-    .stu
-        padding-bottom 200rpx
-        .student
-            font-size 28rpx
-            color #2c2c2c
-            .stuImage
-                position relative
-                padding 20rpx 0rpx
-                width 200rpx
-                margin-right 15rpx
-                margin-bottom 15rpx
-                box-shadow #efefef 0rpx 0rpx 10rpx 
-                font-size 24rpx
-                background #f1f1f1
-                span
-                    width 190rpx
-                    margin-top 5rpx
-                    text-align center
-                    overflow hidden
-                    text-overflow ellipsis
-                    white-space nowrap
-                .images
-                    width 80rpx
-                    height 80rpx
-                    border-radius 50%
-                .del
-                    width 32rpx
-                    height 32rpx
-                    position absolute
-                    top 0rpx
-                    right 0rpx
+    
 
 
 </style>
