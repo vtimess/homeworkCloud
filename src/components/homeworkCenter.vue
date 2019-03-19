@@ -1,16 +1,5 @@
 <template>
     <div class="body">
-      <!-- <div>
-      <div class="mainView" v-if="tabIndex == 0" key="0">
-        <quorapage ></quorapage>
-      </div>
-      <div class="mainView" v-if="tabIndex == 1" key="1">
-        <homeworkpage></homeworkpage>
-      </div>
-      <div class="mainView" v-if="tabIndex == 2" key="2">
-        <mypage></mypage>
-      </div>
-      </div> -->
       <div class="head">
         <swiper class="swiper" indicator-dots="true" autoplay="true" circular="true" interval="4000" duration="600" 
         indicator-color="rgba(255, 255, 255, .3)" indicator-active-color="rgba(255, 255, 255, .8)">
@@ -24,9 +13,13 @@
       <div class="flex-x-y navbar">
         <li>签到</li>
         <li>我的帖子</li>
-        <li>加入班群</li>
+        <li @click="join">加入班群</li>
       </div>
-      <div style="height:20rpx;background:#f1f1f1;"></div>
+      <div style="height:60rpx;background:#f1f1f1;">
+        <i-notice-bar icon="systemprompt" loop speed="1000">
+            2018年世界杯,将于6月14日至7月15日举行;2018年世界杯,将于6月14日至7月15日举行;
+        </i-notice-bar>
+      </div>
       <div class="homewrok">
         <div class="flex-xf-yc title">
           <span class="img"></span><span>全部功课</span>
@@ -61,27 +54,16 @@
       <view class="loading_box">
         <view class="loading_fade_circle"></view>
       </view>
-      
-      <!-- <div class="add">
-        <img src="/static/images/add.png" @click="join">
-      </div> -->
-          <!-- <span class="classid" @click="classgroup">什么是班群号？</span> -->
       <div class="goTop" >
         <img src="/static/images/backtotop.png"  @click="goTop" >
       </div>
-    <!-- <bottom :tabIndex="tabIndex" @toggleTab="toggleTab"></bottom> -->
     </div>
 </template>
 
 <script>
-import HomeworksList from '@/components/HomeworksList'
-import bottom from '@/components/bottom.vue'
 import MyButton from '@/components/MyButton'
-import store from '../../store/'
 export default {
   components:{
-      HomeworksList,
-      bottom,
       MyButton,
   },
   data () {
@@ -117,18 +99,6 @@ export default {
         this.getData();
     });
   },
-  created () {
-    console.log(store.state.status)
-    // if(store.state.status == 2){
-    //   wx.reLaunch({
-    //       url:'/pages/teacher/main'
-    //   })
-    // }else if(!store.state.status){
-    //   wx.reLaunch({
-    //     url:'/pages/welcome/main'
-    //   })
-    // }
-  },
   computed: {
         // end(){
         //     let nowtime = new Date()
@@ -149,7 +119,7 @@ export default {
       //   url:'/pages/homeworkInfo/main?listData='+this.listData
       // })
     },
-    getData:async function(){
+    getData(){
       this.$api.gethomework({
         page:0,
         size:4
@@ -161,10 +131,6 @@ export default {
           this.show = true
         }
       })
-    },
-    animate(){
-      var animate = wx.createAnimation();
-      animate
     },
     join:function(){
       wx.navigateTo({
@@ -191,7 +157,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../../static/css/app.css'
+@import '../../static/css/app.css'
 .body
   width 100%
   height 100%

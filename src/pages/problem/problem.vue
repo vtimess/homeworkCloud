@@ -1,15 +1,11 @@
 <template>
     <div class="problem">
-        <ProblemList></ProblemList>
     </div>
 </template>
 
 <script>
-import ProblemList from '@/components/problemList.vue'
 export default {
-    components:{
-        ProblemList
-    }
+    
 }
 </script>
 <style lang="stylus" scoped>

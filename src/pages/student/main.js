@@ -8,10 +8,10 @@ export default{
     config: {
         navigationBarBackgroundColor: '#64dcdb',
         navigationBarTitleText: '云作业',
-        enablePullDownRefresh:true,
         usingComponents: {
             "i-tab-bar": "../../iView/tab-bar/index",
-            "i-tab-bar-item": "../../iView/tab-bar-item/index"
+            "i-tab-bar-item": "../../iView/tab-bar-item/index",
+            "i-notice-bar": "../../../iView/notice-bar/index"
         }
     }
     

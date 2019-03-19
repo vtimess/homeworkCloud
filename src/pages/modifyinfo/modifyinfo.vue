@@ -24,7 +24,7 @@
                 <textarea class="motto" v-model="myData.motto" maxlength="36" adjust-position="true"  />
             </ul>
         </div>
-        <MyButton styleType="defult" @click="update">确认修改</MyButton>
+        <MyButton styleType="defult" @click="myClick">确认修改</MyButton>
     </div>
 </template>
 
@@ -48,9 +48,9 @@ export default {
             array:['男神','女神'],
         }
     },
-    // onLoad(){
-    //      this.getData()
-    // },
+    onLoad(){
+         this.getData()
+    },
     methods: {
         pickerChange({ mp }){
             this.index = mp.detail.value
@@ -59,13 +59,18 @@ export default {
             this.$api.getProfile({})
             .then( data =>{
                 this.myData = data;
+                if(this.myData.sex == '女神'){
+                    this.index = 1
+                }
             })
         },
         myClick(){
             var vm = this
+            vm.myData.sex = array[vm.index];
             vm.$api.modifyProfile(
                 vm.myData
             ).then(code=>{
+                console.log(code)
                 if(code == 0){
                     wx.navigateBack({
                         delta: 1
