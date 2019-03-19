@@ -75,9 +75,6 @@ export default {
         {src:'/static/images/third.jpg'}
       ],
       imgs:[
-            {subject:'语文',img:'/static/images/chinese.png'},
-            {subject:'数学',img:'/static/images/math.png'},
-            {subject:'英语',img:'/static/images/english.png'},
             {subject:'化学',img:'/static/images/chemistry.png'},
             {subject:'物理',img:'/static/images/physics.png'},
             {subject:'生物',img:'/static/images/biology.png'},
