@@ -77,7 +77,7 @@ export default {
                     sourceType: ['album', 'camera'],
                     success(res) {
                         wx.uploadFile({
-                            url: 'http://localhost:8080/upload/image', 
+                            url: `${host}/upload/image`, 
                             filePath: res.tempFilePaths[0],
                             name: 'file',
                             header:{

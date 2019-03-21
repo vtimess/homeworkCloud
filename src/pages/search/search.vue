@@ -12,25 +12,25 @@
               <a  v-if="classId.length > 0" @click="setValue"  class="clear-input">
               <img src="/static/images/del.png"/></a>
              <span></span>
-            <button class="search-btn" plain="true" focus="true" @click="search">搜索</button>    
+            <button class="search-btn" plain="true" focus="true" @click="searchClass">搜索</button>    
         </div>
         <div v-if="classInfo" class="grouplist">
             <div class="img">
                 <img @error="error" :src="imgUrl">
             </div>
             <div class="info">
-                <span>{{classInfo.teacherName}}</span>
+                <span>{{classInfo.className}}</span>
                 <li>班群号:{{classInfo.classId}} | {{classInfo.joinNumber}}人</li>
             </div>
             <button plain="true" @click="joinin">{{joinState}}</button>
         </div>
-        <div class="flex-xc nothing">
+        <div class="flex-xc nothing" v-if="!classInfo">
             <div class="flex-y">
-            <img v-if="!classInfo" src="/static/images/searchTip.png"  >
+            <img  src="/static/images/searchTip.png"  >
             <span class="classid" @click="classgroup">什么是班群号？</span>
             </div>
         </div>
-        <div class=".flex-xc-yc password" v-show="show">
+        <div class=".flex-xc-yc password" v-show="dialogShow">
             <div class="passwd">
                 <span>班群密码</span>
                 <div class="password-input">
@@ -54,7 +54,8 @@
 </template>
 
 <script>
-import config from '@/config/index'
+import { devHost as host } from '../../http/config'
+
 export default {
     data() {
         return {
@@ -64,6 +65,8 @@ export default {
             classInfo:null,
             defaulteImage:'/static/images/header.png',
             imgError:false,
+            dialogShow:false,
+            classIdPut:'',
             State:''
 
         }
@@ -73,7 +76,7 @@ export default {
             if(!this.classInfo || this.imgError){
                 return this.defaulteImage
             }
-            return config.host+this.classInfo.avatarUrl
+            return `${host}${this.classInfo.avatarUrl}`
         },
         joinState(){
             this.State = this.classInfo&&this.classInfo.status===0?'加入':'已加入'
@@ -97,18 +100,18 @@ export default {
                 url: '../classgroup/main'
             })
         },
-        async search(){
-            let result = await this.$http.get('/student/class',{
-                classId:this.classId
-            })
-            console.log(result)
-            if(result){
-                this.classInfo = result;
-                console.log(result)
-            }
+        searchClass(){
+            console.log('123')
+            this.$api.search(
+                {
+                    classId:this.classId
+                }).then(result =>{
+                    console.log(result)
+                    this.classIdPut = this.classId;
+                    this.classInfo = result;
+                })
         },
-        async joinin(){
-            this.show = true;
+        joinin(){
             if(this.State === '已加入'){
                 wx.showToast({
                     title:'不能重复加入',
@@ -118,29 +121,25 @@ export default {
                 },500)
                 return 0
             }else{
-                this.show = true
+                this.dialogShow = true
             }
         },
-        async joinRequest(){
-            let result = await this.$http.put('/student/class',{
-                classId:this.classId,
+        joinRequest(){
+            this.$api.join({
+                classId:this.classIdPut,
                 password:this.password
-            })
-            if(result){
-                if(result.code == 0){
-                    this.classInfo.status=1
+            }).then((code) =>{
+                if(code == 0){
+                    this.classInfo.status=1;
                     wx.showToast({
                         title:'成功加入'
-                    }),
-                    setTimeout(function(){
-                        wx.hideToast()
-                    },500)
-                console.log("",result)
-                }else{
-                    console.log("22",result)
+                    },1000)
+                    this.dialogShow = false;
+                    this.password='';
                 }
-                 
-            }
+            })
+                
+            
         }
     }
 

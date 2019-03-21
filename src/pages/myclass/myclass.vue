@@ -13,32 +13,34 @@ export default {
     },
     data(){
         return{
-            page:1,
+            page:0,
+            size:4,
             totalPages:1,
             ClassData:[],
         }
     },
     onLoad(){
-        this.getData()
+        if(!this.ClassData.length){
+            this.getData();
+        }
     },
     methods: {
-        getData:async function(calback){
-            let result = await this.$http.get('/student/class/joined',{page:this.page,size:7})
-            if(result){
-                let totalData = result.totalData;
-                this.totalPages = result.totalPages;
-                let data = result.data;
+        getData:function(calback){
+            this.$api.getClass({
+                page:this.page,
+                size:this.size
+            }).then((data)=>{
+                let totalData = data.totalData;
+                this.totalPages = data.totalPages;
                 if(totalData === 0){
                     wx.showToast({
                     title:'尚未加入班级',
                     })
                 }else{
-                    this.ClassData = [...this.ClassData,...data];
+                    this.ClassData = [...this.ClassData,...data.data];
                 }
-                
-            }
-            calback&&calback()
-        },
+                calback&&calback()
+            });
         
     },
     onPullDownRefresh:function(){
@@ -59,6 +61,7 @@ export default {
             this.page = this.page+1
             this.getData()
         }
+    }
     }
             
 }

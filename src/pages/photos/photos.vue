@@ -9,6 +9,7 @@
     </div>
 </template>
 <script>
+import { devHost as host } from '../../http/config'
 export default {
     data() {
         return{
@@ -48,7 +49,7 @@ export default {
                 var uploadImgCount = 0;
                 for (var i = 0,h = this.tempFilePaths.length; i < h; i++) {
                     wx.uploadFile({
-                        url: 'http://bd.liukang666.cn:8080/upload/image', 
+                        url: `${host}/upload/image`, 
                         filePath: this.tempFilePaths[i],
                         name: 'file',
                         formData:{

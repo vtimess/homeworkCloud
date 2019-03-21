@@ -60,7 +60,7 @@ export default {
             console.log(data)
 
             wx.navigateTo({
-                url: '/pages/teacherBody/classDetail/main?data='+data
+                url: `/pages/teacherBody/classDetail/main?data=${data}`
             })
         },
         //删除班群

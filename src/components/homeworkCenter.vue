@@ -15,25 +15,23 @@
         <li>我的帖子</li>
         <li @click="join">加入班群</li>
       </div>
-      <div style="height:60rpx;background:#f1f1f1;">
-        <i-notice-bar icon="systemprompt" loop speed="1000">
+      <i-notice-bar icon="systemprompt" loop="true" speed="2000">
             2018年世界杯,将于6月14日至7月15日举行;2018年世界杯,将于6月14日至7月15日举行;
-        </i-notice-bar>
+      </i-notice-bar>
+      <div v-if="false" style="height:60rpx;background:#f1f1f1;">
       </div>
       <div class="homewrok">
         <div class="flex-xf-yc title">
           <span class="img"></span><span>全部功课</span>
         </div>
-        <div class="list" @click="hwShow">
+        <div class="list" v-for="(item, index) in homeworkData" :key="index" @click="hwShow">
           <div class="header">
               <img src="/static/images/physics.png" />
               <span >欧阳老师</span>
-              <!-- <span >{{homeworkData.teacherName || '欧阳老师'}}</span> -->
           </div>
           <div class="hr"></div>
           <div class="mid">
               <p>{{title}}</p>
-              <!-- <p>{{homeworkData.description || '大家都是一家人'}}</p> -->
               <span>可提交</span>
           </div>
           <div class="footer">
@@ -43,7 +41,7 @@
         </div>
         
         <!-- <HomeworksList  v-for="homework in homeworkData" :key="homework.id" :homework="homework" ></HomeworksList> -->
-        <div v-if="homeworkData" class="flex-xc nothing">
+        <div v-if="!homeworkData" class="flex-xc nothing">
           <div class="flex-y">
             <img  src="/static/images/nothing.png"  @click="join" >
             <span class="tip">阿欧,还没有班群,快去加入吧！</span>
@@ -51,9 +49,9 @@
           </div>
         </div>
       </div>
-      <view class="loading_box">
+      <!-- <view class="loading_box">
         <view class="loading_fade_circle"></view>
-      </view>
+      </view> -->
       <div class="goTop" >
         <img src="/static/images/backtotop.png"  @click="goTop" >
       </div>
@@ -70,9 +68,9 @@ export default {
     return {
       tabIndex:1,
       imgUrls: [
-        {src:'/static/images/first.jpg'},
-        {src:'/static/images/second.jpg'},
-        {src:'/static/images/third.jpg'}
+        {src:'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640'},
+        {src:'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640'},
+        {src:'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'}
       ],
       imgs:[
             {subject:'化学',img:'/static/images/chemistry.png'},
@@ -121,8 +119,9 @@ export default {
         page:0,
         size:4
       }).then((data)=>{
-        if(data){
-          this.homeworkData = data
+        if(data.data.length){
+          console.log(data)
+          this.homeworkData = data.data
           this.show = false
         }else{
           this.show = true
@@ -171,10 +170,11 @@ export default {
     background #fff
     font-size 32rpx
   .homewrok
+    padding-bottom 300rpx
     .title
       color #2c2c2c
       font-size 28rpx
-      padding 20rpx
+      padding 20rpx 
       .img
         margin-right 20rpx
         width 6rpx

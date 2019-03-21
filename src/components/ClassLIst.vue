@@ -5,11 +5,13 @@
         </div>
         <div class="info">
             <span>{{classData.className}}({{classData.teacherName}})</span>
-            <li>班群号:{{classData.classId}} | {{classData.joinNumber}}人</li>
+            <li>班群号:{{classData.classId}} | {{classData.studentNum}}人</li>
         </div>
     </div>
 </template>
 <script>
+import { devHost as host } from '../http/config'
+
 export default {
     props:{
         classData:Object
@@ -25,7 +27,7 @@ export default {
             if(!this.classInfo || this.imgError){
                 return this.defaulteImage
             }
-            return config.host+this.classInfo.avatarUrl
+            return `${host}${this.classInfo.classAvatarUrl}`
         },
     },
     methods: {

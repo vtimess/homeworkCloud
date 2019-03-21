@@ -16,13 +16,14 @@
                     <img src="/static/images/teacher_edit.png"> 
                     <span>意见反馈</span>
                     </li>
-                <li class="flex-xc-yc nav-2">退出登录</li>
+                <li class="flex-xc-yc nav-2" @click="logout">退出登录</li>
             </ul>
             <div class="flex-xc footer">-HEO技术支持-</div>
         </div>
     </div>
 </template>
 <script>
+import store from '../store/'
 export default {
     data(){
         return{
@@ -39,6 +40,32 @@ export default {
         navigateTo(val){
             wx.navigateTo({
                 url: val
+            })
+        },
+        logout(){
+            wx.showModal({
+                title: '提示',
+                content: '是否确定退出登录?',
+                success(res) {
+                    if (res.confirm) {
+                        console.log('用户点击确定')
+                        store.commit(REMOVE_STATUS);
+                        store.commit(REMOVE_TOKEN);
+                        // wx.getStorageInfo({
+                        //     success(res) {
+                        //         console.log(res.keys)//当前 storage 中所有的 key
+                        //         console.log(res.currentSize)//当前占用的空间大小, 单位 KB
+                        //         console.log(res.limitSize)//限制的空间大小，单位 KB
+                        //     }
+                        // })
+                        wx.clearStorageSync();
+                        wx.reLaunch({
+                            url:'/pages/welcome/main'
+                        })
+                    } else if (res.cancel) {
+                        console.log('用户点击取消')
+                    }
+                }
             })
         }
     }

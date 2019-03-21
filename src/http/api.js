@@ -2,7 +2,7 @@ import http from './http'
 
 const GET = 'GET'
 const POST = 'POST'
-const PUT = 'POST'
+const PUT = 'PUT'
 const DELETE = 'DELETE'
 
 /**
