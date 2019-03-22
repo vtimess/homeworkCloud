@@ -2,12 +2,12 @@
     <div class="body">
     <div style="padding: 20rpx;">
         <div class="content">
-            <input  class="input"  v-model="title" placeholder="加个标题哟~" type="text" auto-focus @input="totast" :maxlength="maxlength">
-            <textarea class="textarea" maxlength="200" v-model="content" placeholder="来吧,尽情地布置作业吧..." auto-focus show-confirm-bar></textarea>    
+            <input  class="input"  v-model="myform.title" placeholder="加个标题哟~" type="text" auto-focus @input="totast" :maxlength="maxlength">
+            <textarea class="textarea" maxlength="200" v-model="myform.content" placeholder="来吧,尽情地布置作业吧..." auto-focus show-confirm-bar></textarea>    
         </div>
         <div class="flex-xf-yc image">
-            <div class="flex-xf-yc imageFile" v-for="(item, index) in imageList" :key="index">
-                <img class="images" mode="aspectFill" :src="item" >
+            <div v-if="image" class="flex-xf-yc imageFile" >
+                <img class="images" mode="aspectFill" :src="image" >
                 <img @click="del(index)" class="del" src="/static/images/image_del.png">
             </div>
             <img @click="addImage" src="/static/images/releaseWorks_add.png">
@@ -34,7 +34,7 @@
                 <view class="section">
                     <picker @change="pickerChange" :value="index" :range="array">
                         <view class="picker">
-                        {{array[index]}}
+                        {{myform.subject}}
                         </view>
                     </picker>
                 </view>
@@ -79,6 +79,10 @@
 </template>
 <script>
 import {formatNumber,formatTime} from '@/utils/index.js'
+import { devHost as host } from '../../../http/config'
+import store from '../../../store/'
+
+
 export default {
     data(){
         return{
@@ -88,9 +92,17 @@ export default {
             timesIndex:0,
             time:'22:30',
             timeData:'',
-            title:'',
-            content:'',
+            myform:{
+                title:'',
+                classId:'439382',
+                content:'',
+                subject:'',
+                endDate:''
+            },
             maxlength:20,
+            tempFile:[],
+            image:'',
+
         }
     },
     onLoad(){
@@ -103,6 +115,10 @@ export default {
 
     },
     methods:{
+        del(){
+            this.tempFile.splice(0,1)
+            console.log("333")
+        },
         totast({ mp }){
             if(mp.detail.value.length > this.maxlength){
                 wx.showToast({
@@ -112,24 +128,95 @@ export default {
                 })
             }
         },
+        addImage(){
+            var vm = this
+            let counts = vm.tempFile.length;
+            console.log(counts)
+            if(counts<1){
+                wx.chooseImage({
+                    count: 1,
+                    sizeType: ['original', 'compressed'],
+                    sourceType: ['album', 'camera'],
+                    success(res) {
+                        wx.uploadFile({
+                            url: `${host}/upload/image`, 
+                            filePath: res.tempFilePaths[0],
+                            name: 'file',
+                            header:{
+                                'Authorization':store.state.token,
+                            },
+                            formData:{
+                                'type': 'post'
+                            },
+                            success: (res) => {
+                                console.log(res)
+                                var result = JSON.parse(res.data)
+                                if(result.code == 0){
+                                    wx.showToast({
+                                        title: '图片上传成功',
+                                        icon: 'success',
+                                        duration: 2000
+                                    })
+                                    vm.image = host+result.data;
+                                    vm.tempFile.push(result.data);
+                                }else{
+                                    wx.showToast({
+                                        title: '上传图片失败',
+                                        icon: 'none',
+                                        duration: 2000
+                                    }) 
+                                }
+                                
+                            },
+                                
+                        })
+                    }
+                 })
+            }else{
+                wx.showToast({
+                    title: '限制只能上传1张图片!',
+                    icon: 'none',
+                    duration: 2000
+                })
+            }
+        },
         sub(){
+            this.myform.map((item)=>{
+                if(!item||item == undefined){
+                    wx.showToast({
+                        icon:"none",
+                        title:'尚有信息未填!'
+                    },1000)
+                    return 0;
+                }
+            })
+            this.myform.endDate = this.timeData+this.time
+            this.$api.releaseWorks(
+                this.myform
+            ).then((code)=>{
+                if(code == 0){
+                    wx.redirectTo({
+                        url:'/pages/teacherBody/worksManage/main'
+                    })
+                }
+            })
             console.log(this.title,this.content)
         },
         timesrChange({ mp }){
-            this.timesIndex = mp.detail.value
+            this.timesIndex = mp.detail.value;
         },
         pickerChange({ mp }){
-            this.index = mp.detail.value
+            this.myform.subject = array[mp.detail.value];
         },
         switchChange({ mp }){
 
         },
         timeChange({ mp }){
-            this.time = mp.detail.value
+            this.time = mp.detail.value;
             console.log(this.time)
         },
         dateChange({ mp }){
-            this.timeData = mp.detail.value.replace(/-/g,'/')
+            this.timeData = mp.detail.value.replace(/-/g,'/');
         },
         toClassGroup(){
             wx.navigateTo({

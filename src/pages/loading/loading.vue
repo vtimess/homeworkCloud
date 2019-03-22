@@ -10,25 +10,25 @@ export default {
 
         }
     },
-    // onShow(){
-    //     console.log(store.state.status)
-    //     setTimeout(function(){
-    //         if(store.state.status == 1){
-    //             wx.reLaunch({
-    //             url:'/pages/homework/main'
-    //             })
-    //         }
-    //         else if(store.state.status == 2){
-    //             wx.reLaunch({
-    //                 url:'/pages/teacher/main'
-    //             })
-    //         }else{
-    //             wx.reLaunch({
-    //                 url:'/pages/welcome/main'
-    //             })
-    //         }
-    //     },2000)
-    // },
+    onShow(){
+        console.log(store.state.status)
+        setTimeout(function(){
+            if(store.state.status == 1){
+                wx.reLaunch({
+                url:'/pages/homework/main'
+                })
+            }
+            else if(store.state.status == 2){
+                wx.reLaunch({
+                    url:'/pages/teacher/main'
+                })
+            }else{
+                wx.reLaunch({
+                    url:'/pages/welcome/main'
+                })
+            }
+        },2000)
+    },
     methods:{
         
     }
