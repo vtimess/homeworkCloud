@@ -96,8 +96,10 @@ export default {
                 title:'',
                 classId:'439382',
                 content:'',
-                subject:'',
-                endDate:''
+                subject:'其他',
+                desc:'RNG666',
+                endDate:'',
+                classId:[],
             },
             maxlength:20,
             tempFile:[],
@@ -105,7 +107,15 @@ export default {
 
         }
     },
-    onLoad(){
+    onLoad(option){
+        console.log(option)
+        //获取所有班群classId
+        this.$api.getClassList({})
+        .then((data)=>{
+            this.classGroup = data
+            console.log(data,"classId")
+        })
+
         var dateTime = new Date();
         const year = dateTime.getFullYear();
         const month = dateTime.getMonth()+1;
@@ -113,6 +123,10 @@ export default {
         this.timeData = [year,month,date].map(formatNumber).join('/');
         console.log(this.timeData)
 
+    },
+    changData:function(val){
+        console.log(val)
+        this.myform.classId = val
     },
     methods:{
         del(){
@@ -181,32 +195,45 @@ export default {
             }
         },
         sub(){
-            this.myform.map((item)=>{
-                if(!item||item == undefined){
-                    wx.showToast({
-                        icon:"none",
-                        title:'尚有信息未填!'
-                    },1000)
-                    return 0;
-                }
-            })
-            this.myform.endDate = this.timeData+this.time
+            if(wx.getStorageSync('classId')){
+                var classId = wx.getStorageSync('classId');
+                this.myform.classId = classId;
+            }else{
+                wx.showToast({
+                    icon:"none",
+                    title:'请选择同步的班级!'
+                },1000)
+                return 0;
+            }
+            console.log(classId)
+            // for(var val of this.myform){
+            //     if(!val||val.length == 0){
+            //         wx.showToast({
+            //             icon:"none",
+            //             title:'尚有信息未填!'
+            //         },1000)
+            //         return 0;
+            //     }
+            // }
+            this.myform.image = this.tempFile;
+            this.myform.endDate = this.timeData+''+this.time;
             this.$api.releaseWorks(
                 this.myform
-            ).then((code)=>{
+            ).then((code) => {
+                console.log(code)
                 if(code == 0){
+                    console.log(code)
                     wx.redirectTo({
                         url:'/pages/teacherBody/worksManage/main'
                     })
                 }
             })
-            console.log(this.title,this.content)
         },
         timesrChange({ mp }){
             this.timesIndex = mp.detail.value;
         },
         pickerChange({ mp }){
-            this.myform.subject = array[mp.detail.value];
+            this.myform.subject = this.array[mp.detail.value];
         },
         switchChange({ mp }){
 
@@ -219,11 +246,14 @@ export default {
             this.timeData = mp.detail.value.replace(/-/g,'/');
         },
         toClassGroup(){
+            let data = JSON.stringify(this.classGroup)
             wx.navigateTo({
-                url: '/pages/teacherBody/syncClass/main'
+                url: '/pages/teacherBody/syncClass/main?data='+data
             })
-        }
-    }
+        },
+        
+    },
+    
 }
 </script>
 <style lang="stylus" scoped>

@@ -7,34 +7,61 @@
             </i-checkbox-group>
         </i-panel>
         
-
+    <button class="btn" @click="syncClass">同步到班群</button>
     </div>
 </template>
 <script>
 export default {
     data(){
         return{
-            classGroup: [{
-                id: 1,
-                name: 'HEO总部',
-            }, {
-                id: 2,
-                name: 'Mighty'
-            }, {
-                id: 3,
-                name: '世界第一帅'
-            }, {
-                id: 4,
-                name: '美少女',
-            }],
-            current: ['HEO总部', 'Mighty'],
+            classGroup:[],
+            current: [],
+            classId:[],
         }
+    },
+    onLoad(options){
+        this.classGroup = JSON.parse(options.data);
+        this.current.push(this.classGroup[0].name)
+        console.log(this.classGroup )
+    },
+    onHide() {
+        console.log('onHide', this)
     },
     methods:{
         groupChange({ mp }){
             console.log(mp)
             const index = this.current.indexOf(mp.detail.value);
             index === -1 ? this.current.push(mp.detail.value) : this.current.splice(index, 1);
+        },
+        syncClass(){
+            if(this.current.length){
+                console.log(this.current)
+                this.current.map((item)=>{
+                    this.classGroup.map(val =>{
+                        if(item == val.name){
+                            this.classId.push(val.classId)
+                        }
+                    })
+                })
+                console.log(this.classId)
+                wx.setStorageSync('classId',this.classId)
+                // //获取页面栈
+                // var pages = getCurrentPages();
+                // console.log(pages)
+
+                // if(pages.length > 1){
+                //     var prePage = pages[pages.length - 2];
+                //     prePage.changData(this.classId)
+                    wx.navigateBack({
+                        delta: 1,
+                    })
+                // }
+                
+            }else{
+                wx.showToast({
+                    title:'请勾选将要发布到的班群'
+                })
+            }
         }
     }
 }
@@ -47,4 +74,13 @@ export default {
     right 0rpx
     bottom 0rpx
     background #f1f1f1
+    .btn
+        position fixed
+        left 20rpx
+        right 20rpx
+        bottom 10rpx
+        color #B22222
+        font-weight 580
+    .btn::after
+        border none
 </style>

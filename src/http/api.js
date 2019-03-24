@@ -69,7 +69,7 @@ const createClass = (params) => http('/t/class',POST,params,"创建中...")
 
 /** 发布作业api
  */
-const releaseWorks = (params) => http('',POST,params,"发布中...")
+const releaseWorks = (params) => http('/t/homework',POST,params,"发布中...")
 
 /** 获取班群列表api
  */
