@@ -15,7 +15,7 @@ export default {
         setTimeout(function(){
             if(store.state.status == 1){
                 wx.reLaunch({
-                url:'/pages/homework/main'
+                url:'/pages/student/main'
                 })
             }
             else if(store.state.status == 2){

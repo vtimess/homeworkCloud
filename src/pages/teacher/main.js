@@ -10,8 +10,8 @@ export default{
         navigationBarTitleText: '',
         enablePullDownRefresh:true,
         usingComponents: {
-            "i-tab-bar": "../../iView/tab-bar/index",
-            "i-tab-bar-item": "../../iView/tab-bar-item/index"
+            "i-tab-bar": "/static/iView/tab-bar/index",
+            "i-tab-bar-item": "/static/iView/tab-bar-item/index"
         }
     }
     

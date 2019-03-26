@@ -1,16 +1,14 @@
 <template>
     <div class="body">
         <div class="time">
-            <time>6月16日 周一 12:26 布置</time>
-            <time>9月32日 周三 01:01 截止(已截止)</time>
-            <span class="object">数学训练</span>
+            <time>{{homeworkData.beginTime}} 布置</time>
+            <time>{{homeworkData.endTime}} 截止{{homeworkData.end}}</time>
+            <span class="object">{{homeworkData.subject}}训练</span>
         </div>
         <div class="works">
             <p>作业详情: </p>
-            <li>1. 第3~6题、第12题 p32</li>
-            <li>2. 第3~6题、第12题 p12</li>
-            <li>3. 第6题、第18题 p62</li>
-            <li>4. 第1~4题、第12题p132</li>
+            <li>{{homeworkData.description}}</li>
+            <li><img :src="homeworkData.i" ></li>
         </div>
         <div class="finish">
             <span v-if="!status" >还未有同学完成</span>
@@ -33,6 +31,7 @@ export default {
     data() {
         return {
             status:false,
+            homeworkData:{},
             button:[
                 // 提交作业
                 // 重新提交
@@ -53,16 +52,15 @@ export default {
         //     return utils.formatTime(this.homework.endTime)
         // }
     },
-    onLoad(){
+    onLoad(options){
+        console.log(options)
+        this.homeworkData = JSON.parse(options.homeworkData)
+        console.log(this.homeworkData)
         this.getData()
     },
     methods:{
         getData:async function(){
-            let result = await this.$http.get('/student/homeworkInfo')
-            if(result){
-                this.homeworkInfo = result
-                this.status = true
-            }
+            
         },
         finished(){
             wx.navigateTo({
@@ -71,7 +69,7 @@ export default {
         },
         submit(){
             wx.navigateTo({
-                url: '../photos/main'
+                url: '../photos/main?id='+this.homeworkData.id
             })
         }
     }    

@@ -16,7 +16,7 @@
         <li @click="join">加入班群</li>
       </div>
       <i-notice-bar icon="systemprompt" loop="true" speed="2000">
-            2018年世界杯,将于6月14日至7月15日举行;2018年世界杯,将于6月14日至7月15日举行;
+        请尽快完善个人信息，以便老师一眼识别到你！
       </i-notice-bar>
       <div v-if="false" style="height:60rpx;background:#f1f1f1;">
       </div>
@@ -24,23 +24,22 @@
         <div class="flex-xf-yc title">
           <span class="img"></span><span>全部功课</span>
         </div>
-        <div class="list" v-for="(item, index) in homeworkData" :key="index" @click="hwShow">
+        <div class="list" v-for="(item, index) in homeworkData" :key="index" @click="hwShow(index)">
           <div class="header">
               <img src="/static/images/physics.png" />
-              <span >欧阳老师</span>
+              <span >{{item.teacherName}}</span>
           </div>
           <div class="hr"></div>
           <div class="mid">
-              <p>{{title}}</p>
-              <span>可提交</span>
+              <p>{{item.description}}</p>
+              <span>{{item.status}}</span>
           </div>
           <div class="footer">
               <img src="/static/images/clock.png"/>
-              <time>2020/03/9 15:36{{date}} 截止 {{end}}</time>
+              <time>{{item.endTime}} 截止 {{item.end}}</time>
           </div>
         </div>
         
-        <!-- <HomeworksList  v-for="homework in homeworkData" :key="homework.id" :homework="homework" ></HomeworksList> -->
         <div v-if="!homeworkData" class="flex-xc nothing">
           <div class="flex-y">
             <img  src="/static/images/nothing.png"  @click="join" >
@@ -60,6 +59,8 @@
 
 <script>
 import MyButton from '@/components/MyButton'
+import {formatNumber,formatTime} from '@/utils/index.js'
+
 export default {
   components:{
       MyButton,
@@ -95,24 +96,19 @@ export default {
     });
   },
   computed: {
-        // end(){
-        //     let nowtime = new Date()
-        //     return nowtime > this.homeworkData.endTime ? '(已截止)':''
-        // },
-        // date(){
-        //     return utils.formatTime(this.homework.endTime)
-        // }
+       
   },
   methods: {
     // toggleTab(e){
     //   this.tabIndex = e;
     //   console.log(this.tabIndex)
     // },
-    hwShow:function(e){
-      console.log(e)
-      // wx.navigateTo({
-      //   url:'/pages/homeworkInfo/main?listData='+this.listData
-      // })
+    hwShow(val){
+      console.log(this.homeworkData[val])
+      let data = JSON.stringify(this.homeworkData[val])
+      wx.navigateTo({
+        url:'/pages/homeworkInfo/main?homeworkData='+data
+      })
     },
     getData(){
       this.$api.gethomework({
@@ -120,8 +116,19 @@ export default {
         size:4
       }).then((data)=>{
         if(data.data.length){
-          console.log(data)
+          console.log(data,666)
+          let nowtime = new Date();
+
+          data.data.map((item)=>{
+            if(item.endTime){
+              item.end = nowtime > item.endTime ? '(已截止)':'';
+              item.endTime = formatTime(item.endTime);
+              item.beginTime = formatTime(item.beginTime);
+            }
+          })
           this.homeworkData = data.data
+          console.log(this.homeworkData )
+
           this.show = false
         }else{
           this.show = true

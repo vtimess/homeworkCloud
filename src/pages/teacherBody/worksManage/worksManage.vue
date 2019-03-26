@@ -14,7 +14,16 @@
             @animationfinish="animationFinish">
             <swiper-item >
                 <scroll-view scroll-y="true">
-                    1
+                    <div>3月26日</div>
+                    <div class="finish">
+                        <div class="flex-xf-yc head">
+                            <img src="/static/images/homework.png" >
+                            <span class="title">3月26日作业</span>
+                        </div>
+                        <div class="desc">
+                            四年防务服务费威锋网服务范围无法无法
+                        </div>
+                    </div>
                 </scroll-view>
             </swiper-item>
             <swiper-item >
@@ -36,7 +45,13 @@ export default {
             navbarActiveIndex:0,
         }
     },
+    onLoad(){
+        this.getData()
+    },
     methods:{
+        getData(){
+
+        },
         onNavBarTap(e){
             this.navbarActiveIndex = e.currentTarget.dataset.navbarIndex
         },
@@ -82,6 +97,26 @@ export default {
         bottom 0
         top 100rpx
         .swiper
+            background #f8f8f8
+            padding 20rpx
             height 100%
+            .finish
+                padding 20rpx
+                margin-top 10rpx
+                background #ffffff
+                border-radius 10rpx
+                box-shadow #ccc 0rpx 0rpx 10rpx 
+                .head
+                    border-bottom 1rpx solid #e6e6e6
+                    padding-bottom 20rpx
+                    img 
+                        width 48rpx
+                        height 48rpx
+                .desc
+                    width 50%
+                    margin-top 20rpx
+                    overflow hidden
+                    text-overflow ellipsis
+                    white-space nowrap
     
 </style>

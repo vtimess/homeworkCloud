@@ -2,7 +2,7 @@
     <div class="body">
         <img src="/static/images/photos.png" class="bgimg">
         <div class="photos">
-            <img v-for="item in tempFilePaths " :key="item.index" :src="item" mode="aspectFill" @click="preview" class="tempFilePaths">
+            <img v-for="item in tempFilePaths " :key="item.index" :src="item" mode="aspectFill" @click="preview(index)" class="tempFilePaths">
         </div>
         <button class="btn" @click="upload">{{button}}</button>
         <span class="status">批改中</span>
@@ -10,20 +10,28 @@
 </template>
 <script>
 import { devHost as host } from '../../http/config'
+import store from '../../store/'
+
 export default {
     data() {
         return{
             tempFilePaths:[],
             button:'拍照/相册',
-            btnState:'false'
+            btnState:'false',
+            tempFile:[],
+            homeworkId:'',
         }
         
     },
+    onLoad(options){
+        this.homeworkId = options.id;
+        console.log(options)
+    },
     methods:{
-        preview(){
+        preview(index){
             wx.previewImage({
-                current: tempFilePaths[item.index],
-                urls: tempFilePaths
+                current: this.tempFilePaths[index],
+                urls: this.tempFilePaths
             })
         },
         upload(){
@@ -52,6 +60,9 @@ export default {
                         url: `${host}/upload/image`, 
                         filePath: this.tempFilePaths[i],
                         name: 'file',
+                        header:{
+                            'Authorization':store.state.token,
+                        },
                         formData:{
                             'type': 'homework'
                         },
@@ -59,40 +70,39 @@ export default {
                             uploadImgCount++;
                             console.log(res.data)
                             var data = res.data
-                            if(data.code == 0){
-                                if (uploadImgCount == this.tempFilePaths.length) {  
-                                wx.showToast({
-                                    title: '成功',
-                                    icon: 'success',
-                                    duration: 2000
-                                    })
-                                this.button = '完成'
-                                this.btnState = 'finish' 
-                            }
-                            }else{
-                                this.button = '重新上传'
-                                this.btnState = true
-                                wx.showToast({
-                                    title: '上传图片失败',
-                                    icon: 'none',
-                                    duration: 2000
-                                    }) 
+                            this.tempFile.push(data.data)
+                            if (uploadImgCount == this.tempFilePaths.length) {  
+                                this.$api.postHomework({
+                                    homeworkId:this.homeworkId,
+                                    image:this.tempFile
+                                }).then((code)=>{
+                                    console.log(code)
+                                    wx.showToast({
+                                        title: '成功',
+                                        icon: 'success',    
+                                        duration: 2000
+                                        })
+                                    this.button = '完成'
+                                    this.btnState = 'finish'
+                                })
+                                 
                             }
                             
                         },
                         fail: (res) => {
                             this.button = '重新上传'
                             this.btnState = true
-                        wx.hideToast();  
-                        wx.showModal({  
-                            title: '错误提示',  
-                            content: '上传图片失败',  
-                            showCancel: false,  
-                            })
-                          
-                        }
+                            wx.hideToast();  
+                            wx.showModal({  
+                                title: '错误提示',  
+                                content: '上传图片失败',  
+                                showCancel: false,  
+                                },2000)
+                            return 0
+                            }
                     })
                 }
+                
                  
             }
             

@@ -50,6 +50,10 @@ const release = (params) => http('/s/post',POST,params,"发布中...")
  */
 const gethomework = (params) => http('/s/homework',GET,params,"正在加载...")
 
+/** 作业提交api
+ */
+const postHomework = (params) => http('/homework',POST,params)
+
 
 /**
  * 教师端api
@@ -91,6 +95,7 @@ const api = {
     join,
     release,
     gethomework,
+    postHomework,
 
 
     createClass,

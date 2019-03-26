@@ -9,9 +9,9 @@ export default{
         navigationBarBackgroundColor: '#64dcdb',
         navigationBarTitleText: '云作业',
         usingComponents: {
-            "i-tab-bar": "../../iView/tab-bar/index",
-            "i-tab-bar-item": "../../iView/tab-bar-item/index",
-            "i-notice-bar": "../../../iView/notice-bar/index"
+            "i-tab-bar": "/static/iView/tab-bar/index",
+            "i-tab-bar-item": "/static/iView/tab-bar-item/index",
+            "i-notice-bar": "/static/iView/notice-bar/index"
         }
     }
     

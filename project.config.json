@@ -12,6 +12,7 @@
 	"compileType": "miniprogram",
 	"appid": "wxaa5ec51c6c3a5d36",
 	"projectname": "homeworkCloud",
+	"libVersion": "2.6.4",
 	"condition": {
 		"search": {
 			"current": -1,

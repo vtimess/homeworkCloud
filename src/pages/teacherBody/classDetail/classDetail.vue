@@ -38,10 +38,10 @@ export default {
     components:{
       MyButton,
     },
-    // onLoad(options){
-    //     this.form = JSON.parse(options.data);
-    //     this.image = host + this.form.classAvatarUrl;
-    // },
+    onLoad(options){
+        this.form = JSON.parse(options.data);
+        this.image = this.form.classAvatarUrl;
+    },
     data(){
         return{
             form:{
@@ -52,7 +52,6 @@ export default {
                 studentNum:0,
                 classAvatarUrl:null,
                 classDesc:null,
-
             },
             image:'',
             subject:"物理",

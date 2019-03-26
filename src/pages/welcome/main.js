@@ -8,8 +8,8 @@ export default{
     config: {
         navigationBarBackgroundColor: '#64dcdb',
         usingComponents: {
-            "i-tabs": "../../iView/tabs/index",
-            "i-tab": "../../iView/tab/index"
+            "i-tabs": "/static/iView/tabs/index",
+            "i-tab": "/static/iView/tab/index"
         }
     }
     

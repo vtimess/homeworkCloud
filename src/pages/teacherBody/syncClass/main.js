@@ -9,9 +9,9 @@ export default{
         navigationBarBackgroundColor: '#fff',
         navigationBarTitleText: '群列表',
         usingComponents: {
-            "i-checkbox-group": "../../../iView/checkbox-group/index",
-            "i-checkbox": "../../../iView/checkbox/index",
-            "i-panel": "../../../iView/panel/index"
+            "i-checkbox-group": "/static/iView/checkbox-group/index",
+            "i-checkbox": "/static/iView/checkbox/index",
+            "i-panel": "/static/iView/panel/index"
         }
     }
     
