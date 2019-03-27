@@ -3,7 +3,7 @@
     <div style="padding: 20rpx;">
         <div class="content">
             <input  class="input"  v-model="myform.title" placeholder="加个标题哟~" type="text" auto-focus @input="totast" :maxlength="maxlength">
-            <textarea class="textarea" maxlength="200" v-model="myform.content" placeholder="来吧,尽情地布置作业吧..." auto-focus show-confirm-bar></textarea>    
+            <textarea class="textarea" maxlength="200" v-model="myform.desc" placeholder="来吧,尽情地布置作业吧..." auto-focus show-confirm-bar></textarea>    
         </div>
         <div class="flex-xf-yc image">
             <div v-if="image" class="flex-xf-yc imageFile" >
@@ -97,7 +97,7 @@ export default {
                 classId:'439382',
                 content:'',
                 subject:'其他',
-                desc:'RNG666',
+                desc:'',
                 endDate:'',
                 classId:[],
             },
@@ -120,7 +120,7 @@ export default {
         const year = dateTime.getFullYear();
         const month = dateTime.getMonth()+1;
         const date = dateTime.getDate();
-        this.timeData = [year,month,date].map(formatNumber).join('/');
+        this.timeData = [year,month,date].map(formatNumber).join('-');
         console.log(this.timeData)
 
     },
@@ -216,17 +216,13 @@ export default {
             //     }
             // }
             this.myform.image = this.tempFile;
-            this.myform.endDate = this.timeData+''+this.time;
+            this.myform.endDate = this.timeData+' '+this.time+':00';
             this.$api.releaseWorks(
                 this.myform
             ).then((code) => {
-                console.log(code)
-                if(code == 0){
-                    console.log(code)
-                    wx.redirectTo({
-                        url:'/pages/teacherBody/worksManage/main'
-                    })
-                }
+                wx.redirectTo({
+                    url:'/pages/teacherBody/worksManage/main'
+                })
             })
         },
         timesrChange({ mp }){
@@ -243,7 +239,7 @@ export default {
             console.log(this.time)
         },
         dateChange({ mp }){
-            this.timeData = mp.detail.value.replace(/-/g,'/');
+            this.timeData = mp.detail.value.replace(/-/g,'-');
         },
         toClassGroup(){
             let data = JSON.stringify(this.classGroup)

@@ -1,10 +1,10 @@
 <template>
     <div class="body">
       <div>
-      <div class="mainView" v-if="tabIndex == 0" key="0">
+      <div class="mainView" v-show="tabIndex == 0" key="0">
             <div>1</div>
       </div>
-      <div class="mainView" v-if="tabIndex == 1" key="1">
+      <div class="mainView" v-show="tabIndex == 1" key="1">
             <MyCenter></MyCenter>
       </div>
       
@@ -18,14 +18,15 @@
 
 <script>
 import MyCenter from '@/components/teacherCenter'
+
 export default {
   components:{
       MyCenter,
   },
   data () {
     return {
-        current:'0',
-        tabIndex:'0',
+        current:'1',
+        tabIndex:'1',
         text:"1",
         scrollTop: {
             scroll_top: 0,

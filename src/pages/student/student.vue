@@ -42,12 +42,7 @@ export default {
         show:false
     }
   },
-  onLoad(){
-  },
-  created () {
-  },
-  computed: {
-  },
+
   methods:{
     handleChange ({ mp }) {
         this.tabIndex = mp.detail.key;

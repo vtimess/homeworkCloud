@@ -31,8 +31,8 @@
           </div>
           <div class="hr"></div>
           <div class="mid">
-              <p>{{item.description}}</p>
-              <span>{{item.status}}</span>
+              <p>{{item.desc}}</p>
+              <span>{{item.status=='-1'?'未提交':'已提交'}}</span>
           </div>
           <div class="footer">
               <img src="/static/images/clock.png"/>
@@ -115,6 +115,7 @@ export default {
         page:0,
         size:4
       }).then((data)=>{
+        console.log(data)
         if(data.data.length){
           console.log(data,666)
           let nowtime = new Date();

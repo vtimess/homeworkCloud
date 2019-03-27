@@ -84,6 +84,9 @@ export default {
                                         })
                                     this.button = '完成'
                                     this.btnState = 'finish'
+                                    wx.navigateBack({
+                                        delta: 2
+                                    })
                                 })
                                  
                             }

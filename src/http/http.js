@@ -69,7 +69,7 @@ const http = (url,method,data,title) => {
                 }
                 if(result.code !== 0){
                     wx.showToast({
-                        title: result.msg,
+                        title: result.msg+" ",
                         icon: "none"
                     })
                     console.log(result)
@@ -81,7 +81,7 @@ const http = (url,method,data,title) => {
             fail: function (error) {
                 wx.hideLoading()
                 wx.showToast({
-                    title: "网络出错，稍后再试",
+                    title: "网络出错，稍后再试!!!",
                     icon: "none"
                 });
             },

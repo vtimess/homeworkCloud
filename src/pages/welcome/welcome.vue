@@ -1,6 +1,6 @@
 <template>
     <div class="auth" >
-        <i-tabs v-if="show" :current="current" color="#64dcdb" @change="handleChange">
+        <i-tabs v-show="show" :current="current" color="#64dcdb" @change="handleChange">
             <i-tab key="1" title="学生登录"></i-tab>
             <i-tab key="2" title="教师登录"></i-tab>
         </i-tabs>
@@ -34,11 +34,15 @@ export default {
             current_scroll: '1'
         }
     },
-    onLoad(){
-
+    onLoad(options){
+        if(options.status){
+            this.setStatus(options.status)
+            this.current = '2'
+        }
     },
     created() {
         if(this.status){
+            console.log(this.status)
             this.next(false)
         }else{
             this.next(true)
@@ -60,7 +64,7 @@ export default {
              setStatus : SET_STATUS,
         }),
         next(val){
-            this.show = val
+            this.show = val;
         },
         handleChange ({ mp }) {
             this.setStatus(mp.detail.key)

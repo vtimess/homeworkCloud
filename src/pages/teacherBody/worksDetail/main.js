@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './worksManage'
+import App from './worksDetail'
 
 const app = new Vue(App)
 app.$mount()
@@ -7,7 +7,7 @@ app.$mount()
 export default{
     config: {
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '作业管理',
+        navigationBarTitleText: '作业详情',
     }
     
 }

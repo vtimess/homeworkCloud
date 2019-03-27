@@ -7,8 +7,8 @@
         </div>
         <div class="works">
             <p>作业详情: </p>
-            <li>{{homeworkData.description}}</li>
-            <li><img :src="homeworkData.i" ></li>
+            <li>{{homeworkData.desc}}</li>
+            <li><img style="width:300rpx;height:300rpx;" :src="homeworkData.images" ></li>
         </div>
         <div class="finish">
             <span v-if="!status" >还未有同学完成</span>
@@ -17,13 +17,15 @@
         </div>
         <StudentList></StudentList>
         <div class="footer">
-            <button class="sub" @click="submit">提交作业</button>
+            <button class="sub" @click="submit">{{homeworkData.status == '-1'?'提交作业':'已提交'}}</button>
         </div>
     </div>
 </template>
 <script>
 import utils from '@/utils/'
 import StudentList from '@/components/StudentList'
+import { devHost as host } from '../../http/config'
+
 export default {
     components:{
       StudentList,
@@ -55,13 +57,11 @@ export default {
     onLoad(options){
         console.log(options)
         this.homeworkData = JSON.parse(options.homeworkData)
+        this.homeworkData.images = `${host}${this.homeworkData.images}`
         console.log(this.homeworkData)
-        this.getData()
     },
     methods:{
-        getData:async function(){
-            
-        },
+        
         finished(){
             wx.navigateTo({
                 url: '../finish/main'

@@ -93,7 +93,7 @@ export default {
         },
         cancel(){
             this.password = '';
-            this.show = false;
+            this.dialogShow = false;
         },
         classgroup(){
             wx.navigateTo({
@@ -129,14 +129,12 @@ export default {
                 classId:this.classIdPut,
                 password:this.password
             }).then((code) =>{
-                if(code == 0){
-                    this.classInfo.status=1;
-                    wx.showToast({
-                        title:'成功加入'
-                    },1000)
-                    this.dialogShow = false;
-                    this.password='';
-                }
+                this.classInfo.status=1;
+                wx.showToast({
+                    title:'成功加入'
+                },1000)
+                this.dialogShow = false;
+                this.password='';
             })
                 
             

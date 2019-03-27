@@ -24,10 +24,12 @@ export default {
     },
     computed: {
         imgUrl(){
-            if(!this.classInfo || this.imgError){
+            console.log(this.classData)
+            if(!this.classData.classAvatarUrl || this.imgError){
+                console.log('ddd')
                 return this.defaulteImage
             }
-            return `${host}${this.classInfo.classAvatarUrl}`
+            return `${host}${this.classData.classAvatarUrl}`
         },
     },
     methods: {

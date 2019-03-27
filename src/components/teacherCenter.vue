@@ -24,6 +24,8 @@
 </template>
 <script>
 import store from '../store/'
+import {REMOVE_STATUS,REMOVE_TOKEN} from '../store/mutation-types'
+
 export default {
     data(){
         return{
@@ -59,8 +61,9 @@ export default {
                         //     }
                         // })
                         wx.clearStorageSync();
+                        let status = '2'
                         wx.reLaunch({
-                            url:'/pages/welcome/main'
+                            url:'/pages/welcome/main?status='+status
                         })
                     } else if (res.cancel) {
                         console.log('用户点击取消')
