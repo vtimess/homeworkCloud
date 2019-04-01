@@ -47,10 +47,10 @@
             <span class="tip">阿欧,尚未发布作业哦!</span>
           </div>
         </div>
+        <i-load-more v-if="loadStatus" tip="加载中" :loading="loadStatus" />
+        <i-load-more v-if="0" tip="已经到底了"  />
       </div>
-      <!-- <view class="loading_box">
-        <view class="loading_fade_circle"></view>
-      </view> -->
+      
       <div class="goTop" >
         <img src="/static/images/backtotop.png"  @click="goTop" >
       </div>
@@ -60,6 +60,8 @@
 <script>
 import MyButton from '@/components/MyButton'
 import {formatNumber,formatTime} from '@/utils/index.js'
+import store from '../store/'
+
 
 export default {
   components:{
@@ -67,7 +69,7 @@ export default {
   },
   data () {
     return {
-      tabIndex:1,
+      loadStatus:false,
       imgUrls: [
         {src:'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640'},
         {src:'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640'},
@@ -95,14 +97,30 @@ export default {
         this.getData();
     });
   },
-  computed: {
-       
+  onPullDownRefresh(){
+    if(store.state.tabIndex == '1'){
+      this.getData()
+      console.log("作业")
+      setTimeout(function(){
+        wx.stopPullDownRefresh()
+      },2000)
+    }
+  },
+  onReachBottom(){
+    var vm = this;
+    if(store.state.tabIndex == '1'){
+      vm.loadStatus = true
+      setTimeout(function(){
+        vm.loadStatus = false
+      },2000)
+      console.log("上拉刷新")
+    }
   },
   methods: {
-    // toggleTab(e){
-    //   this.tabIndex = e;
-    //   console.log(this.tabIndex)
-    // },
+    add(){
+      console.log("add")
+    },
+    
     hwShow(val){
       console.log(this.homeworkData[val])
       let data = JSON.stringify(this.homeworkData[val])

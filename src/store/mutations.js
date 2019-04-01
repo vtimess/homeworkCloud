@@ -8,6 +8,9 @@ const mutations={
     [types.SET_TOKEN] (state, v) {
         state.token = v;
     },
+    [types.SET_TABINDEX] (state,v){
+        state.tabIndex = v;
+    },
     [types.SET_STATUS] (state, v) {
         state.status = v;
     },
@@ -18,7 +21,10 @@ const mutations={
         state.userInfo = v;
     },
     [types.PUSH_FORM_ID] (state,v){
-        state.formId.push(v)
+        state.formId.push(v);
+    },
+    [types.REMOVE_TABINDEX] (state,v){
+        state.tabIndex = "";
     },
     [types.REMOVE_ALL_FORM_ID] (state){
         // state.formId.splice(0,state.formId.length)
@@ -30,6 +36,9 @@ const mutations={
     [types.REMOVE_STATUS] (state){
         state.status="";
     },
+    [types.SET_ERROR_IMAGE](state){
+        state.errorImage="";
+    }
 
 }
 

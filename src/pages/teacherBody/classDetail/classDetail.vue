@@ -1,49 +1,77 @@
 <template>
     <div class="body">
-        <i-panel title="班群名称:">
-            <i-input  v-model="form.name" placeholder="给班群起个名字" />
-        </i-panel>
-        <i-panel title="选择科目:" hide-border>
-            <view class="section">
-                <picker @change="pickerChange" :value="index" :range="array">
-                    <view class="picker">
-                    {{form.subject}}
-                    </view>
-                </picker>
-            </view>
-        </i-panel>
-        <i-panel title="班群密码:">
-            <i-input v-model="form.password" maxlength="6" placeholder="请输入班群密码(6位数字)" />
-        </i-panel>
-        <i-panel title="班群LOGO:" hide-border>
-            <div class="flex-xf-yc image">
-                <div v-if="form.classAvatarUrl" class="flex-xf-yc imageFile" >
-                    <img class="images" mode="aspectFill" :src="image" >
-                    <img @click="del" class="del" src="/static/images/image_del.png">
+        <div class="flex-yf head">
+            <span>{{form.name}}</span>
+            <div class="flex-xf-yc" style="font-size:30rpx;margin-top:20rpx">
+                <div class="flex-xf-yc">
+                    <img style="width:36rpx;height:36rpx"  src="/static/images/people.png" >
+                    <span> {{form.studentNum}}</span>
                 </div>
-                <img @click="addImage" src="/static/images/releaseWorks_add.png">
+                <div class="flex-xf-yc" style="margin-left:60rpx">
+                    <img  src="/static/images/flag.png" >
+                    <span>{{form.classId}}</span>
+                </div>
             </div>
-        </i-panel>
-        <i-panel title="班群成员:" hide-border >
-            <i-cell :title="form.studentNum?form.studentNum+'位同学已加入':'尚无同学加入'" value="查看详情" @click="toStudent" ></i-cell>
-        </i-panel>
-        <MyButton styleType="defult" @click="update">修改班群信息</MyButton>
+            <div class="flex-x-y navbar" >
+                <div class="flex-yc" @click="end">
+                    <span>已结束</span>
+                    <span style="color:#E95848">0</span>
+                </div>
+                <span>|</span>
+                <div class="flex-yc" @click="ongoing">
+                    <span>进行中</span>
+                    <span style="color:#E95848">0</span>
+                </div>
+            </div>
+            <div class="edit" @click="edit">
+                <img src="/static/images/modifyInfo.png" >
+            </div>
+        </div>
+        <div class="student">
+            <i-panel title="学生">
+                    <div class="userInfo"  >
+                        <i-swipeout operateWidth="120" :unclosable="true" :toggle="true">
+                            <div slot="content" class="flex-xf-yc content">
+                                <div class="avatar" ><avatar :src="avatar" size="default" @click="lookup(1)"></avatar></div>
+                                <div class="name_desc">
+                                    <div class="name">张申然</div>
+                                </div>
+                            </div>
+                            <div class="button" slot="button">
+                                <div class="item info" @click="lookup(1)">
+                                    <span>查看</span>
+                                </div>
+                                <div v-if="creator" class="item bye" @click="del(1)">
+                                    <span>踢出</span>
+                                </div>
+                            </div>
+                        </i-swipeout>
+                    </div>
+                </i-panel>
+        </div>
     </div>
 </template>
 <script>
 import MyButton  from '@/components/MyButton.vue'
 import { devHost as host } from '../../../http/config'
+import StudentList from '@/components/StudentList'
+import avatar from '@/components/lk-avatar'
+
+
 
 export default {
     components:{
       MyButton,
+      StudentList,
+      avatar,
     },
-    onLoad(options){
-        this.form = JSON.parse(options.data);
-        this.image = this.form.classAvatarUrl;
-    },
+    // onLoad(options){
+    //     this.form = JSON.parse(options.data);
+    // },
     data(){
         return{
+            creator:true,
+            avatar:'/static/images/header.png',
             form:{
                 classId:null,
                 name:null,
@@ -53,87 +81,38 @@ export default {
                 classAvatarUrl:null,
                 classDesc:null,
             },
-            image:'',
-            subject:"物理",
-            password:"664532",
-            array:['语文','数学','外语','物理','化学','JAVA','其他'],
-            index:3,
+            
         }
     },
     methods:{
-        del(){
-            this.form.classAvatarUrl = '';
+        //跳转到学生个人资料
+        lookup(val){
+            console.log("lookup")
         },
-        pickerChange({ mp }){
-            this.form.subject = array[mp.detail.value];
+        //将学生从本群删除
+        del(val){
+            console.log("del")
+
         },
-        toStudent(){
+        //跳转修改班群信息页面
+        edit(){
             wx.navigateTo({
-                url:'/pages/teacherBody/sdtDetail/main'
+                url:'/pages/teacherBody/editClass/main'
             })
         },
-        addImage(){
-            var vm = this
-            let counts = vm.form.classAvatarUrl?1:0;
-            console.log(counts)
-            if(counts<1){
-                wx.chooseImage({
-                    count: 1,
-                    sizeType: ['original', 'compressed'],
-                    sourceType: ['album', 'camera'],
-                    success(res) {
-                        wx.uploadFile({
-                            url: 'http://localhost:8080/upload/image', 
-                            filePath: res.tempFilePaths[0],
-                            name: 'file',
-                            header:{
-                                'Authorization':store.state.token,
-                            },
-                            formData:{
-                                'type': 'post'
-                            },
-                            success: (res) => {
-                                console.log(res)
-                                var result = JSON.parse(res.data)
-                                if(result.code == 0){
-                                    wx.showToast({
-                                        title: '图片上传成功',
-                                        icon: 'success',
-                                        duration: 2000
-                                    })
-                                    vm.image = host+result.data;
-                                    vm.form.classAvatarUrl = result.data;
-                                }else{
-                                    wx.showToast({
-                                        title: '上传图片失败',
-                                        icon: 'none',
-                                        duration: 2000
-                                    }) 
-                                }
-                                
-                            },
-                                
-                        })
-                    }
-                 })
-            }else{
-                wx.showToast({
-                    title: '限制只能上传1张图片!',
-                    icon: 'none',
-                    duration: 2000
-                })
-            }
+        //跳转已结束作业详情页面
+        end(){
+            wx.navigateTo({
+                url:'/pages/teacherBody/worksManage/main?status='+'0'
+            })
         },
-        update(){
-            var vm = this
-            vm.$api.updateClass(
-                vm.form
-                ).then(data =>{
-                    wx.navigateBack({
-                        delta: 1
-                    })
-                })
+        ongoing(){
+            wx.navigateTo({
+                url:'/pages/teacherBody/worksManage/main?status='+'1'
+            })
         }
+        
+        
     }
 }
 </script>
@@ -146,31 +125,61 @@ export default {
     left 0rpx
     right 0rpx
     bottom 0rpx
-    padding 20rpx
-    background #fff
-    .section
-        padding-left 40rpx
-        font-size 28rpx
-        color #707070
-    .image
-        padding-left 30rpx
-        padding-top 10rpx
-        .imageFile
-            position relative
-            margin-right 20rpx
-            .images
-                width 154rpx
-                height 160rpx
-                border-radius 10rpx
-            .del
-                width 32rpx
-                height 32rpx
-                position absolute
-                top -5rpx
-                right -5rpx
+    background #f1f1f1
+    .head
+        position relative
+        color #fff
+        background-color #E95848
+        height 160rpx
+        padding 30rpx
+        margin-bottom 60rpx
         img 
-            width 154rpx
-            height 160rpx
+            width 48rpx
+            height 48rpx
+        .navbar
+            position absolute
+            bottom 0
+            left 50%
+            transform translate(-50%, 50%)
+            height 122rpx
+            width 91.4%
+            background-color #fff
+            border-radius 4rpx
+            box-shadow rgba(153, 153, 153, 0.24) 0 2px 7px
+            span 
+                font-size 32rpx
+                color #2c2c2c
+        .edit
+            position absolute
+            right 60rpx
+            top 50%
+            transform translate(50%, -50%)
+    .student
+        .userInfo
+            .avatar 
+                margin-right 20rpx
+            .button
+                    background-color #888
+                    height 100%
+                    display flex
+                    .item
+                        height 100%
+                        width 80px
+                        color #fff
+                        text-align center
+                        display flex
+                        align-items center
+                        span
+                            flex-grow 1
+                            text-align center
+                            font-size 30rpx
+                    .like
+                        background-color #e74c3c
+                    .info
+                        background-color #3498db
+                    .bye
+                        background-color #7f8c8d
+
     
 
 

@@ -42,7 +42,7 @@
             <li class="flex-x-sb">
                 <span>同步到我的其他班群</span>
                 <div @click="toClassGroup" style="display:flex;align-items:center;">
-                    <span style="font-size:24rpx;color:#707070">Mighty等两个群</span>
+                    <span style="font-size:24rpx;color:#707070">{{classLength?classLength+'个群':'同步班群'}}</span>
                     <image style="width:32rpx;height:32rpx;margin-right:-20rpx" src="/static/images/back.png"/>
                 </div>
             </li>
@@ -104,24 +104,28 @@ export default {
             maxlength:20,
             tempFile:[],
             image:'',
+            classLength:'0'
 
         }
     },
     onLoad(option){
-        console.log(option)
-        //获取所有班群classId
-        this.$api.getClassList({})
-        .then((data)=>{
-            this.classGroup = data
-            console.log(data,"classId")
-        })
+        if(option.length){
+            this.myform.classId = option;
+            this.classLength = option.length;
+            console.log(this.myform.classId )
+        }else{
+            //获取所有班群classId
+            this.$api.getClassList({})
+            .then((data)=>{
+                this.classGroup = data
+            })
 
-        var dateTime = new Date();
-        const year = dateTime.getFullYear();
-        const month = dateTime.getMonth()+1;
-        const date = dateTime.getDate();
-        this.timeData = [year,month,date].map(formatNumber).join('-');
-        console.log(this.timeData)
+            var dateTime = new Date();
+            const year = dateTime.getFullYear();
+            const month = dateTime.getMonth()+1;
+            const date = dateTime.getDate();
+            this.timeData = [year,month,date].map(formatNumber).join('-');
+        }
 
     },
     changData:function(val){
@@ -131,7 +135,6 @@ export default {
     methods:{
         del(){
             this.tempFile.splice(0,1)
-            console.log("333")
         },
         totast({ mp }){
             if(mp.detail.value.length > this.maxlength){
@@ -195,17 +198,13 @@ export default {
             }
         },
         sub(){
-            if(wx.getStorageSync('classId')){
-                var classId = wx.getStorageSync('classId');
-                this.myform.classId = classId;
-            }else{
+            if(this.myform.classId.length==0){
                 wx.showToast({
                     icon:"none",
                     title:'请选择同步的班级!'
                 },1000)
                 return 0;
             }
-            console.log(classId)
             // for(var val of this.myform){
             //     if(!val||val.length == 0){
             //         wx.showToast({
@@ -217,6 +216,7 @@ export default {
             // }
             this.myform.image = this.tempFile;
             this.myform.endDate = this.timeData+' '+this.time+':00';
+            console.log(this.myform)
             this.$api.releaseWorks(
                 this.myform
             ).then((code) => {

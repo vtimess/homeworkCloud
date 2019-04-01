@@ -1,9 +1,15 @@
 <template>
     <div class="self">
-        <div class="flex-y user">
-            <open-data type="userAvatarUrl" class="useravatar"></open-data>
-            <open-data type="userNickName" class="username"></open-data>
-            <span class="motto">-愿望是半个生命,淡漠是半个死亡</span>
+        <div class="head">
+            <div class="flex-y user">
+                <open-data type="userAvatarUrl" class="useravatar"></open-data>
+                <open-data type="userNickName" class="username"></open-data>
+                <span class="motto">-愿望是半个生命,淡漠是半个死亡</span>
+            </div>
+            <view class="fake-searchbar" >
+                <icon type="search" size="14" color="#1D1D1D" />
+                <text class="fake-placeholder">搜索你想知道的知识和技术</text>
+            </view>
         </div>
         <div class="navList">
             <ul class="flex-x-m">
@@ -82,32 +88,55 @@ export default {
     position absolute
     top 0px
     left 0px
+    padding-bottom 40rpx
     background-color #fff
-    .user
-        justify-content center
-        margin-top 100rpx
-        align-items center
-        .useravatar 
-            width 140rpx
-            height 140rpx
-            border-radius 50%
-            overflow hidden
-            border: 2px solid #fff
-            box-shadow: 0rpx 6rpx 5rpx rgba(0, 0, 0, 0.2)
-        .username
-            margin-top 10rpx
-            color #2c2c2c
-            font-size 34rpx
-        .motto
-            width 360rpx
-            margin-top 10rpx
-            color rgba(0, 0, 0, 0.7)
-            font-size 24rpx
-            overflow hidden
-            text-overflow ellipsis
-            white-space nowrap
+    .head
+        width 100%
+        padding-top 100rpx
+        padding-bottom 80rpx
+        position relative
+        background -webkit-linear-gradient(bottom,#383945,#32333F) no-repeat
+        .user
+            justify-content center
+            align-items center
+            .useravatar 
+                width 140rpx
+                height 140rpx
+                border-radius 50%
+                overflow hidden
+                border: 2px solid #fff
+                box-shadow: 0rpx 6rpx 5rpx rgba(0, 0, 0, 0.2)
+            .username
+                margin-top 10rpx
+                color #fff
+                font-size 34rpx
+            .motto
+                width 360rpx
+                margin-top 10rpx
+                color rgba(255, 255, 255, 0.48)
+                font-size 24rpx
+                overflow hidden
+                text-overflow ellipsis
+                white-space nowrap
+        .fake-searchbar
+            position absolute
+            bottom 0
+            left 50%
+            transform translate(-50%, 50%)
+            height 92rpx
+            width 91.4%
+            display flex
+            justify-content center
+            align-items center
+            background-color #fff
+            border-radius 4rpx
+            box-shadow rgba(153, 153, 153, 0.24) 0 2px 7px
+            .fake-placeholder 
+                margin-left 12rpx
+                color rgba(153, 153, 153, 0.89)
+                font-size 28rpx
     .navList
-        margin-top 60rpx
+        margin-top 100rpx
         font-size 28rpx
         color #2c2c2c
         padding 5rpx

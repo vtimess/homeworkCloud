@@ -6,7 +6,8 @@ app.$mount()
 
 export default{
     config: {
-        navigationBarBackgroundColor: '#64dcdb',
+        navigationBarBackgroundColor: '#32333F',
+        navigationBarTextStyle:"white",
         navigationBarTitleText: '',
         enablePullDownRefresh:true,
         usingComponents: {

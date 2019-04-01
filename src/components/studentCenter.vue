@@ -34,59 +34,66 @@
 
 <script>
 import Mylist from '@/components/Mylist.vue'
-    export default {
-        components:{
-            Mylist
-        },
-        data() {
-            return {
-                avatarUrl:"",
-                praiseUrl:"/static/images/praise_no.png",
-                bigData:[
-                    {
-                        name:'我的班群',
-                        url:'../myclass/main'
-                    },
-                    {
-                        name:'我的成就',
-                        url:'../achievement/main'
-                    },
-                    {   
-                        name:'学习状况',
-                        url:'../studyCondition/main'
-                    }
-                ],
-                midData:[
-                    {
-                        name:'我的错题',
-                        url:'../myWrong/main'
-                    }
-                ],
-                smallData:[
-                    {
-                        name:'帮助中心',
-                        url:'../problem/main'
-                    }
-                ]
-            }
-        },
-        onLoad() {
-            var that = this
-            wx.getUserInfo({
-                success:function(res){
-                    that.avatarUrl = res.userInfo.avatarUrl
-                    console.log(that.avatarUrl)
+import store from '../store/'
+
+export default {
+    components:{
+        Mylist
+    },
+    data() {
+        return {
+            avatarUrl:"",
+            praiseUrl:"/static/images/praise_no.png",
+            bigData:[
+                {
+                    name:'我的班群',
+                    url:'../myclass/main'
+                },
+                {
+                    name:'我的作业',
+                    url:'../mywork/main'
+                },
+                {   
+                    name:'学习状况',
+                    url:'../studyCondition/main'
                 }
-            })
-        },
-        methods:{
-            modify:function(){
-            wx.navigateTo({
-                url: '../modifyinfo/main'
-            })
-        }   
+            ],
+            midData:[
+                {
+                    name:'我的错题',
+                    url:'../myWrong/main'
+                }
+            ],
+            smallData:[
+                {
+                    name:'帮助中心',
+                    url:'../problem/main'
+                }
+            ]
         }
+    },
+    onPullDownRefresh(){
+        if(store.state.tabIndex == '2'){
+            wx.stopPullDownRefresh()
+        }
+    },
+    onLoad() {
+        var that = this
+        wx.getUserInfo({
+            success:function(res){
+                that.avatarUrl = res.userInfo.avatarUrl
+                console.log(that.avatarUrl)
+            }
+        })
+    },
+    methods:{
+        modify:function(){
+        wx.navigateTo({
+            url: '../modifyinfo/main'
+        })
+    }   
     }
+}
 </script>
 <style lang="stylus"  scoped>
 @import '../../static/css/app.css'

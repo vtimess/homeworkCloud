@@ -21,6 +21,9 @@ import MyButton from '@/components/MyButton'
 import studentCenter from '@/components/studentCenter'
 import homeworkCenter from '@/components/homeworkCenter'
 
+import { mapState, mapMutations } from 'vuex'
+import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
+
 
 export default {
   components:{
@@ -42,12 +45,33 @@ export default {
         show:false
     }
   },
-
+  computed: {
+        ...mapState([   //分发store中的数据到当前组件
+            'tabIndex',
+        ])
+    },
+  
+  //onReachBottom: function () {
+    //var vm = this;
+    //   pageStatus: true
+    // setTimeout(function () {
+    //   vm.setData({
+    //     pageNo: vm.data.pageNo + 1,
+    //     list: vm.data.list.concat(vm.data.list2),
+    //     pageStatus: false
+    //   });
+    // }, 2000);
+  //},
   methods:{
+    ...mapMutations({
+          setTabIndex : SET_TABINDEX,
+    }),
     handleChange ({ mp }) {
         this.tabIndex = mp.detail.key;
         this.current = mp.detail.key;
+        this.setTabIndex(mp.detail.key);
     }
+
     
   },
 

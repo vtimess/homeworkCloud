@@ -34,28 +34,32 @@ export default {
             index === -1 ? this.current.push(mp.detail.value) : this.current.splice(index, 1);
         },
         syncClass(){
-            if(this.current.length){
-                console.log(this.current)
-                this.current.map((item)=>{
-                    this.classGroup.map(val =>{
+            var vm = this
+            if(vm.current.length){
+                console.log(vm.current)
+                vm.current.map((item)=>{
+                    vm.classGroup.map(val =>{
                         if(item == val.name){
-                            this.classId.push(val.classId)
+                            vm.classId.push(val.classId)
                         }
                     })
                 })
-                console.log(this.classId)
-                wx.setStorageSync('classId',this.classId)
+                console.log(vm.classId)
+                // wx.setStorageSync('classId',vm.classId)
                 // //获取页面栈
-                // var pages = getCurrentPages();
-                // console.log(pages)
-
-                // if(pages.length > 1){
-                //     var prePage = pages[pages.length - 2];
-                //     prePage.changData(this.classId)
+                var pages = getCurrentPages();
+                var prePage = pages[pages.length - 2];
+                setTimeout(()=>{
                     wx.navigateBack({
-                        delta: 1,
+                        success:function(){
+                            prePage.onLoad(vm.classId)
+                        }
                     })
-                // }
+                },1000)
+                // prePage.changData(this.classId)
+                // wx.navigateBack({
+                //     delta: 1,
+                // })
                 
             }else{
                 wx.showToast({

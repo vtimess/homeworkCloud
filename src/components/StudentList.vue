@@ -4,7 +4,7 @@
         <div class="image" @click="look">
             <img src="/static/images/header.png" >
         </div>
-        <li><p>张申然</p><span>07月19日 14：25 完成</span></li>
+        <li><p>张申然</p><span>从本群删除</span></li>
     </div>
 </template>
 <script>

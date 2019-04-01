@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './classDetail'
+import App from './editClass'
 
 const app = new Vue(App)
 app.$mount()
@@ -7,15 +7,11 @@ app.$mount()
 export default{
     config: {
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '班群详情',
+        navigationBarTitleText: '修改班群信息',
         usingComponents: {
             "i-input": "/static/iView/input/index",
             "i-panel": "/static/iView/panel/index",
-            "i-cell": "/static/iView/cell/index",
-            "i-swipeout": "/static/iView/swipeout/index",
-            "i-avatar":"/static/iView/avatar/index",
-
-
+            "i-cell": "/static/iView/cell/index"
         }
     }
     

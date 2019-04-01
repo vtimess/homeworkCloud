@@ -9,7 +9,7 @@
       </div>
       
       </div>
-      <i-tab-bar class="tabbar" :current="current" color="#64dcdb" @change="handleChange">
+      <i-tab-bar class="tabbar" :current="current" color="#32333F" @change="handleChange">
         <i-tab-bar-item key="0" icon="homepage" current-icon="homepage_fill" title="广场"></i-tab-bar-item>
         <i-tab-bar-item key="1" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
       </i-tab-bar>
@@ -25,8 +25,8 @@ export default {
   },
   data () {
     return {
-        current:'1',
-        tabIndex:'1',
+        current:'0',
+        tabIndex:'0',
         text:"1",
         scrollTop: {
             scroll_top: 0,
@@ -76,7 +76,7 @@ export default {
   height 100%
   background #fff
   .tabbar
-    position absolute
+    position fixed
     right 0
     left 0
     bottom 0
