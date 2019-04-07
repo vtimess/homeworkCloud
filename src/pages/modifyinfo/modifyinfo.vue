@@ -1,9 +1,9 @@
 <template>
     <div class="info">
         <div class="head">
-            <span class="img">头像</span>
-            <div class="size">
-            <open-data  type="userAvatarUrl" class="useravatar"></open-data>
+            <span class="img">班群头像</span>
+            <div class="size" @click="upload">
+                <img class="useravatar" :src="myData.avatarUrl"/>
             </div>
         </div>
         <div class="selfinfo">
@@ -37,6 +37,7 @@ export default {
     data() {
         return {
             myData:{
+                avatarUrl:'',
                 nickname:'未填写',
                 nid:'未填写',
                 sex:'男神',
@@ -46,6 +47,7 @@ export default {
             btn:'保 存',
             index:'0',
             array:['男神','女神'],
+            tempFile:'',
         }
     },
     onLoad(){
@@ -59,8 +61,51 @@ export default {
             this.$api.getProfile({})
             .then( data =>{
                 this.myData = data;
+                console.log(this.myData)
                 if(this.myData.sex == '女神'){
                     this.index = 1
+                }
+            })
+        },
+        upload(){
+            var vm = this
+            wx.chooseImage({
+                count: 1,
+                sizeType: ['original', 'compressed'],
+                sourceType: ['album', 'camera'],
+                success(res) {
+                    wx.uploadFile({
+                        url: `${host}/upload/image`, 
+                        filePath: res.tempFilePaths[0],
+                        name: 'file',
+                        header:{
+                            'Authorization':store.state.token,
+                        },
+                        formData:{
+                            'type': 'avatar'
+                        },
+                        success: (res) => {
+                            console.log(res)
+                            var result = JSON.parse(res.data)
+                            if(result.code == 0){
+                                wx.showToast({
+                                    title: '图片上传成功',
+                                    icon: 'success',
+                                    duration: 2000
+                                })
+                                vm.myData.avatarUrl = host+result.data;
+                                vm.tempFile = result.data ;
+                            }else{
+                                wx.showToast({
+                                    title: '上传图片失败',
+                                    icon: 'none',
+                                    duration: 2000
+                                }) 
+                            }
+                            
+                        },
+                            
+                    })
                 }
             })
         },

@@ -20,7 +20,7 @@
 </template>
 <script>
 import store from '../../store/'
-import { devHost as host } from '../../http/config'
+import host  from '../../http/config'
 
 export default {
     

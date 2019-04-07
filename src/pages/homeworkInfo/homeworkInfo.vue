@@ -24,7 +24,7 @@
 <script>
 import utils from '@/utils/'
 import StudentList from '@/components/StudentList'
-import { devHost as host } from '../../http/config'
+import host  from '../../http/config'
 
 export default {
     components:{

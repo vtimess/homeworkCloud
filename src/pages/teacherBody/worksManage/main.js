@@ -8,6 +8,10 @@ export default{
     config: {
         navigationBarBackgroundColor: '#fff',
         navigationBarTitleText: '作业管理',
+        enablePullDownRefresh:true,
+        usingComponents: {
+            "i-load-more": "/static/iView/load-more/index"
+        }
     }
     
 }

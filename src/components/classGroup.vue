@@ -1,6 +1,6 @@
 <template>
     <div class="body">
-        <div v-for="(item, index) in classData" :key="index">
+    <div v-for="(item, index) in classData" :key="index">
         <div style="margin-top:20rpx"></div>
         <div class="card" @click="toClassDetail(item)">
             <div class="flex-x-sb card-title">
@@ -11,18 +11,27 @@
                         <span style="color:#707070;font-size:26rpx;margin-top:10rpx">班群号:{{item.classId}}</span>
                     </div>
                 </div>
+                <div class="flex-xf-yc detail">
+                    <span >查看详情</span>
+                    <img src="/static/images/back.png" >
+                </div>
             </div>
             <div class="card-footer">
                 <span>创建时间：{{item.createTime}}</span>
                 <span>班群人数: {{item.studentNum||0}} 人</span>
             </div>
         </div>   
-        </div>     
+    </div>
+    <div v-show="!classData" class="flex-yc error">
+        <img src="/static/images/load-error.png" @click="getData">
+        <span>加载失败,点击重试</span>
+    </div>     
     </div>
 </template>
 <script>
 import {formatNumber,formatTime} from '@/utils/index.js'
-import host  from '../../../http/config'
+import host  from '../http/config'
+import store from '../store/'
 
 export default {
     data(){
@@ -35,11 +44,20 @@ export default {
             this.getData();
         });
     },
+    onPullDownRefresh(){
+        if(store.state.tabIndex == '1'){
+            this.getData()
+            setTimeout(function(){
+                wx.stopPullDownRefresh()
+            },2000)
+        }
+    },
     methods:{
         //请求 获取班群列表
         getData(){
             this.$api.getClassList({})
             .then( data =>{
+                console.log(this.status)
                 data.map((item)=>{
                     if(item.createTime){
                         item.createTime = formatTime(item.createTime);
@@ -77,14 +95,23 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../../static/css/app.css'
+@import '../../static/css/app.css'
+
 .body
-    position absolute
-    top 0rpx
-    left 0rpx
-    right 0rpx
-    bottom 0rpx
+    width 100%
+    height 100%
     background #fff
+    .error
+        width 100%
+        height 100%
+        background #fff
+        img
+            margin-top 50%
+            width 192rpx
+            height 192rpx
+        span
+            font-size 32rpx
+            color #707070
     .card
         margin-left 30rpx
         margin-right 30rpx
@@ -112,6 +139,12 @@ export default {
                 color #ed3f14
                 font-weight 600rpx
                 letter-spacing 5rpx
+            .detail
+                color #707070
+                font-size 26rpx
+                img 
+                    width 24rpx
+                    height 24rpx
         .card-footer
             padding-top 20rpx
             color #8a8a8a

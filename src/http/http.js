@@ -1,6 +1,6 @@
 import store from '../store/'
 import {SET_TOKEN,REMOVE_ALL_FORM_ID} from '../store/mutation-types'
-import { devHost as host } from './config'
+import  host from './config'
 
 const http = (url,method,data,title) => {
     /** 

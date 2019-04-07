@@ -6,22 +6,19 @@
                 <open-data type="userNickName" class="username"></open-data>
                 <span class="motto">-愿望是半个生命,淡漠是半个死亡</span>
             </div>
-            <view class="fake-searchbar" >
+            <view class="fake-searchbar" @click="navigateTo(releaseUrl)">
                 <icon type="search" size="14" color="#1D1D1D" />
-                <text class="fake-placeholder">搜索你想知道的知识和技术</text>
+                <text class="fake-placeholder" >搜索你想知道的知识和技术</text>
             </view>
         </div>
         <div class="navList">
             <ul class="flex-x-m">
-                <li class="flex-xc-yc nav-1" @click="navigateTo(classUrl)">班群管理</li>
-                <li class="flex-xc-yc nav-1" @click="navigateTo(worksUrl)">作业管理</li>
-                <li class="flex-xc-yc nav-1" @click="navigateTo(releaseUrl)">布置作业</li>
                 <li class="flex-xc-yc nav-2" @click="navigateTo(learnUrl)">学习Echart</li>
                 <li class="flex-xc-yc nav-1" @click="navigateTo(createUrl)">创建班群</li>
                 <li class="flex-yc nav-1 " @click="navigateTo(feedbackUrl)">
                     <img src="/static/images/teacher_edit.png"> 
                     <span>意见反馈</span>
-                    </li>
+                </li>
                 <li class="flex-xc-yc nav-2" @click="logout">退出登录</li>
             </ul>
             <div class="flex-xc footer">-HEO技术支持-</div>
@@ -36,8 +33,6 @@ export default {
     data(){
         return{
             releaseUrl:'/pages/teacherBody/releaseworks/main',
-            worksUrl:'/pages/teacherBody/worksManage/main',
-            classUrl:'/pages/teacherBody/classGroup/main',
             learnUrl:'/pages/teacherBody/learnChart/main',
             createUrl:'/pages/teacherBody/createClass/main',
             feedbackUrl:'/pages/teacherBody/feedback/main',

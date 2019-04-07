@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './classGroup'
+import App from './sdtDetail'
 
 const app = new Vue(App)
 app.$mount()
@@ -7,12 +7,8 @@ app.$mount()
 export default{
     config: {
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '班群列表',
-        enablePullDownRefresh:true,
-        
-
-
-        
+        navigationBarTitleText: '某某同学作业',
+       
     }
     
 }

@@ -26,7 +26,7 @@
         </div>
         <div class="list" v-for="(item, index) in homeworkData" :key="index" @click="hwShow(index)">
           <div class="header">
-              <img src="/static/images/physics.png" />
+              <img :src="item.img?item.img:'/static/images/subject.png'" />
               <span >{{item.teacherName}}</span>
           </div>
           <div class="hr"></div>
@@ -76,10 +76,10 @@ export default {
         {src:'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'}
       ],
       imgs:[
-            {subject:'化学',img:'/static/images/chemistry.png'},
-            {subject:'物理',img:'/static/images/physics.png'},
-            {subject:'生物',img:'/static/images/biology.png'},
-            {subject:'地理',img:'/static/images/geography.png'},
+            {subject:'语文',img:'/static/images/chemistry.png'},
+            {subject:'数学',img:'/static/images/physics.png'},
+            {subject:'英语',img:'/static/images/biology.png'},
+            {subject:'JAVA',img:'/static/images/geography.png'},
             {subject:'其他',img:'/static/images/subject.png'}
         ],
       scrollTop: {
@@ -91,6 +91,9 @@ export default {
       status:true,
       show:false
     }
+  },
+  computed: {
+   
   },
   onLoad(){
     this.$nextTick(() => {
@@ -122,7 +125,6 @@ export default {
     },
     
     hwShow(val){
-      console.log(this.homeworkData[val])
       let data = JSON.stringify(this.homeworkData[val])
       wx.navigateTo({
         url:'/pages/homeworkInfo/main?homeworkData='+data
@@ -133,21 +135,24 @@ export default {
         page:0,
         size:4
       }).then((data)=>{
-        console.log(data)
         if(data.data.length){
           console.log(data,666)
           let nowtime = new Date();
 
-          data.data.map((item)=>{
+          data.data.map((item,index)=>{
             if(item.endTime){
               item.end = nowtime > item.endTime ? '(已截止)':'';
               item.endTime = formatTime(item.endTime);
               item.beginTime = formatTime(item.beginTime);
             }
+            this.imgs.forEach(row => {
+              if(item.subject == row.subject){
+                item.img = row.img;
+              }
+            })
           })
+          console.log(data.data)
           this.homeworkData = data.data
-          console.log(this.homeworkData )
-
           this.show = false
         }else{
           this.show = true

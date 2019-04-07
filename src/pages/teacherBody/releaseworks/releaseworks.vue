@@ -2,7 +2,7 @@
     <div class="body">
     <div style="padding: 20rpx;">
         <div class="content">
-            <input  class="input"  v-model="myform.title" placeholder="加个标题哟~" type="text" auto-focus @input="totast" :maxlength="maxlength">
+            <input  class="input"  v-model="myform.title"  type="text" disabled="disabled">
             <textarea class="textarea" maxlength="200" v-model="myform.desc" placeholder="来吧,尽情地布置作业吧..." auto-focus show-confirm-bar></textarea>    
         </div>
         <div class="flex-xf-yc image">
@@ -74,16 +74,21 @@
         </ul>
     </div>
     <div style="height:20rpx;background:#f1f1f1"></div>
-    <button class="btn" @click="sub">发布作业</button>
+    <MyButton styleType="teacher" @click="sub">发布作业</MyButton>
     </div>
 </template>
 <script>
+import MyButton  from '@/components/MyButton.vue'
 import {formatNumber,formatTime} from '@/utils/index.js'
-import { devHost as host } from '../../../http/config'
+import host  from '../../../http/config'
+
 import store from '../../../store/'
 
 
 export default {
+    components:{
+      MyButton,
+    },
     data(){
         return{
             times:['0','1','2'],
@@ -101,7 +106,6 @@ export default {
                 endDate:'',
                 classId:[],
             },
-            maxlength:20,
             tempFile:[],
             image:'',
             classLength:'0'
@@ -125,6 +129,7 @@ export default {
             const month = dateTime.getMonth()+1;
             const date = dateTime.getDate();
             this.timeData = [year,month,date].map(formatNumber).join('-');
+            this.myform.title = `${month}月${date}日 作业`
         }
 
     },
@@ -136,15 +141,7 @@ export default {
         del(){
             this.tempFile.splice(0,1)
         },
-        totast({ mp }){
-            if(mp.detail.value.length > this.maxlength){
-                wx.showToast({
-                    title: '标题超过20个字的限制',
-                    icon: 'none',
-                    duration: 1000
-                })
-            }
-        },
+    
         addImage(){
             var vm = this
             let counts = vm.tempFile.length;

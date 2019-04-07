@@ -45,10 +45,19 @@ export default {
     left 20rpx
     right 20rpx
     bottom 10rpx
-    color #B22222
-    background #f1f1f1
+    color #fff
+    background #64dcdb
     font-weight 580
 .defult::after
     border none
-
+.teacher
+    position fixed
+    left 20rpx
+    right 20rpx
+    bottom 10rpx
+    color #fff
+    background #32333F
+    font-weight 580
+.teacher::after
+    border none
 </style>

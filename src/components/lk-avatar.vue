@@ -29,9 +29,9 @@ export default {
                 return defaultImage
             }
             if(/^https?:/.test(this.src) || /^\/static\//.test(this.src)){
+                console.log(this.src)
                 return this.src
             }
-            return this.$imageHost +'/'+ this.src
         }   
     },
     methods: {

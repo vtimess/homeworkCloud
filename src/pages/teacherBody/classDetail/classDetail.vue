@@ -1,26 +1,26 @@
 <template>
     <div class="body">
         <div class="flex-yf head">
-            <span>{{form.name}}</span>
+            <span>{{myform.name}}</span>
             <div class="flex-xf-yc" style="font-size:30rpx;margin-top:20rpx">
                 <div class="flex-xf-yc">
                     <img style="width:36rpx;height:36rpx"  src="/static/images/people.png" >
-                    <span> {{form.studentNum}}</span>
+                    <span> {{myform.studentNum}}</span>
                 </div>
                 <div class="flex-xf-yc" style="margin-left:60rpx">
                     <img  src="/static/images/flag.png" >
-                    <span>{{form.classId}}</span>
+                    <span>{{myform.id}}</span>
                 </div>
             </div>
             <div class="flex-x-y navbar" >
                 <div class="flex-yc" @click="end">
                     <span>已结束</span>
-                    <span style="color:#E95848">0</span>
+                    <span style="color:#E95848">{{myform.endHomeworkNum}}</span>
                 </div>
                 <span>|</span>
                 <div class="flex-yc" @click="ongoing">
                     <span>进行中</span>
-                    <span style="color:#E95848">0</span>
+                    <span style="color:#E95848">{{myform.goingHomeworkNum}}</span>
                 </div>
             </div>
             <div class="edit" @click="edit">
@@ -29,19 +29,19 @@
         </div>
         <div class="student">
             <i-panel title="学生">
-                    <div class="userInfo"  >
+                    <div class="userInfo" v-for="item in myform.students" :key="item.id" >
                         <i-swipeout operateWidth="120" :unclosable="true" :toggle="true">
                             <div slot="content" class="flex-xf-yc content">
-                                <div class="avatar" ><avatar :src="avatar" size="default" @click="lookup(1)"></avatar></div>
+                                <div class="avatar" ><avatar :src="item.avatar" size="default" @click="lookup(item.id)"></avatar></div>
                                 <div class="name_desc">
-                                    <div class="name">张申然</div>
+                                    <div class="name">{{item.name}}</div>
                                 </div>
                             </div>
                             <div class="button" slot="button">
-                                <div class="item info" @click="lookup(1)">
+                                <div class="item info" @click="lookup(item.id)">
                                     <span>查看</span>
                                 </div>
-                                <div v-if="creator" class="item bye" @click="del(1)">
+                                <div v-if="creator" class="item bye" @click="del(item.id)">
                                     <span>踢出</span>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
 </template>
 <script>
 import MyButton  from '@/components/MyButton.vue'
-import { devHost as host } from '../../../http/config'
+import host  from '../../../http/config'
 import StudentList from '@/components/StudentList'
 import avatar from '@/components/lk-avatar'
 
@@ -65,26 +65,28 @@ export default {
       StudentList,
       avatar,
     },
-    // onLoad(options){
-    //     this.form = JSON.parse(options.data);
-    // },
+    onLoad(options){
+        console.log(options.data)
+        this.classDetail = JSON.parse(options.data);
+        this.getData(this.classDetail.classId) 
+    },
     data(){
         return{
             creator:true,
             avatar:'/static/images/header.png',
-            form:{
-                classId:null,
-                name:null,
-                password:null,
-                subject:null,
-                studentNum:0,
-                classAvatarUrl:null,
-                classDesc:null,
-            },
-            
+            myform:{},
+            classDetail:{},
         }
     },
     methods:{
+        getData(val){
+            this.$api.getCDT({
+                classId:val
+            }).then((data)=>{
+                this.myform = data
+                console.log(this.myform)
+            })
+        },
         //跳转到学生个人资料
         lookup(val){
             console.log("lookup")
@@ -96,19 +98,21 @@ export default {
         },
         //跳转修改班群信息页面
         edit(){
+            let data = JSON.stringify(this.classDetail)
+            console.log(data)
             wx.navigateTo({
-                url:'/pages/teacherBody/editClass/main'
+                url:'/pages/teacherBody/editClass/main?data='+data
             })
         },
         //跳转已结束作业详情页面
         end(){
             wx.navigateTo({
-                url:'/pages/teacherBody/worksManage/main?status='+'0'
+                url:`/pages/teacherBody/worksManage/main?status=${1}&classId=${this.classDetail.classId}`
             })
         },
         ongoing(){
             wx.navigateTo({
-                url:'/pages/teacherBody/worksManage/main?status='+'1'
+                url:`/pages/teacherBody/worksManage/main?status=${0}&classId=${this.classDetail.classId}`
             })
         }
         

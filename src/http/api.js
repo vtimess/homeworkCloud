@@ -1,4 +1,6 @@
 import http from './http'
+import upload from './upload'
+import store from '../store/'
 
 const GET = 'GET'
 const POST = 'POST'
@@ -17,6 +19,13 @@ const login = (url,params) => http(url,POST,params,"正在登录中...")
 /** 获取帖子api
  */
 const getPost = (params) => http('/s/post',GET,params,"正在加载...")
+
+/**
+ * 查看资料api
+ */
+const getUser = () =>http((store.state.status==0?'/s':'/t')+'/info',GET,null,1)
+
+const uploadImg = () =>upload(type)
 
 /**
  * 学生端api
@@ -54,6 +63,11 @@ const gethomework = (params) => http('/s/homework',GET,params,"正在加载...")
  */
 const postHomework = (params) => http('/s/homework',POST,params)
 
+/** 获取班群详细信息api
+ */
+const getCDS = (params) =>http('/s/class/user',GET,params,"正在加载...")
+
+
 
 /**
  * 教师端api
@@ -79,14 +93,25 @@ const releaseWorks = (params) => http('/t/homework',POST,params,"发布中...")
  */
 const getClassList = (params) => http('/t/class',GET,params,"正在加载...")
 
-/** 获取班群列表api
+/** 更新班群信息api
  */
 const updateClass = (params) => http('/t/class',PUT,params,"上传修改...")
+
+/** 获取班群详细信息api
+ */
+const getCDT = (params) =>http('/t/class/user',GET,params,"正在加载...")
+
+/** 获取作业列表api
+ */
+const getWorksT = (params) =>http('/t/homework',GET,params,"正在加载...")
+
 
 
 const api = {
     login,
     getPost,
+    getUser,
+    uploadImg,
     
     search,
     getProfile,
@@ -96,6 +121,7 @@ const api = {
     release,
     gethomework,
     postHomework,
+    getCDS,
 
 
     createClass,
@@ -104,6 +130,8 @@ const api = {
     updateClass,
     getInfo,
     modifyInfo,
+    getCDT,
+    getWorksT
 }
 
 export default api

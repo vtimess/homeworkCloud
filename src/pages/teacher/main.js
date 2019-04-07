@@ -9,6 +9,7 @@ export default{
         navigationBarBackgroundColor: '#32333F',
         navigationBarTextStyle:"white",
         navigationBarTitleText: '',
+        backgroundTextStyle:'dark',
         enablePullDownRefresh:true,
         usingComponents: {
             "i-tab-bar": "/static/iView/tab-bar/index",

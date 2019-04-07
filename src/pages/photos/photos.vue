@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-import { devHost as host } from '../../http/config'
+import host  from '../../http/config'
 import store from '../../store/'
 
 export default {

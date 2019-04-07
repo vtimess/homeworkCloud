@@ -56,7 +56,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 26,
+			"current": 27,
 			"list": [
 				{
 					"id": -1,
@@ -235,6 +235,13 @@
 					"id": -1,
 					"name": "loading",
 					"pathName": "pages/loading/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "worksDetail",
+					"pathName": "pages/teacherBody/worksDetail/main",
 					"scene": null
 				}
 			]

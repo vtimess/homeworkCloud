@@ -27,12 +27,13 @@
         <i-panel title="班群成员:" hide-border >
             <i-cell :title="form.studentNum?form.studentNum+'位同学已加入':'尚无同学加入'" value="查看详情" @click="toStudent" ></i-cell>
         </i-panel>
-        <MyButton styleType="defult" @click="update">修改班群信息</MyButton>
+        <MyButton styleType="teacher" @click="update">修改班群信息</MyButton>
     </div>
 </template>
 <script>
 import MyButton  from '@/components/MyButton.vue'
-import { devHost as host } from '../../../http/config'
+import host  from '../../../http/config'
+
 
 export default {
     components:{

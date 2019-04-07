@@ -28,12 +28,13 @@
                 <img @click="addImage" src="/static/images/releaseWorks_add.png">
             </div>
         </i-panel>
-        <MyButton styleType="defult" @click="create">立即创建</MyButton>
+        <MyButton styleType="teacher" @click="create">立即创建</MyButton>
     </div>
 </template>
 <script>
 import MyButton  from '@/components/MyButton.vue'
-import { devHost as host } from '../../../http/config'
+import host  from '../../../http/config'
+
 import store from '../../../store/'
 
 export default {
@@ -84,7 +85,7 @@ export default {
                                 'Authorization':store.state.token,
                             },
                             formData:{
-                                'type': 'post'
+                                'type': 'homework'
                             },
                             success: (res) => {
                                 console.log(res)
