@@ -52,7 +52,6 @@
     </div>
 </template>
 <script>
-import MyButton  from '@/components/MyButton.vue'
 import host  from '../../../http/config'
 import StudentList from '@/components/StudentList'
 import avatar from '@/components/lk-avatar'
@@ -61,7 +60,6 @@ import avatar from '@/components/lk-avatar'
 
 export default {
     components:{
-      MyButton,
       StudentList,
       avatar,
     },
@@ -121,8 +119,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../../static/css/app.css'
-
 .body
     position absolute
     top 0rpx

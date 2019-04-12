@@ -1,17 +1,18 @@
 <template>
 <div class="body">
     <div class="image">
-        <swiper class="swiper"  circular="true" interval="4000" duration="600" @change="handChange">
-          <block v-for="(item, index) in imgUrls" :key="index">
-            <swiper-item>
-              <img :src="item" class="slide-image" @click="preview(index)"/>
+        <swiper class="swiper" style="height:300px"  circular="true" interval="4000" duration="600" @change="handChange">
+          <block v-for="(item, index) in imageList" :key="index">
+            <swiper-item class="flex-xc">
+              <img :src="host+item" mode="aspectFill" class="slide-image" @click="preview(index)"/>
             </swiper-item>
           </block>
         </swiper>
         <span class="page">{{current}}/{{total}}</span>
     </div>
+
     <div class="flex-x-y footer">
-        <input type="text" v-model="score" placeholder="请输入分数..." maxlength="3">
+        <input type="number" v-model="score" placeholder="请输入100以内分数..." maxlength="3">
         <span @click="submit">评分</span>
         <span @click="edit">批改</span>
     </div>
@@ -29,23 +30,21 @@
     </view>
     <!--画布工具区域-->
     <view v-if="status" class="canvas_tools">
-        <view class="box box3" @click="colorSelect"></view>
-        <view class="box " @click="cancal">取消</view>
-        <view class="box " @click="save">保存</view>
+        <view class="box" @click="cancal">取消</view>
+        <view class="box" @click="save">保存</view>
     </view>
 </div>
 </template>
 <script>
+import host  from '../../../http/config'
+import store from '../../../store/'
+
 export default {
     startX: 0, //保存X坐标轴变量
     startY: 0, //保存Y坐标轴变量
     data(){
         return{
-            imgUrls: [
-                'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-                'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-                'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
-            ],
+            h:9,
             current:1,
             total:null,
             imgUrl:'/static/images/header.png',
@@ -55,22 +54,26 @@ export default {
             title:'某某同学',
 
             status:false,
+            imageList:[],
 
             pen: 3, //画笔粗细默认值
             color: '#cc0033', //画笔颜色默认值
             canvasw:0,
             canvash:0,
-            image:'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
+            host:host,
         }
     },
+    
     onLoad(options){
+        Object.assign(this.$data, this.$options.data())
         if(options){
-
+            console.log(JSON.parse(options.param))
+            this.param = JSON.parse(options.param)
+            this.getData()
         }
         wx.setNavigationBarTitle({
             title: this.title+'同学'
         })
-        this.total = this.imgUrls.length;
         var vm = this;
         wx.getSystemInfo({
         success: function (res) {
@@ -82,6 +85,19 @@ export default {
         
     },
     methods: {
+        getData(){
+            var vm = this;
+            vm.$api.getImageT({
+                homeworkId: vm.param.homeworkId,
+                userId:vm.param.id
+            }).then(data=>{
+                vm.total = data.length
+                vm.imageList = data
+                console.log(vm.imageList)
+            }).catch(code=>{
+
+            })
+        },
         handChange({mp:{detail}}){
             this.current = detail.current+1
         },
@@ -90,25 +106,25 @@ export default {
             vm.status = true;
             const contexts = wx.createCanvasContext('myCanvas');
             wx.getImageInfo({
-            src: vm.image,
+            src: host+vm.imageList[vm.current-1],
             success(res) {
-                let height = 0;
-                let width = 0;
-                let maxHeight = res.height;
-                let maxWidth = res.width;
-                if(res.height < vm.canvash){
-                    height = (vm.canvash - res.height)/2
-                }else{
-                    maxHeight = vm.canvash
+                console.log(res)
+                let width= res.width;
+                let height = res.height;
+                if(width > vm.canvasw || height > vm.canvash){
+                    let bl = 1
+                    if(width - vm.canvasw >= height - vm.canvash){
+                        bl = vm.canvasw/width
+                    }else{
+                        bl =  vm.canvash/height
+                    }
+                    width = width*bl;
+                    height = height*bl;
                 }
-                if(res.width < vm.canvasw){
-                    width = (vm.canvasw - res.width)/2
-                }else{
-                    maxWidth = vm.canvasw
-                }
+                console.log(res.width,res.height,width,height)
                 contexts.setFillStyle('#fff')
                 contexts.fillRect(0, 0, vm.canvasw, vm.canvash)
-                contexts.drawImage(res.path, width, height, maxWidth, maxHeight);
+                contexts.drawImage(res.path, (vm.canvasw-width)/2, (vm.canvash-height)/2, width, height);
                 contexts.draw();
                 console.log(contexts)
             }
@@ -116,17 +132,36 @@ export default {
         },
         preview(val){
             wx.previewImage({
-                current: this.imgUrls[val], // 当前显示图片的http链接
-                urls: this.imgUrls // 需要预览的图片http链接列表
+                current: this.imageList[val], // 当前显示图片的http链接
+                urls: this.imageList // 需要预览的图片http链接列表
             })
         },
         submit(){
-            this.$api.updateClass({
-                classId:this.classId,
+            if(Number(this.score) > 100){
+                wx.showToast({
+                    icon:"none",
+                    title:"请输入100以内的分数"
+                },1000)
+                return false
+            }
+            this.$api.updeteImageT({
+                homeworkId:this.param.homeworkId,
+                userId:this.param.id||0,
                 score:this.score,
-                img:this.imgUrls,
+                comment:'',
+                images:this.imageList
             }).then(()=>{
-                this.next = true;
+                var vm = this;
+                var pages = getCurrentPages();
+                var prePage = pages[pages.length - 2];
+                setTimeout(()=>{
+                    wx.navigateBack({
+                        success:function(){
+                            prePage.onLoad({id:vm.param.homeworkId})
+                        }
+                    })
+                },1000)
+                // this.next = true;
             })
         },
         next(){
@@ -188,6 +223,28 @@ export default {
                 canvasId: 'myCanvas',
                 success(res) {
                     console.log(res.tempFilePath)
+                    wx.uploadFile({
+                        url: `${host}/upload/image`, 
+                        filePath: res.tempFilePath,
+                        name: 'file',
+                        header:{
+                            'Authorization':store.state.token,
+                        },
+                        formData:{
+                            'type': 'homework'
+                        },
+                        success(res) {
+                            let images = vm.imageList;
+                            console.log(vm.imageList,"111")
+                            images[vm.current-1] = JSON.parse(res.data).data
+                            vm.imageList = images
+                            vm.h = 6
+                            console.log(res)
+                            console.log(vm.imageList)
+                            // const data = res.data
+                            // do something
+                        }
+                    })
                     vm.status = false
                 }
             })
@@ -201,7 +258,7 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../../static/css/app.css'
+
 .body
     position absolute
     top 0rpx
@@ -216,10 +273,8 @@ export default {
         align-items center
         .swiper
             width 100%
-            max-height 100%
             .slide-image
-                width 100%
-                max-height 100%
+                height 300px                
     .page
         position absolute
         top 50rpx
@@ -287,14 +342,12 @@ export default {
         transform translate(0,-50%)
         z-index 2
         .box
-            width 100rpx
-            height 100rpx
-            border-radius 50%
-            background-color rebeccapurple
+            font-size 32rpx
+            padding 12rpx
+            border-radius 10rpx
+            color #fff
+            background rgba(0,0,0,0.3)
             margin-top 30rpx
-            .box3
-                background-color #cc0033
-            .box5
-                background-color #cccccc
+            
         
 </style>

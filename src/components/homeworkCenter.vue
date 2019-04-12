@@ -15,10 +15,10 @@
         <li>我的帖子</li>
         <li @click="join">加入班群</li>
       </div>
-      <i-notice-bar icon="systemprompt" loop="true" speed="2000">
+      <!-- <i-notice-bar icon="systemprompt" loop="true" >
         请尽快完善个人信息，以便老师一眼识别到你！
-      </i-notice-bar>
-      <div v-if="false" style="height:60rpx;background:#f1f1f1;">
+      </i-notice-bar> -->
+      <div v-show="false" style="height:60rpx;background:#f1f1f1;">
       </div>
       <div class="homewrok">
         <div class="flex-xf-yc title">
@@ -40,15 +40,16 @@
           </div>
         </div>
         
-        <div v-if="show" class="flex-xc nothing">
+        <div v-show="show" class="flex-xc nothing">
           <div class="flex-y">
             <img  src="/static/images/nothing.png"  @click="join" >
             <span class="tip">阿欧,还没有班群,快去加入吧！</span>
             <span class="tip">阿欧,尚未发布作业哦!</span>
           </div>
         </div>
-        <i-load-more v-if="loadStatus" tip="加载中" :loading="loadStatus" />
-        <i-load-more v-if="0" tip="已经到底了"  />
+        <div v-show="loadStatus">
+          <i-load-more  tip="加载中" :loading="true" />
+        </div>
       </div>
       
       <div class="goTop" >
@@ -59,111 +60,107 @@
 
 <script>
 import {formatNumber,formatTime} from '@/utils/index.js'
-// import { mapState, mapMutations } from 'vuex'
-// import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
+import { mapState, mapMutations } from 'vuex'
+import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
 import host  from '../http/config'
 
 
 export default {
-  // components:{
-  //     MyButton,
-  // },
-  // data () {
-  //   return {
-  //     loadStatus:false,
-  //     imgUrls: [
-  //       {src:'/static/images/homeImg.png'},
-  //       {src:'/static/images/homeImg2.png'},
-  //       {src:'/static/images/homeImg.png'}
-  //     ],
-  //     homeworkData:null,
-  //     title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
-  //     status:true,
-  //     show:true
-  //   }
-  // },
-  // // computed: {
-  // //       ...mapState([   //分发store中的数据到当前组件
-  // //           'tabIndex',
-  // //       ])
-  // //   },
-  // onLoad(){
-  //     // this.getData();
-  // },
-  // onPullDownRefresh(){
-  //   if(this.tabIndex == '1'){
-  //     this.getData()
-  //     console.log("作业")
-  //     setTimeout(function(){
-  //       wx.stopPullDownRefresh()
-  //     },2000)
-  //   }
-  // },
-  // onReachBottom(){
-  //   var vm = this;
-  //   if(this.tabIndex == '1'){
-  //     vm.loadStatus = true
-  //     setTimeout(function(){
-  //       vm.loadStatus = false
-  //     },2000)
-  //     console.log("上拉刷新")
-  //   }
-  // },
-  // methods: {
-  //   // ...mapMutations({
-  //   //       setTabIndex : SET_TABINDEX,
-  //   // }),
-  //   add(){
-  //     console.log("add")
-  //   },
+  
+  data () {
+    return {
+      loadStatus:false,
+      imgUrls: [
+        {src:'/static/images/homeImg.png'},
+        {src:'/static/images/homeImg2.png'},
+        {src:'/static/images/homeImg.png'}
+      ],
+      homeworkData:null,
+      title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
+      status:true,
+      show:true
+    }
+  },
+  computed: {
+        ...mapState([   //分发store中的数据到当前组件
+            'tabIndex',
+        ])
+    },
+  onLoad(){
+      this.getData();
+  },
+  onPullDownRefresh(){
+    if(this.tabIndex == '1'){
+      this.getData()
+      setTimeout(function(){
+        wx.stopPullDownRefresh()
+      },2000)
+    }
+  },
+  onReachBottom(){
+    var vm = this;
+    if(this.tabIndex == '1'){
+      vm.loadStatus = true
+      setTimeout(function(){
+        vm.loadStatus = false
+      },2000)
+    }
+  },
+  methods: {
+    ...mapMutations({
+          setTabIndex : SET_TABINDEX,
+    }),
+    add(){
+      console.log("add")
+    },
     
-  //   hwShow(val){
-  //     let data = JSON.stringify(this.homeworkData[val])
-  //     wx.navigateTo({
-  //       url:'/pages/homeworkInfo/main?homeworkData='+data
-  //     })
-  //   },
-  //   getData(){
-  //     this.$api.gethomework({
-  //       page:0,
-  //       size:4
-  //     }).then((data)=>{
-  //       console.log(data)
-  //         let nowtime = new Date();
-  //         data.data.map((item,index)=>{
-  //           if(item.endTime){
-  //             item.end = nowtime > item.endTime ? '(已截止)':'';
-  //             item.endTime = formatTime(item.endTime);
-  //             item.beginTime = formatTime(item.beginTime);
-  //           }
-  //           item.images = host+item.images
-  //         })
-  //         console.log(data.data)
-  //         this.homeworkData = data.data
-  //         this.show = false
-  //     }).catch(code =>{
-  //         this.show = true
+    hwShow(val){
+      let data = JSON.stringify(this.homeworkData[val])
+      wx.navigateTo({
+        url:'/pages/homeworkInfo/main?homeworkData='+data
+      })
+    },
+    getData(){
+      this.$api.gethomework({
+        page:0,
+        size:4
+      }).then((data)=>{
+        console.log(data)
+          let nowtime = new Date();
+          data.data.map((item,index)=>{
+            if(item.endTime){
+              item.end = nowtime > item.endTime ? '(已截止)':'';
+              item.endTime = formatTime(item.endTime);
+              item.beginTime = formatTime(item.beginTime);
+            }
+            item.images = host+item.images
+          })
+          console.log(data.data)
+          this.homeworkData = data.data
+          this.show = false
+      }).catch(code =>{
+          this.show = true
 
-  //     })
-  //   },
-  //   join:function(){
-  //     wx.navigateTo({
-  //       url:'/pages/search/main'
-  //     })
-  //   },
-  //   classgroup:function(){
-  //     wx.navigateTo({
-  //       url:'/pages/classgroup/main'
-  //     })
-  //   },
-  //   goTop:function(){
-  //     wx.pageScrollTo({
-  //       scrollTop: 0,
-  //       duration: 200
-  //     })
-  //   },
+      })
+    },
+    join:function(){
+      wx.navigateTo({
+        url:'/pages/search/main'
+      })
+    },
+    classgroup:function(){
+      wx.navigateTo({
+        url:'/pages/classgroup/main'
+      })
+    },
+    goTop:function(){
+      wx.pageScrollTo({
+        scrollTop: 0,
+        duration: 200
+      })
+    },
     
-  // },
+  },
 
   
 
@@ -171,7 +168,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../static/css/app.css'
 .body
   width 100%
   height 100%
@@ -278,23 +274,6 @@ export default {
     img
       width 64rpx
       height 64rpx
-  .loading_box
-    width 100%
-    text-align center
-    padding 100rpx 0
-    .loading_fade_circle
-      width 30rpx
-      height 30rpx
-      background #1ab394
-      border-radius 50%
-      animation fading_circle 1s ease-out infinite alternate
-        // @keyframes fading_circle
-        //   0%
-        //     transform: scale(1.5)
-        //     opacity: 0.2
-        //   100%  
-        //     transform scale(0.1)
-        //     opacity 1
       
 
 </style>

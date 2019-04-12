@@ -13,7 +13,8 @@ export default{
             "i-cell-group": "/static/iView/cell-group/index",
             "i-cell": "/static/iView/cell/index",
             "i-collapse": "/static/iView/collapse/index",
-            "i-collapse-item": "/static/iView/collapse-item/index"
+            "i-collapse-item": "/static/iView/collapse-item/index",
+            "i-avatar":"/static/iView/avatar/index",
         }
     }
     

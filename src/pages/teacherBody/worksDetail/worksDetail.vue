@@ -21,36 +21,40 @@
         </div>
         <view class="student"  slot="content">
             <i-collapse name="name1" accordion>
-            <i-collapse-item v-if="1" :title="unCorrect" name="name1">
+            <i-collapse-item :title="unCorrect" name="name1">
                 <view slot="content">
-                     <div class="flex-x-m">
-                        <li  class="flex-y stuImage" @click="toStudent">
-                            <img class="images" mode="aspectFill" src="/static/images/header.png" >
-                            <span>张申然</span>
+                     <div class="flex-x-m" v-for="(item, index) in Detail.unCorrectStudent" :key="index">
+                        <li  class="flex-y stuImage" @click="toStudent(item.id,item.name,index)">
+                            <avatar :src="item.avatar" size="default" ></avatar>
+                            <span>{{item.name}}</span>
                         </li>
                     </div>
                 </view>
             </i-collapse-item>
-            <i-collapse-item v-if="1" :title="correct" name="name2">
+            <i-collapse-item  :title="correct" name="name2">
                 <view slot="content">
-                    <div class="flex-x-m">
-                        <li class="flex-y stuImage" @click="toStudent">
-                            <img class="images" mode="aspectFill" src="/static/images/header.png" >
-                            <span>张申然</span>
-                            <img @click="del" class="del" src="/static/images/trues-active.png">
+                     <div class="flex-x-m" v-for="(item, index) in Detail.correctStudent" :key="index">
+                        <li  class="flex-y stuImage" >
+                            <avatar :src="item.avatar" size="default" ></avatar>
+                            <span>{{item.name}}</span>
                         </li>
                     </div>
                 </view>
             </i-collapse-item>
             </i-collapse>
+            
         </view>
         
     </div>
 </template>
 <script>
 import host  from '../../../http/config'
+import avatar from '@/components/lk-avatar'
 
 export default {
+    components:{
+      avatar
+    },
     data(){
         return{
             correct:'已批改',
@@ -77,16 +81,22 @@ export default {
 
             })
         },
-        toStudent(){
+        toStudent(id,name,index){
+            let param = {};
+            param.homeworkId = this.Detail.id;
+            param.userIdList = this.Detail.unCorrectStudent;
+            param.name = name;
+            param.id = id;
+            param.index = index;
+
             wx.navigateTo({
-                url: '/pages/teacherBody/sdtDetail/main'
+                url: '/pages/teacherBody/sdtDetail/main?param='+JSON.stringify(param)
             })
         }
     }
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../../static/css/app.css'
 .body
     position absolute
     top 0rpx

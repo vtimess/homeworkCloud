@@ -67,6 +67,13 @@ const postHomework = (params) => http('/s/homework',POST,params)
  */
 const getCDS = (params) =>http('/s/class/user',GET,params,"正在加载...")
 
+/** 获取作业列表api
+ */
+const getworksList = (params) =>http('/s/homework',GET,params,"正在加载...")
+
+
+
+
 
 
 /**
@@ -109,6 +116,13 @@ const getWorksT = (params) =>http('/t/homework',GET,params,"正在加载...")
  */
 const getWkDetailT = (params) =>http('/t/homework/'+params,GET,null,"正在加载...")
 
+/** 获取学生作业图片api
+ */
+const getImageT = (params) =>http('/t/homework/image',GET,params)
+
+/** 批改作业图片api
+ */
+const updeteImageT = (params) =>http('/t/homework/image',POST,params,"正在提交批改...")
 
 
 const api = {
@@ -126,6 +140,7 @@ const api = {
     gethomework,
     postHomework,
     getCDS,
+    getworksList,
 
 
     createClass,
@@ -136,7 +151,9 @@ const api = {
     modifyInfo,
     getCDT,
     getWorksT,
-    getWkDetailT
+    getWkDetailT,
+    getImageT,
+    updeteImageT
 }
 
 export default api

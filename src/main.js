@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
-import store from './store' 
+import store from './store'
+import '../static/css/app.css' 
 // import http from '@/utils/http'
 import api from '@/http/api'
 

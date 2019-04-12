@@ -15,21 +15,17 @@
             <span v-if="status" @click="finished">36同学已经完成</span>
             <img src="/static/images/finish.png"/>
         </div>
-        <StudentList></StudentList>
         <div class="footer">
-            <button class="sub" @click="submit">{{homeworkData.status == '-1'?'提交作业':'已提交'}}</button>
+            <button class="sub" @click="submit">{{homeworkData.status=='1'?'已提交': homeworkData.end?'已截至':'未提交'}}</button>
         </div>
     </div>
 </template>
 <script>
 import utils from '@/utils/'
-import StudentList from '@/components/StudentList'
 import host  from '../../http/config'
 
 export default {
-    components:{
-      StudentList,
-    },
+    
     data() {
         return {
             status:false,
@@ -57,6 +53,9 @@ export default {
             })
         },
         submit(){
+            // if(this.homeworkData.status=='1'){
+            //     return false
+            // }
             wx.navigateTo({
                 url: '../photos/main?id='+this.homeworkData.id
             })

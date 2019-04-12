@@ -56,6 +56,7 @@ export default {
                 })
                 var uploadImgCount = 0;
                 for (var i = 0,h = this.tempFilePaths.length; i < h; i++) {
+                    console.log(this.tempFilePaths[i])
                     wx.uploadFile({
                         url: `${host}/upload/image`, 
                         filePath: this.tempFilePaths[i],
@@ -68,9 +69,8 @@ export default {
                         },
                         success: (res) => {
                             uploadImgCount++;
-                            console.log(res.data)
-                            var data = res.data
-                            this.tempFile.push(data.data)
+                            var result = JSON.parse(res.data)
+                            this.tempFile.push(result.data)
                             if (uploadImgCount == this.tempFilePaths.length) {  
                                 console.log(this.tempFile)
                                 this.$api.postHomework({

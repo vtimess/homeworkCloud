@@ -17,7 +17,7 @@
                         <img src="/static/images/homework.png" >
                         <span class="title">{{item.startDate}}作业</span>
                     </div>
-                    <span style="width:140rpx;color:#d75959;font-size:26rpx;">0/23已提交</span>
+                    <!-- <span style="width:140rpx;color:#d75959;font-size:26rpx;">0/23已提交</span> -->
                 </div>
                 <div class="desc">
                     详细:{{item.desc}}
@@ -108,7 +108,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../../static/css/app.css'
 .body
     position absolute
     top 0rpx
