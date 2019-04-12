@@ -35,8 +35,7 @@ export default {
     methods: {
         classinfo: function(e){
             let that = this
-            let index = e.currentTarget.dataset.index
-            let classBean = JSON.stringify(that.data.classData[index])
+            let classBean = JSON.stringify(that.classData)
             wx.navigateTo({
                 url: '../classinfo/main?classBean=' + classBean,
             })

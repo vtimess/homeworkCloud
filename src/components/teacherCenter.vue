@@ -27,7 +27,7 @@
 </template>
 <script>
 import store from '../store/'
-import {REMOVE_STATUS,REMOVE_TOKEN} from '../store/mutation-types'
+import {CLEAR_ALL} from '../store/mutation-types'
 
 export default {
     data(){
@@ -51,17 +51,7 @@ export default {
                 content: '是否确定退出登录?',
                 success(res) {
                     if (res.confirm) {
-                        console.log('用户点击确定')
-                        store.commit(REMOVE_STATUS);
-                        store.commit(REMOVE_TOKEN);
-                        // wx.getStorageInfo({
-                        //     success(res) {
-                        //         console.log(res.keys)//当前 storage 中所有的 key
-                        //         console.log(res.currentSize)//当前占用的空间大小, 单位 KB
-                        //         console.log(res.limitSize)//限制的空间大小，单位 KB
-                        //     }
-                        // })
-                        wx.clearStorageSync();
+                        store.commit(CLEAR_ALL);
                         let status = '2'
                         wx.reLaunch({
                             url:'/pages/welcome/main?status='+status

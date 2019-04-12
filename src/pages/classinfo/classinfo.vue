@@ -7,13 +7,13 @@
                     <span>{{classBean.teacherName}}</span></li>
                 <li class="befroe">
                     <p>班群名称</p>
-                    <span>{{classBean.className}}</span></li>
+                    <span>{{classBean.name}}</span></li>
                 <li class="befroe">
                     <p>班群号</p>
                     <span>{{classBean.classId}}</span></li>
                 <li class="befroe">
                     <p>班群人数</p>
-                    <span>{{classBean.joinNumber}}</span></li>
+                    <span>{{classBean.studentNum}}</span></li>
                 <li class="after">
                     <p>科目</p>
                     <span>{{classBean.subject}}</span></li>
@@ -21,7 +21,7 @@
         </div>
         <div class="mid">
             <p>创建时间</p>
-            <span>{{setTime}}</span>
+            <span>{{classBean.createTime}}</span>
         </div>
         <button @click="exit">退出班群</button>
     </div>
@@ -31,23 +31,20 @@ import utils from '@/utils/'
 export default {
     data() {
         return{
+            classBean:[]
+        }
+    },
+    onLoad(options){
+        this.classBean =JSON.parse(options.classBean)
+        this.classBean.createTime = utils.formatTime(this.classBean.createTime)
+        console.log(this.classBean)
 
-        }
     },
-    onLocad:function(options){
-        let that = this
-        let classBean =JSON.parse(options.classBean)
-        that.setData({
-            classBean: classBean
-        })
-    },
-    computed:{
-        setTime(){
-            return utils.formatTime(this.classBean.setTime)
-        }
-    },
+    
     methods: {
+        exit(){
 
+        }
     }
 }
 </script>

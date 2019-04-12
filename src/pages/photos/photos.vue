@@ -72,6 +72,7 @@ export default {
                             var data = res.data
                             this.tempFile.push(data.data)
                             if (uploadImgCount == this.tempFilePaths.length) {  
+                                console.log(this.tempFile)
                                 this.$api.postHomework({
                                     homeworkId:this.homeworkId,
                                     image:this.tempFile
@@ -85,7 +86,7 @@ export default {
                                     this.button = '完成'
                                     this.btnState = 'finish'
                                     wx.navigateBack({
-                                        delta: 2
+                                        delta: 1
                                     })
                                 })
                                  

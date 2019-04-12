@@ -1,14 +1,14 @@
 <template>
     <div class="body">
-      <div v-show="tabIndex == 0" key="0">00
+      <div v-show="Index == 0" >00
       </div>
-      <div v-show="tabIndex == 1" key="1">
+      <div v-show="Index == 1">
         <homeworkCenter></homeworkCenter>
       </div>
-      <div v-show="tabIndex == 2" key="2">
+      <div v-show="Index == 2" >
         <studentCenter ></studentCenter>
       </div>
-      <i-tab-bar class="tabbar" :current="current" color="#64dcdb" @change="handleChange">
+      <i-tab-bar class="tabbar" :current="Index" color="#64dcdb" @change="handleChange">
         <i-tab-bar-item key="0" icon="homepage" current-icon="homepage_fill" title="广场"></i-tab-bar-item>
         <i-tab-bar-item key="1" icon="computer" current-icon="computer_fill" title="作业"></i-tab-bar-item>
         <i-tab-bar-item key="2" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
@@ -21,8 +21,8 @@ import MyButton from '@/components/MyButton'
 import studentCenter from '@/components/studentCenter'
 import homeworkCenter from '@/components/homeworkCenter'
 
-import { mapState, mapMutations } from 'vuex'
-import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
+// import { mapState, mapMutations } from 'vuex'
+// import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
 
 
 export default {
@@ -34,8 +34,8 @@ export default {
   data () {
     return {
         current:'0',
-        tabIndex:'0',
         text:"1",
+        Index:'0',
         scrollTop: {
             scroll_top: 0,
             goTop_show: true
@@ -45,11 +45,11 @@ export default {
         show:false
     }
   },
-  computed: {
-        ...mapState([   //分发store中的数据到当前组件
-            'tabIndex',
-        ])
-    },
+  // computed: {
+  //       ...mapState([   //分发store中的数据到当前组件
+  //           'tabIndex',
+  //       ])
+  //   },
   
   //onReachBottom: function () {
     //var vm = this;
@@ -63,13 +63,12 @@ export default {
     // }, 2000);
   //},
   methods:{
-    ...mapMutations({
-          setTabIndex : SET_TABINDEX,
-    }),
+    // ...mapMutations({
+    //       setTabIndex : SET_TABINDEX,
+    // }),
     handleChange ({ mp }) {
-        this.tabIndex = mp.detail.key;
-        this.current = mp.detail.key;
-        this.setTabIndex(mp.detail.key);
+        this.Index = mp.detail.key
+        // this.setTabIndex(mp.detail.key);
     }
 
     

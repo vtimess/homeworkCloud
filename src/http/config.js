@@ -1,5 +1,6 @@
 
-const devHost = 'http://192.168.1.106:8080'
+const devHost = 'http://192.168.1.109:8080'
+// const devHost = 'http://192.168.1.104:8080'
 
 const proHost = 'https://www.vtimess.cn'
 

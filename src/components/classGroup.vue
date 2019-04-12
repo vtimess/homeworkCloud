@@ -22,7 +22,7 @@
             </div>
         </div>   
     </div>
-    <div v-show="!classData" class="flex-yc error">
+    <div v-show="show" class="flex-yc error">
         <img src="/static/images/load-error.png" @click="getData">
         <span>加载失败,点击重试</span>
     </div>     
@@ -37,6 +37,7 @@ export default {
     data(){
         return{
             classData:[],
+            show:false,
         }
     },
     mounted() {
@@ -57,7 +58,7 @@ export default {
         getData(){
             this.$api.getClassList({})
             .then( data =>{
-                console.log(this.status)
+                this.show = false
                 data.map((item)=>{
                     if(item.createTime){
                         item.createTime = formatTime(item.createTime);
@@ -69,6 +70,10 @@ export default {
                 })
                 console.log(data)
                 this.classData = data
+            })
+            .catch(code =>{
+                this.show = true
+                // console.log(this.classData.length)
             })
         },
         toClassDetail(val){

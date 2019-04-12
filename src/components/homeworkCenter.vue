@@ -5,7 +5,7 @@
         indicator-color="rgba(255, 255, 255, .3)" indicator-active-color="rgba(255, 255, 255, .8)">
           <block v-for="item in imgUrls" :key="item.index">
             <swiper-item>
-              <img :src="item.src" class="slide-image" />
+              <img :src="item.src" class="slide-image" mode="aspectFill"/>
             </swiper-item>
           </block>
         </swiper>
@@ -26,13 +26,13 @@
         </div>
         <div class="list" v-for="(item, index) in homeworkData" :key="index" @click="hwShow(index)">
           <div class="header">
-              <img :src="item.img?item.img:'/static/images/subject.png'" />
+              <img :src="item.images?item.images:'/static/images/subject.png'" />
               <span >{{item.teacherName}}</span>
           </div>
           <div class="hr"></div>
           <div class="mid">
               <p>{{item.desc}}</p>
-              <span>{{item.status=='-1'?'未提交':'已提交'}}</span>
+              <span>{{item.status=='1'?'已提交': item.end?'已截至':'未提交'}}</span>
           </div>
           <div class="footer">
               <img src="/static/images/clock.png"/>
@@ -40,7 +40,7 @@
           </div>
         </div>
         
-        <div v-if="!homeworkData" class="flex-xc nothing">
+        <div v-if="show" class="flex-xc nothing">
           <div class="flex-y">
             <img  src="/static/images/nothing.png"  @click="join" >
             <span class="tip">阿欧,还没有班群,快去加入吧！</span>
@@ -58,125 +58,112 @@
 </template>
 
 <script>
-import MyButton from '@/components/MyButton'
 import {formatNumber,formatTime} from '@/utils/index.js'
-import store from '../store/'
+// import { mapState, mapMutations } from 'vuex'
+// import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
+import host  from '../http/config'
 
 
 export default {
-  components:{
-      MyButton,
-  },
-  data () {
-    return {
-      loadStatus:false,
-      imgUrls: [
-        {src:'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640'},
-        {src:'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640'},
-        {src:'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'}
-      ],
-      imgs:[
-            {subject:'语文',img:'/static/images/chemistry.png'},
-            {subject:'数学',img:'/static/images/physics.png'},
-            {subject:'英语',img:'/static/images/biology.png'},
-            {subject:'JAVA',img:'/static/images/geography.png'},
-            {subject:'其他',img:'/static/images/subject.png'}
-        ],
-      scrollTop: {
-        scroll_top: 0,
-        goTop_show: true
-      },
-      homeworkData:null,
-      title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
-      status:true,
-      show:false
-    }
-  },
-  computed: {
-   
-  },
-  onLoad(){
-    this.$nextTick(() => {
-        this.getData();
-    });
-  },
-  onPullDownRefresh(){
-    if(store.state.tabIndex == '1'){
-      this.getData()
-      console.log("作业")
-      setTimeout(function(){
-        wx.stopPullDownRefresh()
-      },2000)
-    }
-  },
-  onReachBottom(){
-    var vm = this;
-    if(store.state.tabIndex == '1'){
-      vm.loadStatus = true
-      setTimeout(function(){
-        vm.loadStatus = false
-      },2000)
-      console.log("上拉刷新")
-    }
-  },
-  methods: {
-    add(){
-      console.log("add")
-    },
+  // components:{
+  //     MyButton,
+  // },
+  // data () {
+  //   return {
+  //     loadStatus:false,
+  //     imgUrls: [
+  //       {src:'/static/images/homeImg.png'},
+  //       {src:'/static/images/homeImg2.png'},
+  //       {src:'/static/images/homeImg.png'}
+  //     ],
+  //     homeworkData:null,
+  //     title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
+  //     status:true,
+  //     show:true
+  //   }
+  // },
+  // // computed: {
+  // //       ...mapState([   //分发store中的数据到当前组件
+  // //           'tabIndex',
+  // //       ])
+  // //   },
+  // onLoad(){
+  //     // this.getData();
+  // },
+  // onPullDownRefresh(){
+  //   if(this.tabIndex == '1'){
+  //     this.getData()
+  //     console.log("作业")
+  //     setTimeout(function(){
+  //       wx.stopPullDownRefresh()
+  //     },2000)
+  //   }
+  // },
+  // onReachBottom(){
+  //   var vm = this;
+  //   if(this.tabIndex == '1'){
+  //     vm.loadStatus = true
+  //     setTimeout(function(){
+  //       vm.loadStatus = false
+  //     },2000)
+  //     console.log("上拉刷新")
+  //   }
+  // },
+  // methods: {
+  //   // ...mapMutations({
+  //   //       setTabIndex : SET_TABINDEX,
+  //   // }),
+  //   add(){
+  //     console.log("add")
+  //   },
     
-    hwShow(val){
-      let data = JSON.stringify(this.homeworkData[val])
-      wx.navigateTo({
-        url:'/pages/homeworkInfo/main?homeworkData='+data
-      })
-    },
-    getData(){
-      this.$api.gethomework({
-        page:0,
-        size:4
-      }).then((data)=>{
-        if(data.data.length){
-          console.log(data,666)
-          let nowtime = new Date();
+  //   hwShow(val){
+  //     let data = JSON.stringify(this.homeworkData[val])
+  //     wx.navigateTo({
+  //       url:'/pages/homeworkInfo/main?homeworkData='+data
+  //     })
+  //   },
+  //   getData(){
+  //     this.$api.gethomework({
+  //       page:0,
+  //       size:4
+  //     }).then((data)=>{
+  //       console.log(data)
+  //         let nowtime = new Date();
+  //         data.data.map((item,index)=>{
+  //           if(item.endTime){
+  //             item.end = nowtime > item.endTime ? '(已截止)':'';
+  //             item.endTime = formatTime(item.endTime);
+  //             item.beginTime = formatTime(item.beginTime);
+  //           }
+  //           item.images = host+item.images
+  //         })
+  //         console.log(data.data)
+  //         this.homeworkData = data.data
+  //         this.show = false
+  //     }).catch(code =>{
+  //         this.show = true
 
-          data.data.map((item,index)=>{
-            if(item.endTime){
-              item.end = nowtime > item.endTime ? '(已截止)':'';
-              item.endTime = formatTime(item.endTime);
-              item.beginTime = formatTime(item.beginTime);
-            }
-            this.imgs.forEach(row => {
-              if(item.subject == row.subject){
-                item.img = row.img;
-              }
-            })
-          })
-          console.log(data.data)
-          this.homeworkData = data.data
-          this.show = false
-        }else{
-          this.show = true
-        }
-      })
-    },
-    join:function(){
-      wx.navigateTo({
-        url:'/pages/search/main'
-      })
-    },
-    classgroup:function(){
-      wx.navigateTo({
-        url:'/pages/classgroup/main'
-      })
-    },
-    goTop:function(){
-      wx.pageScrollTo({
-        scrollTop: 0,
-        duration: 200
-      })
-    },
+  //     })
+  //   },
+  //   join:function(){
+  //     wx.navigateTo({
+  //       url:'/pages/search/main'
+  //     })
+  //   },
+  //   classgroup:function(){
+  //     wx.navigateTo({
+  //       url:'/pages/classgroup/main'
+  //     })
+  //   },
+  //   goTop:function(){
+  //     wx.pageScrollTo({
+  //       scrollTop: 0,
+  //       duration: 200
+  //     })
+  //   },
     
-  },
+  // },
 
   
 

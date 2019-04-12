@@ -17,9 +17,10 @@ export default {
              pushFormId: PUSH_FORM_ID,
         }),
         formSubmit:function(e){
-            let formId = e.mp.detail.formId
+            console.log('采取formId',e.mp.detail)
+            let formId = e.mp.detail
             var reg = /[0-9a-zA-Z]*/
-            if(reg.test(formId)){
+            if(formId!='the formId is a mock one' && reg.test(formId)){
                 console.log("formId:"+formId)
                 this.pushFormId(formId)
             }

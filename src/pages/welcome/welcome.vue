@@ -31,13 +31,14 @@ export default {
             gender:"",
             avatarUrl:"",
             current: '1',
-            current_scroll: '1'
+            current_scroll: '1',
+            key:'',
         }
     },
     onLoad(options){
         if(options.status){
-            this.setStatus(options.status)
-            this.current = '2'
+            this.key = options.status
+            this.current = options.status
         }
     },
     created() {
@@ -67,8 +68,7 @@ export default {
             this.show = val;
         },
         handleChange ({ mp }) {
-            this.setStatus(mp.detail.key)
-            console.log(this.status)
+            this.key = mp.detail.key
             this.current = mp.detail.key
         },
         handleChangeScroll ({ mp }) {
@@ -77,7 +77,7 @@ export default {
         
         login(wxCode){
             this.$api.login(
-                this.status==2?'/t/login':'/s/login',
+                this.key==2?'/t/login':'/s/login',
                 {
                 code: wxCode,
                 type:this.status||1,
@@ -88,7 +88,7 @@ export default {
                 this.setToken(token);
                 console.log("登录成功")
                 var mainUrl = "/pages/teacher/main"
-                if(this.status == 2){
+                if(this.key == 2){
                     this.setStatus("2")
                 }else{
                     this.setStatus("1")
@@ -101,8 +101,6 @@ export default {
             
         },
         getUserInfo(e){
-            console.log(e,'getUserInfo')
-
             if (e.mp.detail.rawData){
                 this.nickName = e.mp.detail.userInfo.nickName;
                 this.avatarUrl = e.mp.detail.userInfo.avatarUrl;

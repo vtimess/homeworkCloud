@@ -1,4 +1,6 @@
 import * as types from './mutation-types'
+import store from '../store/'
+import state from './state'
 
 const mutations={
     /**
@@ -35,6 +37,9 @@ const mutations={
     },
     [types.REMOVE_STATUS] (state){
         state.status="";
+    },
+    [types.CLEAR_ALL] (){
+        store.replaceState=(state);
     },
     [types.SET_ERROR_IMAGE](state){
         state.errorImage="";

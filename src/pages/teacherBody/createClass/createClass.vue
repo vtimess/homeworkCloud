@@ -85,7 +85,7 @@ export default {
                                 'Authorization':store.state.token,
                             },
                             formData:{
-                                'type': 'homework'
+                                'type': 'avatar'
                             },
                             success: (res) => {
                                 console.log(res)

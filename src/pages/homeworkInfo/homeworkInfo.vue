@@ -42,18 +42,7 @@ export default {
             ]
         }
     },
-    computed:{
-        // end(){
-        //     let nowtime = new Date()
-        //     return nowtime > this.homework.endTime ? '(已截止)':''
-        // },
-        // startDate(){
-        //     return utils.formatTime(this.homework.startTime)
-        // },
-        // endDate(){
-        //     return utils.formatTime(this.homework.endTime)
-        // }
-    },
+    
     onLoad(options){
         console.log(options)
         this.homeworkData = JSON.parse(options.homeworkData)

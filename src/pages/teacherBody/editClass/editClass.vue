@@ -91,7 +91,7 @@ export default {
                                 'Authorization':store.state.token,
                             },
                             formData:{
-                                'type': 'post'
+                                'type': 'avatar'
                             },
                             success: (res) => {
                                 console.log(res)

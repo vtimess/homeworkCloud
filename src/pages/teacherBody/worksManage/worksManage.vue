@@ -20,7 +20,7 @@
                     <span style="width:140rpx;color:#d75959;font-size:26rpx;">0/23已提交</span>
                 </div>
                 <div class="desc">
-                    将三角函数预习一下，明天检查{{item.desc}}
+                    详细:{{item.desc}}
                 </div>
             </div>
         </div>
@@ -95,9 +95,9 @@ export default {
                 }
             },2000)
         },
-        worksDetail(){
+        worksDetail(val){
             wx.navigateTo({
-            url: '/pages/teacherBody/worksDetail/main'
+            url: '/pages/teacherBody/worksDetail/main?id='+val
             })
         },
         onNavBarTap(e){

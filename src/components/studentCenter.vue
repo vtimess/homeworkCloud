@@ -18,11 +18,11 @@
         <div class="container big">
             <Mylist v-for="item in bigData" :key="item.name" :Item="item"></Mylist>
         </div>
-        <div class="container mid">
-            <Mylist v-for="item in midData" :key="item.name" :Item="item"></Mylist>
-        </div>
         <div class="container small">
             <Mylist v-for="item in smallData" :key="item.name" :Item="item"></Mylist>
+        </div>
+        <div class="flex-y container logout" @click="logout">
+            <span>退出登录</span>
         </div>
         <div class="flex-xc heo">
             <span>— HEO技术支持 —</span>
@@ -35,6 +35,8 @@
 <script>
 import Mylist from '@/components/Mylist.vue'
 import store from '../store/'
+import {CLEAR_ALL} from '../store/mutation-types'
+
 
 export default {
     components:{
@@ -58,12 +60,7 @@ export default {
                     url:'../studyCondition/main'
                 }
             ],
-            midData:[
-                {
-                    name:'我的错题',
-                    url:'../myWrong/main'
-                }
-            ],
+            
             smallData:[
                 {
                     name:'帮助中心',
@@ -88,10 +85,27 @@ export default {
     },
     methods:{
         modify:function(){
-        wx.navigateTo({
-            url: '../modifyinfo/main'
-        })
-    }   
+            wx.navigateTo({
+                url: '../modifyinfo/main'
+            })
+        },
+        logout(){
+            wx.showModal({
+                title: '提示',
+                content: '是否确定退出登录?',
+                success(res) {
+                    if (res.confirm) {
+                        store.commit(CLEAR_ALL);
+                        let status = '1'
+                        wx.reLaunch({
+                            url:'/pages/welcome/main?status='+status
+                        })
+                    } else if (res.cancel) {
+                        console.log('用户点击取消')
+                    }
+                }
+            })
+        }   
     }
 }
 </script>
@@ -170,10 +184,13 @@ export default {
         margin-bottom 50rpx
     .big
         height 300rpx
-    .mid
-        height 90rpx
     .small
         height 90rpx
+    .logout
+        text-align center
+        padding-top 15rpx
+        padding-bottom 15rpx
+        color #ff0000
     .heo
         span 
             font-size 24rpx

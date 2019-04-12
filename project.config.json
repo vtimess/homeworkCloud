@@ -56,7 +56,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 27,
+			"current": 28,
 			"list": [
 				{
 					"id": -1,
@@ -242,6 +242,13 @@
 					"id": -1,
 					"name": "worksDetail",
 					"pathName": "pages/teacherBody/worksDetail/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "canvas",
+					"pathName": "pages/teacherBody/canvas/main",
 					"scene": null
 				}
 			]

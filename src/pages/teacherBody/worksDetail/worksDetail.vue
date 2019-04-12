@@ -2,20 +2,21 @@
     <div class="body">
         <div class="flex-yf head">
             <i-cell-group>
-                <i-cell title="作业名称" value="03月34日 作业"></i-cell>
-                <i-cell title="截止时间" value="2019/03/45"></i-cell>
+                <i-cell title="作业名称" :value="Detail.startDate+' 作业'"></i-cell>
+                <i-cell title="截止时间" :value="Detail.endDate"></i-cell>
             </i-cell-group>
             <i-collapse-item v-if="1" title="作业详情" name="name1">
-                <view slot="content">
-                    <img style="width:200rpx;height:200rpx;" src="/static/images/header.png">
+                <view slot="content" class="flex-yf">
+                    <span>{{Detail.desc}}</span>
+                    <img style="width:200rpx;height:200rpx;" :src="Detail.img">
                 </view>
             </i-collapse-item>
         </div>
         <div class="flex-yf mid">
             <i-cell-group>
-                <i-cell title="正确率" value="93%"></i-cell>
-                <i-cell title="提交情况" value="12/23已提交"></i-cell>
-                <i-cell title="批改情况" value="08/23已批改"></i-cell>
+                <i-cell title="正确率" :value="Detail.rightBl+'%'"></i-cell>
+                <i-cell title="提交情况" :value="Detail.submitBl+'已提交'"></i-cell>
+                <i-cell title="批改情况" :value="Detail.correctBl+'已批改'"></i-cell>
             </i-cell-group>
         </div>
         <view class="student"  slot="content">
@@ -47,14 +48,35 @@
     </div>
 </template>
 <script>
+import host  from '../../../http/config'
+
 export default {
     data(){
         return{
             correct:'已批改',
             unCorrect:'未批改',
+            Detail:[],
+            unCorrectStudent:[],
+            correctStudent:[],
+        }
+    },
+    onLoad(options){
+        if(options){
+            this.getdata(options.id)
         }
     },
     methods:{
+        getdata(val){
+            this.$api.getWkDetailT(
+                val
+            ).then(data =>{
+                this.Detail = data
+                this.Detail.img = `${host}${data.img}`
+                console.log(this.Detail)
+            }).catch(code=>{
+
+            })
+        },
         toStudent(){
             wx.navigateTo({
                 url: '/pages/teacherBody/sdtDetail/main'

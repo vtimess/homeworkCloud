@@ -160,7 +160,7 @@ export default {
                                 'Authorization':store.state.token,
                             },
                             formData:{
-                                'type': 'post'
+                                'type': 'homework'
                             },
                             success: (res) => {
                                 console.log(res)

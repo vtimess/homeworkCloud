@@ -19,7 +19,7 @@ const http = (url,method,data,title) => {
     /** 收集formid */
     let formId = store.state.formId;
     if(formId){
-        if(data === undefined){
+        if(data === undefined || data === null){
             data = {}
         }
         data.formId = formId;
@@ -58,7 +58,7 @@ const http = (url,method,data,title) => {
                 /** 获取响应的数据 */
                 let result = res.data
                 /** 如果code为-4，等于token无效 */
-                if(result.code === -4){
+                if(result.code === -4 ||result.code === -3){
                     /** 清空token */
                     store.commit(SET_TOKEN,"")
                     /** 跳转登录页面 */
@@ -67,6 +67,7 @@ const http = (url,method,data,title) => {
                     })
                     return
                 }
+                
                 if(result.code !== 0){
                     wx.showToast({
                         title: result.msg+" ",
@@ -84,6 +85,7 @@ const http = (url,method,data,title) => {
                     title: "网络出错，稍后再试!!!",
                     icon: "none"
                 });
+                reject(999)
             },
             complete: function () {
             }

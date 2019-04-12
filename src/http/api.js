@@ -105,6 +105,10 @@ const getCDT = (params) =>http('/t/class/user',GET,params,"正在加载...")
  */
 const getWorksT = (params) =>http('/t/homework',GET,params,"正在加载...")
 
+/** 获取作业详情api
+ */
+const getWkDetailT = (params) =>http('/t/homework/'+params,GET,null,"正在加载...")
+
 
 
 const api = {
@@ -131,7 +135,8 @@ const api = {
     getInfo,
     modifyInfo,
     getCDT,
-    getWorksT
+    getWorksT,
+    getWkDetailT
 }
 
 export default api
