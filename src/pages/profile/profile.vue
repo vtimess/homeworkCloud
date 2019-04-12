@@ -64,7 +64,6 @@ import Mylist from '@/components/Mylist.vue'
     }
 </script>
 <style lang="stylus"  scoped>
-@import '../../../static/css/app.css'
 .self
     width 100%
     height 100%

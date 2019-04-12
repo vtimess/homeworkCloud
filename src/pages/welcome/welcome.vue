@@ -140,7 +140,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../static/css/app.css'
 .auth
     width 100%
     height 100%

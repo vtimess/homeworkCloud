@@ -126,8 +126,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../../static/css/app.css'
-// @import '../../../static/css/weui.css'
 .title
     position absolute
     top 0rpx

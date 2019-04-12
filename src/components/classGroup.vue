@@ -108,8 +108,6 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-@import '../../static/css/app.css'
-
 .body
     width 100%
     height 100%
