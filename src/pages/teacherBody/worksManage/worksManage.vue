@@ -101,7 +101,9 @@ export default {
             })
         },
         onNavBarTap(e){
-            this.navbarActiveIndex = e.currentTarget.dataset.navbarIndex
+            this.navbarActiveIndex = e.currentTarget.dataset.navbarIndex;
+            this.status = this.navbarActiveIndex
+            this.getData()
         },
         
     }

@@ -101,6 +101,7 @@ export default {
         }
     },
     onLoad(option){
+        Object.assign(this.$data, this.$options.data())
         if(option.length){
             this.myform.classId = option;
             this.classLength = option.length;

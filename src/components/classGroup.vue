@@ -53,7 +53,7 @@ export default {
             this.getData()
             setTimeout(function(){
                 wx.stopPullDownRefresh()
-            },2000)
+            },500)
         }
     },
     methods:{

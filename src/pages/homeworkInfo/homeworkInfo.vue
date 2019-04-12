@@ -9,7 +9,7 @@
             <p>作业详情: </p>
             <li>{{homeworkData.desc}}</li>
             <li v-for="(item, index) in homeworkData.images" :key="index">
-                <img style="width:300rpx;height:300rpx;" :src="host+item" ></li>
+                <img v-show="item" style="width:300rpx;height:300rpx;" :src="host+item" ></li>
         </div>
         <!-- <div class="finish">
             <span v-if="!status" >还未有同学完成</span>
@@ -62,6 +62,8 @@ export default {
     },
     
     onLoad(options){
+        Object.assign(this.$data, this.$options.data())
+
         if(options){
             this.id =  JSON.parse(options.homeworkData).id
             this.getData(this.id)
@@ -74,10 +76,11 @@ export default {
             this.$api.getWkDetailS({
                 homeworkId:val
             }).then((data)=>{
-                var list = data.submitImages.map( item =>{
+
+                var list = data.submitImages&&data.submitImages.map( item =>{
                     return host+ item;
                 })
-                var list2 = data.correctionImages.map( item =>{
+                var list2 = data.correctionImages&&data.correctionImages.map( item =>{
                     return host+ item;
                 })
                 data.submitImages = list
@@ -109,7 +112,7 @@ export default {
         submit(){
             if(this.homeworkData.state==0&&!this.homeworkData.end){
                 wx.navigateTo({
-                    url: '../photos/main?id='+this.homeworkData.id
+                    url: '../photos/main?id='+this.id
                 })
             }
             

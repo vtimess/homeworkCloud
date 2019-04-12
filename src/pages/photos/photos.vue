@@ -23,8 +23,10 @@ export default {
         }
         
     },
-    onLoad(options){
-        this.homeworkId = options.id;
+    onLoad({id}){
+        Object.assign(this.$data, this.$options.data())
+        
+        this.homeworkId = id;
         console.log(options)
     },
     methods:{
