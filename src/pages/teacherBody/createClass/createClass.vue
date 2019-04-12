@@ -56,6 +56,9 @@ export default {
             
         }
     },
+    onLoad(){
+        Object.assign(this.$data, this.$options.data())
+    },
     methods:{
         del(){
             this.image = ""
