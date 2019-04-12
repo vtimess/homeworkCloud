@@ -32,7 +32,7 @@
           <div class="hr"></div>
           <div class="mid">
               <p>{{item.desc}}</p>
-              <span>{{item.status=='1'?'已提交': item.end?'已截至':'未提交'}}</span>
+              <span>{{item.status == 0?"未提交":item.status ==2?"已批改":item.end?"已截至":"未批改"}}</span>
           </div>
           <div class="footer">
               <img src="/static/images/clock.png"/>

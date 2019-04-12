@@ -85,9 +85,16 @@ export default {
                                         })
                                     this.button = '完成'
                                     this.btnState = 'finish'
-                                    wx.navigateBack({
-                                        delta: 1
-                                    })
+                                    var vm = this;
+                                    var pages = getCurrentPages();
+                                    var prePage = pages[pages.length - 2];
+                                    setTimeout(()=>{
+                                        wx.navigateBack({
+                                            success:function(){
+                                                prePage.onLoad()
+                                            }
+                                        })
+                                    },1000)
                                 })
                                  
                             }

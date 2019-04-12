@@ -7,6 +7,11 @@ app.$mount()
 export default{
     config: {
         navigationBarTitleText: '作业概览',
-        navigationBarBackgroundColor: '#64dcdb'
+        navigationBarBackgroundColor: '#64dcdb',
+        usingComponents: {
+            "i-collapse": "/static/iView/collapse/index",
+            "i-collapse-item": "/static/iView/collapse-item/index",
+        }
+        
     }
 }

@@ -58,8 +58,7 @@ export default {
     },
     methods:{
         del(){
-            this.tempFile.splice(0,1)
-            console.log("333")
+            this.image = ""
         },
         getclassName({ mp }){
             this.name = mp.detail.detail.value

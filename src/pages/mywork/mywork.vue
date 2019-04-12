@@ -69,8 +69,9 @@ export default {
             })
         },
         worksDetail(row){
+            console.log(row)
             wx.navigateTo({
-            url: '/pages/homeworkInfo/main?homeworkData='+row
+            url: '/pages/homeworkInfo/main?homeworkData='+JSON.stringify(row)
             })
         },
         getMoreData(){

@@ -65,8 +65,12 @@ export default {
     },
     onLoad(options){
         console.log(options.data)
-        this.classDetail = JSON.parse(options.data);
-        this.getData(this.classDetail.classId) 
+        if(options){
+            this.classDetail = JSON.parse(options.data);
+            this.getData(this.classDetail.classId) 
+        }else{
+            this.getData(this.classDetail.classId) 
+        }
     },
     data(){
         return{

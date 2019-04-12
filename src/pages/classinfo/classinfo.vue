@@ -43,7 +43,21 @@ export default {
     
     methods: {
         exit(){
-
+            
+            this.$api.exitClass(
+                this.classBean.classId
+            ).then(()=>{
+                var vm = this;
+                var pages = getCurrentPages();
+                var prePage = pages[pages.length - 2];
+                setTimeout(()=>{
+                    wx.navigateBack({
+                        success:function(){
+                            prePage.onLoad()
+                        }
+                    })
+                },1000)
+            })
         }
     }
 }

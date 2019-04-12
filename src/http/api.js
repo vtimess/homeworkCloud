@@ -71,6 +71,13 @@ const getCDS = (params) =>http('/s/class/user',GET,params,"正在加载...")
  */
 const getworksList = (params) =>http('/s/homework',GET,params,"正在加载...")
 
+/** 获取作业详情api
+ */
+const getWkDetailS = (params) =>http('/s/homework/detail',GET,params,"正在加载...")
+
+/** 退出班级api
+ */
+const exitClass = (params) =>http('/s/class/'+params,DELETE,null,"退出班群...")
 
 
 
@@ -141,6 +148,8 @@ const api = {
     postHomework,
     getCDS,
     getworksList,
+    getWkDetailS,
+    exitClass,
 
 
     createClass,

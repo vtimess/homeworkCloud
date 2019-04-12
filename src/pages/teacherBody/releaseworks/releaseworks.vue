@@ -30,16 +30,6 @@
                 </view>
             </li>
             <li class="flex-x-sb">
-                <span>选择科目</span>
-                <view class="section">
-                    <picker @change="pickerChange" :value="index" :range="array">
-                        <view class="picker">
-                        {{myform.subject}}
-                        </view>
-                    </picker>
-                </view>
-            </li>
-            <li class="flex-x-sb">
                 <span>同步到我的其他班群</span>
                 <div @click="toClassGroup" style="display:flex;align-items:center;">
                     <span style="font-size:24rpx;color:#707070">{{classLength?classLength+'个群':'同步班群'}}</span>
@@ -92,8 +82,6 @@ export default {
     data(){
         return{
             times:['0','1','2'],
-            array:['数学','英语','语文','其他'],
-            index:3,
             timesIndex:0,
             time:'22:30',
             timeData:'',
@@ -217,17 +205,15 @@ export default {
             this.$api.releaseWorks(
                 this.myform
             ).then((code) => {
-                wx.redirectTo({
-                    url:'/pages/teacherBody/worksManage/main'
+                wx.navigateBack({
+                    delta: 1
                 })
             })
         },
         timesrChange({ mp }){
             this.timesIndex = mp.detail.value;
         },
-        pickerChange({ mp }){
-            this.myform.subject = this.array[mp.detail.value];
-        },
+       
         switchChange({ mp }){
 
         },

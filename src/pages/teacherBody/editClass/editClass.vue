@@ -130,9 +130,16 @@ export default {
             vm.$api.updateClass(
                 vm.form
                 ).then(data =>{
-                    wx.navigateBack({
-                        delta: 1
-                    })
+                    var vm = this;
+                    var pages = getCurrentPages();
+                    var prePage = pages[pages.length - 2];
+                    setTimeout(()=>{
+                        wx.navigateBack({
+                            success:function(){
+                                prePage.onLoad()
+                            }
+                        })
+                    },1000)
                 })
         }
     }
