@@ -25,6 +25,9 @@
     <div v-show="show" class="flex-yc error">
         <img src="/static/images/load-error.png" @click="getData">
         <span>加载失败,点击重试</span>
+    </div>
+    <div class="add" @click="add">
+        <img style="height:80rpx;width:80rpx" src="/static/images/add.png" >
     </div>     
     </div>
 </template>
@@ -95,6 +98,11 @@ export default {
                     }
                 }
             })
+        },
+        add(){
+            wx.navigateTo({
+                url: '/pages/teacherBody/releaseworks/main'
+            })
         }
     }
 }
@@ -156,5 +164,8 @@ export default {
             font-size 24rpx
             span 
                 padding-right 20rpx
-
+    .add
+        position fixed
+        right 30rpx
+        bottom 120rpx
 </style>
