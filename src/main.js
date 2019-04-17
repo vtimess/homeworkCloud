@@ -25,7 +25,7 @@ export default {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarTitleText: 'HomeWork',
+      navigationBarTitleText: 'HEO作业云',
       navigationBarTextStyle: 'black',
     },
     // tabBar:{

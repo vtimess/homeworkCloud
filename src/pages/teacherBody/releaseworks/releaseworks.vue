@@ -70,9 +70,9 @@
 <script>
 import MyButton  from '@/components/MyButton.vue'
 import {formatNumber,formatTime} from '@/utils/index.js'
-import host  from '../../../http/config'
+import host  from '@/http/config'
 
-import store from '../../../store/'
+import store from '@/store/'
 
 
 export default {
@@ -101,18 +101,17 @@ export default {
         }
     },
     onLoad(option){
-        Object.assign(this.$data, this.$options.data())
         if(option.length){
             this.myform.classId = option;
             this.classLength = option.length;
             console.log(this.myform.classId )
         }else{
+            Object.assign(this.$data, this.$options.data())
             //获取所有班群classId
             this.$api.getClassList({})
             .then((data)=>{
                 this.classGroup = data
             })
-
             var dateTime = new Date();
             const year = dateTime.getFullYear();
             const month = dateTime.getMonth()+1;
@@ -120,6 +119,7 @@ export default {
             this.timeData = [year,month,date].map(formatNumber).join('-');
             this.myform.title = `${month}月${date}日 作业`
         }
+        
 
     },
     changData:function(val){
@@ -191,15 +191,7 @@ export default {
                 },1000)
                 return 0;
             }
-            // for(var val of this.myform){
-            //     if(!val||val.length == 0){
-            //         wx.showToast({
-            //             icon:"none",
-            //             title:'尚有信息未填!'
-            //         },1000)
-            //         return 0;
-            //     }
-            // }
+            
             this.myform.image = this.tempFile;
             this.myform.endDate = this.timeData+' '+this.time+':00';
             console.log(this.myform)

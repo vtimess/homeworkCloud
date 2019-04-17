@@ -48,6 +48,7 @@ export default {
             }).then((data)=>{
                 let totalData = data.totalData;
                 this.totalPages = data.totalPages;
+                console.log(data)
                 if(totalData === 0){
                     wx.showToast({
                     title:'尚未加入班级',

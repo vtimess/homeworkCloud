@@ -1,64 +1,124 @@
 <template>
     <div class="self">
         <div class="main">
-            <img class="header" :src="avatarUrl" mode="scaleToFill">
+            <img class="header" :src="userData.avatarUrl" mode="scaleToFill">
         </div>
         <div class="flex-y user">
-            <open-data type="userAvatarUrl" class="useravatar"></open-data>
-            <open-data type="userNickName" class="username"></open-data>
-            <span class="motto">-愿望是半个生命,淡漠是半个死亡</span>
+            <img class="useravatar" :src="userData.avatarUrl"/>
+            <span class="username">{{userData.name}}</span>
         </div>
-        <div class="flex-xc-yc praise">
-            <img :src="praiseUrl" @click="praise">
-            <span>{{number}}</span>
+        <div class="flex-xc-yc praise" @click="praise(userData.id)">
+            <img :src="praiseUrl" >
+            <span>{{userData.likedNum}}</span>
         </div>
-        <div class="flex-xc-yc praiseOver">
+        <!-- <div class="flex-xc-yc praiseOver">
             <img :src="praiseOverUrl">
             <span>+1</span>
+        </div> -->
+        <div style="width:100%;height:16rpx;background:#f1f1f1"></div>
+        <div class="flex-xf nav">
+            <span>资料</span>
         </div>
-        <div class="container">
+        <div class="flex-xf container">
+            <ul class="left">
+                <li>姓名</li>
+                <li>身份</li>
+                <li v-if="userData.type == 2">学号</li>
+                <li>性别</li>
+                <li>手机号码</li>
+                <li>座右铭</li>
+            </ul>
+            <ul class="right">
+                <li>{{userData.name}}</li>
+                <li>{{userData.type == 1?'教师':'学生'}}</li>
+                <li v-if="userData.type == 2">{{userData.nid}}</li>
+                <li>{{userData.sex}}</li>
+                <li>{{userData.phone}}</li>
+                <li>{{userData.motto}}</li>
+            </ul>
             <span></span>
         </div>
-        
         <div class="flex-xc heo">
             <span>— HEO技术支持 —</span>
         </div>
-        
+        <i-message id="message" />
+        <MyButton styleType="defult" @click="call()">拨打电话</MyButton>
     </div>
 </template>
 
 <script>
+const { $Message } = require('../../../static/iView/base/index');
+import { mapState } from 'vuex'
+
 import Mylist from '@/components/Mylist.vue'
+import MyButton from '@/components/MyButton.vue'
+
     export default {
         components:{
-            Mylist
+            Mylist,
+            MyButton
+        },
+        computed: {
+            ...mapState([   //分发store中的数据到当前组件
+                'status',
+            ])
         },
         data() {
             return {
-                times:0,
-                number:666,
+                number:0,
                 avatarUrl:"",
                 praiseUrl:"/static/images/praise_no.png",
                 praiseOverUrl:"/static/images/praise_ok.png",
+                userData:{},
             }
         },
-        onLoad() {
-            var that = this
-            wx.getUserInfo({
-                success:function(res){
-                    that.avatarUrl = res.userInfo.avatarUrl
-                    console.log(that.avatarUrl)
-                }
-            })
+        onLoad({id}) {
+            Object.assign(this.$data, this.$options.data())
+            console.log(id)
+            this.getData(id);
         },
         methods:{
-            praise(){
-                if(++this.times <= 10){
-                    this.number++;
-                    this.praiseUrl="/static/images/praise_ok.png";
-                }else{
-                    console.log("今日已经赞完了！")
-                }
+            getData(val){
+                this.$api.getUser(
+                    val
+                ).then((data)=>{
+                    this.userData = data
+                    this.userData.phone = this.userData.phone?this.userData.phone:'无';
+                    this.number = this.userData.likedNum
+                    this.userData.sex = this.userData.sex == '男'?'男神':'女神';
+                    this.userData.motto = this.userData.motto?this.userData.motto:'还没有励志名言呢...';
+                    if(this.userData.like){
+                        this.praiseUrl="/static/images/praise_ok.png";
+                    }
+                    console.log(data)
+                })
+            },
+            praise(val){
+                this.praiseUrl="/static/images/praise_ok.png";
+                    this.$api.userZan({
+                        userId: val
+                    }).then((data)=>{
+                        this.times = data
+                        this.userData.likedNum = this.userData.likedNum + data
+                    }).catch(code=>{
+                        console.log(code)
+                        if(code == 802 ){
+                            $Message({
+                                content: '改天再来吧，一天只能赞十次！',
+                                type: 'warning'
+                            });
+                        }else{
+                            wx.showToast({
+                                icon:'none',
+                                title:'点赞失败'
+                            },500)
+                        }
+                    })
+            },
+            call(){
+                wx.makePhoneCall({
+                    phoneNumber: '17721570251' // 管理员的电话号码
+                })
             }
         }
     }
@@ -70,15 +130,14 @@ import Mylist from '@/components/Mylist.vue'
     position absolute
     top 0px
     left 0px
-    background-color #f6f6f6
+    background-color #fff
     .main
-        height 460rpx
+        height 400rpx
         margin-bottom 50rpx
         overflow hidden
-        // border-radius 100% 100% 100% 100% / 0% 0% 30% 30%
         .header
             width 100%
-            height 750rpx
+            height 650rpx
             filter blur(10rpx) 
             background no-repeat
             background-size 100% 100%
@@ -96,7 +155,7 @@ import Mylist from '@/components/Mylist.vue'
             border: 2px solid #fff
             box-shadow: 0rpx 6rpx 5rpx rgba(0, 0, 0, 0.2)
         .username
-            margin-top 10rpx
+            margin-top 30rpx
             color #fff
             font-size 30rpx
         .motto
@@ -111,7 +170,7 @@ import Mylist from '@/components/Mylist.vue'
     .praise
         position absolute
         right 20rpx
-        top 160px
+        top 140px
         width fit-content    
         padding 10rpx
         padding-left 16rpx
@@ -125,12 +184,22 @@ import Mylist from '@/components/Mylist.vue'
             padding-left 5rpx
             font-size 26rpx
             color #ffffff
+    .nav
+        padding-top 10rpx
+        padding-left 80rpx
+        border-bottom 1rpx solid #f1f1f1
+        span 
+            padding 10rpx 20rpx
+            text-align center
+            font-size 30rpx
+            border-bottom 6rpx solid #64dcdb
+            border-radius 4rpx
+            color #64dcdb
     .praiseOver
         position absolute
         right 40rpx
         top 130px
         color #E9503C
-        animation praiseOver 1.3s ease-in-out 2.7s infinite alternate
         img
             width 38rpx
             height 38rpx
@@ -140,16 +209,19 @@ import Mylist from '@/components/Mylist.vue'
     .container
         background-color #fff
         border-radius 5rpx
-        margin -20rpx 10%
-        margin-bottom 50rpx
-
+        padding-top 40rpx
+        padding-bottom 100rpx
+        font-size 26rpx
+        li
+            padding-top 26rpx
+        .left
+            padding-left 80rpx
+            color #bfbfbf
+        .right
+            padding-left 60rpx
+            color #2c2c2c
     .heo
         span 
             font-size 24rpx
             color #e4e4e4
-
-@keyframes praiseOver {
-    from transform translate(0,0)
-    to transform translate(0,20rpx)
-}
 </style>

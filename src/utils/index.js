@@ -20,7 +20,29 @@ export function formatTime (timestamp) {
   return `${t1} ${t2}`
 }
 
+export function formatBfTime (timestamp) {
+
+  let times = parseInt(timestamp) + '秒前'
+  const month = 60*60*24*30
+  const day = month/30
+  const hour = day/24
+  const minute = hour/60
+  
+  if(timestamp >= month){
+    times = parseInt(timestamp / month) + 1 +'个月前'
+  }else if(timestamp >= day){
+    times = parseInt(timestamp / day) + 1 +'天前'
+  }else if(timestamp >= hour){
+    times = parseInt(timestamp / hour) + 1 + '小时前'
+  }else if(timestamp >= minute){
+    times = parseInt(timestamp / minute) + 1 +'分钟前'
+  }
+
+  return times
+}
+
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  formatBfTime
 }

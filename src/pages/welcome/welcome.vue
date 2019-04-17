@@ -43,7 +43,6 @@ export default {
     },
     created() {
         if(this.status){
-            console.log(this.status)
             this.next(false)
         }else{
             this.next(true)
@@ -118,7 +117,6 @@ export default {
             wx.login({
                 success: function(res) {
                     if (res.code) {
-                        console.log(res.code);
                         that.login(res.code);
                     }else{
                         wx.showToast({
@@ -129,12 +127,7 @@ export default {
                 }
             })
         },
-        // gotoIndex(){
-        //      setTimeout(()=>{
-        //             console.log('跳转')
-        //             wx.reLaunch({url: '../homework/main'})
-        //     },1000)
-        // },
+       
  
     }
 }

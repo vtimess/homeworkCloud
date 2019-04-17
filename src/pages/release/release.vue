@@ -15,15 +15,18 @@
             <span @click="addOrhidden">{{titleTip}}</span>
             <span @click="hiddenOrshow">{{allHidden}}</span>
         </div>
-        <button styleType="defult" @click="sub">发  布</button>
+        <MyButton styleType="defult" @click="sub">发  布</MyButton>
     </div>
 </template>
 <script>
+import MyButton from '@/components/MyButton.vue'
 import store from '../../store/'
 import host  from '../../http/config'
 
 export default {
-    
+    components:{
+      MyButton
+    },
     data(){
         return{
             title:"",
@@ -35,6 +38,9 @@ export default {
             hiddenStatus:true,             //可见状态：true 可见 false 仅自己可见
             tempFile:[],              //图片列表
         }
+    },
+    onLoad(){
+        Object.assign(this.$data, this.$options.data())
     },
     created(){
         this.hostImg = host
@@ -55,6 +61,16 @@ export default {
                     title:this.title || null,
                     content:this.content,
                     image:this.tempFile
+                }).then(data=>{
+                    var pages = getCurrentPages();
+                    var prePage = pages[pages.length - 2];
+                    setTimeout(()=>{
+                        wx.navigateBack({
+                            success:function(){
+                                prePage.onLoad()
+                            }
+                        })
+                    },1000)
                 })
                 //请求
             }else{
@@ -94,7 +110,7 @@ export default {
                         console.log(res.tempFilePaths.length)
                         for (var i = 0,length = res.tempFilePaths.length; i < length; i++) {
                             wx.uploadFile({
-                                url: 'http://bd.liukang666.cn:57358/upload/image', 
+                                url: `${host}/upload/image`, 
                                 filePath: res.tempFilePaths[i],
                                 name: 'file',
                                 header:{

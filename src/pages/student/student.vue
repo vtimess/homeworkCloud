@@ -1,6 +1,7 @@
 <template>
     <div class="body">
-      <div v-show="tabIndex == 0" >00
+      <div v-show="tabIndex == 0" >
+        <quora></quora>
       </div>
       <div v-show="tabIndex == 1">
         <homeworkCenter></homeworkCenter>
@@ -19,6 +20,8 @@
 <script>
 import studentCenter from '@/components/studentCenter'
 import homeworkCenter from '@/components/homeworkCenter'
+import quora from '@/components/quora'
+
 import { mapState, mapMutations } from 'vuex'
 import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
 
@@ -27,6 +30,7 @@ export default {
   components:{
       studentCenter,
       homeworkCenter,
+      quora,
   },
   data () {
     return {

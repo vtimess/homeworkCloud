@@ -7,7 +7,10 @@ app.$mount()
 export default{
     config: {
         navigationBarTitleText: 'ta的个人资料',
-        navigationBarBackgroundColor: '#64dcdb'
+        navigationBarBackgroundColor: '#64dcdb',
+        usingComponents: {
+            "i-message": "/static/iView/message/index"
+        }
 
     }
 }

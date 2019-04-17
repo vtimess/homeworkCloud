@@ -14,8 +14,6 @@ export default{
             "i-cell": "/static/iView/cell/index",
             "i-swipeout": "/static/iView/swipeout/index",
             "i-avatar":"/static/iView/avatar/index",
-
-
         }
     }
     

@@ -11,7 +11,6 @@ export default {
         }
     },
     onShow(){
-        console.log(store.state.status)
         setTimeout(function(){
             if(store.state.status == 1){
                 wx.reLaunch({

@@ -23,9 +23,24 @@ const getPost = (params) => http('/s/post',GET,params,"正在加载...")
 /**
  * 查看资料api
  */
-const getUser = () =>http((store.state.status==0?'/s':'/t')+'/info',GET,null,1)
+const getUser = (params) =>http((store.state.status==1?'/s':'/t')+'/info/'+params,GET,null)
 
 const uploadImg = () =>upload(type)
+
+
+/** 帖子点赞api
+ */
+const postZan = (params) =>http((store.state.status==1?'/s':'/t')+'/post/like',PUT,params)
+
+/** 用户点赞api
+ */
+const userZan = (params) =>http((store.state.status==1?'/s':'/t')+'/like',PUT,params)
+
+/** 帖子详情api
+ */
+const postDetail = (params) =>http((store.state.status==1?'/s':'/t')+'/post/'+params,GET,null,"正在加载...")
+
+
 
 /**
  * 学生端api
@@ -78,6 +93,9 @@ const getWkDetailS = (params) =>http('/s/homework/detail',GET,params,"正在加�
 /** 退出班级api
  */
 const exitClass = (params) =>http('/s/class/'+params,DELETE,null,"退出班群...")
+
+/** 获取班群详细信息api
+ */
 
 
 
@@ -137,6 +155,9 @@ const api = {
     getPost,
     getUser,
     uploadImg,
+    postZan,
+    userZan,
+    postDetail,
     
     search,
     getProfile,

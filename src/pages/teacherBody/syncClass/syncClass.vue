@@ -20,6 +20,7 @@ export default {
         }
     },
     onLoad(options){
+        Object.assign(this.$data, this.$options.data())
         this.classGroup = JSON.parse(options.data);
         this.current.push(this.classGroup[0].name)
         console.log(this.classGroup )

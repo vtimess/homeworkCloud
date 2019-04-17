@@ -87,7 +87,6 @@ export default {
                                         })
                                     this.button = '完成'
                                     this.btnState = 'finish'
-                                    var vm = this;
                                     var pages = getCurrentPages();
                                     var prePage = pages[pages.length - 2];
                                     setTimeout(()=>{

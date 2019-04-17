@@ -1,7 +1,7 @@
 <template>
     <div class="info">
         <div class="head">
-            <span class="img">班群头像</span>
+            <span class="img">头像</span>
             <div class="size" @click="upload">
                 <img class="useravatar" :src="myData.avatarUrl"/>
             </div>
@@ -111,7 +111,7 @@ export default {
         },
         myClick(){
             var vm = this
-            vm.myData.sex = array[vm.index];
+            vm.myData.sex = vm.array[vm.index];
             vm.$api.modifyProfile(
                 vm.myData
             ).then(code=>{

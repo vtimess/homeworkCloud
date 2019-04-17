@@ -15,7 +15,9 @@ export default{
             "i-tab-bar": "/static/iView/tab-bar/index",
             "i-tab-bar-item": "/static/iView/tab-bar-item/index",
             "i-notice-bar": "/static/iView/notice-bar/index",
-            "i-load-more": "/static/iView/load-more/index"
+            "i-load-more": "/static/iView/load-more/index",
+            "i-avatar":"/static/iView/avatar/index",
+            "i-action-sheet": "/static/iView/action-sheet/index",
         }
     }
     

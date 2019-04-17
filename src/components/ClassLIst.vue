@@ -4,7 +4,7 @@
             <img @error="error" :src="imgUrl">
         </div>
         <div class="info">
-            <span>{{classData.className}}({{classData.teacherName}})</span>
+            <span>{{classData.name}}</span>
             <li>班群号:{{classData.classId}} | {{classData.studentNum}}人</li>
         </div>
     </div>
@@ -24,12 +24,11 @@ export default {
     },
     computed: {
         imgUrl(){
-            console.log(this.classData)
             if(!this.classData.classAvatarUrl || this.imgError){
-                console.log('ddd')
-                return this.defaulteImage
+            return this.defaulteImage
             }
             return `${host}${this.classData.classAvatarUrl}`
+            
         },
     },
     methods: {
@@ -65,7 +64,7 @@ export default {
         padding-top 30rpx
         span
             color #707070
-            font-size 34rpx
+            font-size 32rpx
         li
             color #bfbfbf
             font-size 12px

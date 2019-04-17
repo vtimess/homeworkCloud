@@ -78,7 +78,9 @@ export default {
       homeworkData:null,
       title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
       status:true,
-      show:true
+      show:true,
+      page:0,
+      totalPage:0,
     }
   },
   computed: {
@@ -91,6 +93,8 @@ export default {
   },
   onPullDownRefresh(){
     if(this.tabIndex == '1'){
+      this.page = 0;
+      this.totalPage = 1;
       this.getData()
       setTimeout(function(){
         wx.stopPullDownRefresh()
@@ -122,7 +126,7 @@ export default {
     },
     getData(){
       this.$api.gethomework({
-        page:0,
+        page:this.page,
         size:4
       }).then((data)=>{
         console.log(data)

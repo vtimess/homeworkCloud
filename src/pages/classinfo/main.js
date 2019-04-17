@@ -8,5 +8,11 @@ export default{
     config: {
         navigationBarTitleText: '班群信息',
         navigationBarBackgroundColor: '#64dcdb',
+        usingComponents: {
+            "i-panel": "/static/iView/panel/index",
+            "i-swipeout": "/static/iView/swipeout/index",
+            "i-avatar":"/static/iView/avatar/index",
+
+        }
     }
 }

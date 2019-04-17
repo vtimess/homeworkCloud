@@ -3,11 +3,21 @@
     display: flex;
     justify-content: space-around;
 }
+.flex-x-r{
+    display: flex;
+    justify-content: flex-end;
+}
 /* 水平主轴 水平对齐 两端间距是中间一半 */
 .flex-x-y{
     display: flex;
     align-items:center;
     justify-content: space-around;
+}
+/* 水平主轴 垂直 顶部对齐  水平 两端对齐*/
+.flex-xsb-yt{
+    display: flex;
+    align-items:flex-start;
+    justify-content: space-between;
 }
 /* 水平主轴 水平对齐 两端排列 */
 .flex-x-sb{
@@ -24,6 +34,14 @@
 .flex-xf-yc{
     display: flex;
     justify-content: flex-start;
+    align-items:center;
+}
+.flex-xf-yc{
+    display: flex;
+    align-content: center;
+}
+.flex-x-yc{
+    display: flex;
     align-items:center;
 }
 /* 水平主轴 看居中对齐排列  主轴居中排列*/
@@ -54,6 +72,7 @@
     justify-content: center;
     align-items: center;
 }
+
 /*水平从左向右 超出从下一行排列*/
 .flex-x-m{
     display: flex;

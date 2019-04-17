@@ -29,25 +29,25 @@
         </div>
         <div class="student">
             <i-panel title="学生">
-                    <div class="userInfo" v-for="item in myform.students" :key="item.id" >
-                        <i-swipeout operateWidth="120" :unclosable="true" :toggle="true">
-                            <div slot="content" class="flex-xf-yc content">
-                                <div class="avatar" ><avatar :src="item.avatar" size="default" @click="lookup(item.id)"></avatar></div>
-                                <div class="name_desc">
-                                    <div class="name">{{item.name}}</div>
-                                </div>
+                <div class="userInfo" v-for="item in myform.students" :key="item.id" >
+                    <i-swipeout operateWidth="120" :unclosable="true" :toggle="true">
+                        <div slot="content" class="flex-xf-yc content">
+                            <div class="avatar" ><avatar :src="item.avatar" size="default" @click="lookup(item.id)"></avatar></div>
+                            <div class="name_desc">
+                                <div class="name">{{item.name}}</div>
                             </div>
-                            <div class="button" slot="button">
-                                <div class="item info" @click="lookup(item.id)">
-                                    <span>查看</span>
-                                </div>
-                                <div v-if="creator" class="item bye" @click="del(item.id)">
-                                    <span>踢出</span>
-                                </div>
+                        </div>
+                        <div class="button" slot="button">
+                            <div class="item info" @click="lookup(item.id)">
+                                <span>查看</span>
                             </div>
-                        </i-swipeout>
-                    </div>
-                </i-panel>
+                            <div v-if="creator" class="item bye" @click="del(item.id)">
+                                <span>踢出</span>
+                            </div>
+                        </div>
+                    </i-swipeout>
+                </div>
+            </i-panel>
         </div>
     </div>
 </template>
@@ -64,7 +64,6 @@ export default {
       avatar,
     },
     onLoad(options){
-        console.log(options.data)
         if(options){
             this.classDetail = JSON.parse(options.data);
             this.getData(this.classDetail.classId) 
@@ -75,7 +74,6 @@ export default {
     data(){
         return{
             creator:true,
-            avatar:'/static/images/header.png',
             myform:{},
             classDetail:{},
         }
@@ -91,7 +89,9 @@ export default {
         },
         //跳转到学生个人资料
         lookup(val){
-            console.log("lookup")
+            wx.navigateTo({
+                url:'/pages/profile/main?id='+val
+            })
         },
         //将学生从本群删除
         del(val){
