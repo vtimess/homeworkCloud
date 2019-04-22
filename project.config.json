@@ -13,6 +13,8 @@
 	"appid": "wxaa5ec51c6c3a5d36",
 	"projectname": "homeworkCloud",
 	"libVersion": "2.6.4",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -56,7 +58,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 20,
+			"current": 21,
 			"list": [
 				{
 					"id": -1,
@@ -108,13 +110,6 @@
 					"id": -1,
 					"name": "releaseworks",
 					"pathName": "pages/teacherBody/releaseworks/main",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 18,
-					"name": "teacher",
-					"pathName": "pages/teacher/main",
 					"query": "",
 					"scene": null
 				},
@@ -200,6 +195,19 @@
 					"name": "postDetail",
 					"pathName": "pages/postDetail/main",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "feedback",
+					"pathName": "pages/teacherBody/feedback/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "student",
+					"pathName": "pages/student/main",
 					"scene": null
 				}
 			]
