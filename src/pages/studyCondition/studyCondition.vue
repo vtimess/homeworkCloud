@@ -10,13 +10,10 @@
     </div>
 </template>
 <script>
-// import * as echarts from '../../../../static/ec-canvas/echarts.min';
 
   // 指定图表的配置项和数据
     var options = {
-        // title: {
-        //     text: '能力雷达图'
-        // },
+        
         legend: {
             data: ['张申然']
         },
@@ -48,7 +45,7 @@
                 }
             },
             data: [{
-                value: [120, 118, 130, 100, 99, 70],
+                value: [121, 118, 130, 100, 99, 70],
                 name: '张申然',
                 label: {
                     normal: {
@@ -58,21 +55,7 @@
                         }
                     }
                 },
-                // areaStyle: {
-                //     normal: {
-                //         opacity: 0.9,
-                //         color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
-                //             {
-                //                 color: '#B8D3E4',
-                //                 offset: 0
-                //             },
-                //             {
-                //                 color: '#72ACD1',
-                //                 offset: 1
-                //             }
-                //         ])
-                //     }
-                // }
+                
             }]
         }]
     }
