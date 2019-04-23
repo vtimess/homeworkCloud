@@ -7,6 +7,9 @@ app.$mount()
 export default{
     config: {
         navigationBarTitleText: '学习状况',
-        navigationBarBackgroundColor: '#64dcdb'
+        navigationBarBackgroundColor: '#64dcdb',
+        usingComponents: {
+            'ec-canvas': '/static/ec-canvas/ec-canvas'
+        }
     }
 }
