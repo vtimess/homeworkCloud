@@ -196,10 +196,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 20,
 					"name": "postDetail",
 					"pathName": "pages/postDetail/main",
-					"query": "",
+					"query": "id=1",
 					"scene": null
 				}
 			]

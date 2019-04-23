@@ -23,7 +23,7 @@ import homeworkCenter from '@/components/homeworkCenter'
 import quora from '@/components/quora'
 
 import { mapState, mapMutations } from 'vuex'
-import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
+import { SET_STATUS,SET_TABINDEX,SET_TOKEN,SET_CURRENTPAGE} from '@/store/mutation-types'
 
 
 export default {
@@ -40,16 +40,16 @@ export default {
   computed: {
         ...mapState([   //分发store中的数据到当前组件
             'tabIndex',
+            'currentPage'
         ])
     },
-  
-  
   methods:{
     ...mapMutations({
           setTabIndex : SET_TABINDEX,
     }),
     handleChange ({ mp }) {
         this.setTabIndex(mp.detail.key);
+        console.log(this.currentPage)
     }
 
     

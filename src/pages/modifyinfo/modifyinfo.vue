@@ -9,7 +9,7 @@
         <div class="selfinfo">
             <ul>
                 <li class="before"><span>昵称</span>
-                <input type="text" v-model="myData.nickname"/></li>
+                <input type="text" v-model="myData.name"/></li>
                 <li class="before"><span>学号</span>
                 <input type="number" v-model="myData.nid"/></li>
                 <li class="before"><span>性别</span>
@@ -115,12 +115,15 @@ export default {
             vm.$api.modifyProfile(
                 vm.myData
             ).then(code=>{
-                console.log(code)
-                if(code == 0){
+                var pages = getCurrentPages();
+                var prePage = pages[pages.length - 2];
+                setTimeout(()=>{
                     wx.navigateBack({
-                        delta: 1
+                        success:function(){
+                            prePage.onLoad()
+                        }
                     })
-                }
+                },1000)
             })
         }
     }

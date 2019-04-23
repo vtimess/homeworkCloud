@@ -21,7 +21,6 @@ export default {
             })
             return 
         }else{
-            this.page = this.page+1
             this.getData()
         }
     },
@@ -59,6 +58,7 @@ export default {
                     }else{
                         this.ClassData = [...this.ClassData,...data.data];
                     }
+                    this.page = this.page+1
                 }
                 calback&&calback()
             });

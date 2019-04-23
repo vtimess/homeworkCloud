@@ -28,36 +28,35 @@
                 </li>
             </div>
         </div>
-        <div class="flex-yf comments">
+        <div class="flex-yf comments" v-if="postData.hostRe">
             <span>热门评论</span>
-            <div class="flex-xsb-yt nav">
-                <img style="width:64rpx;height:64rpx" src="/static/images/chemistry.png" >
-                <div class="flex-yf nav-con" @click="reply">
-                    <div class="flex-xf-yc" style="width:140rpx;">
-                        <span>张申然</span>
+            <div class="flex-xsb-yt nav" v-for="(items,rindex) in postData.hostRe" :key="rindex">
+                <div class="avatar"  @click="look(items.userId)" ><avatar :src="items.avatar" size="default" ></avatar></div>
+                <div class="flex-yf nav-con" @click="reply(items.username,items.id)">
+                    <div class="flex-xf-yc">
+                        <span>{{items.username}}</span>
                         <!-- <span>楼主</span> -->
-                        <img style="width:32rpx;height:32rpx" src="/static/images/like.png" >
                     </div>
-                    <span class="text">1231321313212312312312312311564654564321322123123</span>
+                    <span class="text">{{replyCon?replyCon:''}}{{items.content}}</span>
                 </div>
-                <img style="width:38rpx;height:38rpx" src="/static/images/like.png" >
+                <img style="width:38rpx;height:38rpx" src="/static/images/like.png" @click="like(items.id)">
             </div>
         </div>
         <div class="flex-yf comments">
             <span>所有评论</span>
-            <div class="flex-xsb-yt nav">
-                <img style="width:64rpx;height:64rpx" src="/static/images/chemistry.png" >
-                <div class="flex-yf nav-con" @click="reply">
-                    <div class="flex-xf-yc" style="width:140rpx;">
-                        <span>张申然</span>
+            <div class="flex-xsb-yt nav" v-for="(items,indexs) in postData.re" :key="indexs">
+                <div class="avatar"  @click="look(items.userId)" ><avatar :src="items.avatar" size="default" ></avatar></div>
+                <div class="flex-yf nav-con" @click="reply(items.username,items.id)">
+                    <div class="flex-xf-yc">
+                        <span>{{items.username}}</span>
                         <!-- <span>楼主</span> -->
-                        <img style="width:32rpx;height:32rpx" src="/static/images/like.png" >
                     </div>
-                    <span class="text">{{replyCon?replyCon:''}}1231321313212312312312312311564654564321322123123</span>
+                    <span class="text">{{items.reUsername?'回复'+items.reUsername+':':''}}{{items.content}}</span>
                 </div>
-                <img style="width:38rpx;height:38rpx" src="/static/images/like.png" >
+                <img style="width:38rpx;height:38rpx" src="/static/images/like.png" @click="like(items.id)">
             </div>
         </div>
+        <div style="height:100rpx"></div>
         <!-- <div>所有评论</div> -->
         <div class="flex-x-sb comment ">
             <textarea name="" 
@@ -72,14 +71,18 @@
             :placeholder="placeholder"
             placeholder-style="" 
             adjust-position="true"></textarea>
-            <button>发表</button>
+            <button @click="rePosts">发表</button>
         </div>
     </div>
 </template>
 <script>
 import host  from '@/http/config'
+import avatar from '@/components/lk-avatar'
 
 export default {
+    components:{
+      avatar,
+    },
     data(){
         return{
             postData:{},
@@ -87,16 +90,18 @@ export default {
             comment:'',
             replyCon:'',
             focus:false,
+            reId:-1,
         }
     },
     onLoad({id}){
-        console.log(id)
-        this.getData(id)
+        this.id = id
+        this.getData()
     },
     methods: {
-        getData(val){
+        //页面数据
+        getData(){
             this.$api.postDetail(
-                val
+                this.id
             ).then(data=>{
                 this.postData = data
                 this.postData.images = data.images.map(item=>{
@@ -107,6 +112,37 @@ export default {
 
             })
         },
+        //评论功能
+        rePosts(){
+            this.$api.rePost({
+                postId:this.postData.id,
+                reId:this.reId,
+                content:this.comment,
+                images:[],
+            }).then(data=>{
+                this.reId = -1;
+                this.placeholder = "评论一下吧~";
+                this.getData()
+            }).catch(code=>{
+                wx.showToast({
+                    icon:'none',
+                    title:'评论失败!'
+                },500)
+            })
+        },
+        like(val){
+            this.$api.commentZan({
+                reId:val
+            }).then(data=>{
+                wx.showToast({
+                    icon:'none',
+                    title:'点赞成功'
+                },500)
+            }).catch(code=>{
+                
+            })
+        },
+        //帖子点赞
         postZan(val){
             this.$api.postZan({
                 postId:val
@@ -119,27 +155,28 @@ export default {
                 },500)
                 console.log(data)
             }).catch(code=>{
-                wx.showToast({
-                    icon:'none',
-                    title:msg
-                },500)
+                
             })
         },
+        //预览图片
         preview(val){
             wx.previewImage({
                 current: val, // 当前显示图片的http链接
                 urls: this.postData.imageList // 需要预览的图片http链接列表
             })
         },
+        //点击评论设置input
         goReply(){
             this.placeholder = "评论一下吧~";
             this.focus = true
         },
-        reply(){
-            console.log(666)
-            this.placeholder = "回复某某某:";
+        //input回复内容
+        reply(name,id){
+            this.placeholder = `回复${name}:`;
+            this.reId = id
             this.focus = true
         },
+        //查看个人资料
         look(val){
             wx.navigateTo({
                 url:'/pages/profile/main?id='+val
@@ -199,16 +236,22 @@ export default {
         li
             margin 10rpx 50rpx
     .comments
-        padding 20rpx 40rpx
+        padding 30rpx 40rpx
         border-bottom 0.5rpx solid #e6e6e6
         .nav
             width 100%
-            padding-top 20rpx
+            padding 20rpx 0rpx
             .nav-con
                 font-size 28rpx
                 color #707070
                 padding 0rpx 30rpx
+                span
+                    width 200rpx
+                    overflow hidden
+                    text-overflow ellipsis
+                    white-space nowrap
                 .text
+                    color #2c2c2c
                     margin-top 10rpx
                     width 500rpx
                     text-overflow ellipsis

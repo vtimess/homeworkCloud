@@ -35,53 +35,51 @@
             </div>
             <div class="bottom"></div>
         </div>
-        <div v-show="loadStatus">
-          <i-load-more  tip="加载中" :loading="true" />
-        </div>
-        <loadError v-if="show" @click="getData"></loadError>
-        <div class="release">
-            <img src="/static/images/edit.png" @click="release">
-        </div>
         <i-action-sheet :visible="visible" :actions="actions" show-cancel @cancel="handleCancel" @itemClick="handleClickItem" />
     </div>
 </template>
 <script>
 import host  from '@/http/config'
 import avatar from '@/components/lk-avatar'
-import loadError from '@/components/loadError'
 import {formatBfTime as format} from '@/utils/index.js'
-import { mapState, mapMutations } from 'vuex'
-import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
 
 export default {
     components:{
       avatar,
-      loadError,
     },
+onPullDownRefresh(){
+    //wx.stopPullDownRefresh()
+},
+onReachBottom: function () {
+    var vm = this;
+    vm.pageStatus = true
+    setTimeout(function () {
+        // vm.pageNo = vm.pageNo + 1;
+        // var list =  JSON.parse(JSON.stringify(vm.list2));
+        // vm.list = vm.list.concat(list);
+        vm.pageStatus = false;
+    }, 2000);
+},
 data(){
     return{
         visible: false,
         actions:[{
             name:'分享',
             openType:'share'
-        },{
-            name:'举报'
         }],
         title:"#RNG超话#2019年LOL世界赛决赛RNG 3:0 GRF 完虐!",
         page:0,
         size:5,
-        totalPage:1,
-        postList:[],
-        show:false
+        postList:[]
     
     }
 },
-computed: {
-    ...mapState([   //分发store中的数据到当前组件
-        'tabIndex',
-    ])
+created() {
+    
 },
 onLoad(){
+    Object.assign(this.$data, this.$options.data())
+    this.page = 0
     this.getData()
 },
 onPullDownRefresh(){
@@ -93,17 +91,20 @@ onPullDownRefresh(){
         wx.stopPullDownRefresh()
       },2000)
     }
-  },
-  onReachBottom(){
+},
+onReachBottom(){
     var vm = this;
     if(this.tabIndex == '0'){
-      vm.loadStatus = true
-      setTimeout(function(){
-          vm.getData()
+        vm.loadStatus = true
+        setTimeout(function(){
+            vm.getData()
         vm.loadStatus = false
-      },2000)
+        },2000)
     }
-  },
+},
+onShareAppMessage(){
+
+},
 methods:{
     getData(){
         var dateTime = new Date();
@@ -121,15 +122,13 @@ methods:{
                 }
                 item.beforeTime = format((dateTime - item.createTime)/1000);
             })
+            console.log(listData)
             if(this.page == 0){
                 this.postList = listData
             }else{
                 this.postList = [...this.postList,...listData]
             }
             this.page = this.page + 1
-            console.log(listData)
-        }).catch(code=>{
-            this.show = true 
         })
     },
     //跳转详情页面
@@ -164,14 +163,6 @@ methods:{
         this.visible = false
     },
     handleClickItem({mp}){
-        console.log(mp.detail)
-        if(mp.detail){
-            wx.showToast({
-                title:'举报成功',
-                icon:'none'
-            })
-            this.visible = false
-        }
     }
 },
  
@@ -233,11 +224,4 @@ methods:{
             margin-left 30rpx
             margin-right 30rpx
             border-bottom 0.5rpx solid #e6e6e6
-    .release
-        position fixed
-        right 80rpx
-        bottom 100rpx
-        img
-            width 64rpx
-            height 64rpx
 </style>

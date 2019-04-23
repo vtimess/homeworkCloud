@@ -1,5 +1,5 @@
 import store from '../store/'
-import {SET_TOKEN,REMOVE_ALL_FORM_ID} from '../store/mutation-types'
+import {SET_TOKEN,REMOVE_ALL_FORM_ID,SET_CURRENTPAGE} from '../store/mutation-types'
 import  host from './config'
 
 const http = (url,method,data,title) => {
@@ -18,7 +18,7 @@ const http = (url,method,data,title) => {
     }
     /** 收集formid */
     let formId = store.state.formId;
-    if(formId){
+    if(formId && formId !=  '[]'){
         if(data === undefined || data === null){
             data = {}
         }
@@ -59,6 +59,20 @@ const http = (url,method,data,title) => {
                 let result = res.data
                 /** 如果code为-4，等于token无效 */
                 if(result.code === -4 ||result.code === -3){
+                    var pages = getCurrentPages();
+                    let page = '/'+pages[0].route
+                    let options = pages[0].options
+                    let f = true
+                    for(let key in options){
+                        if(f){
+                            page+='?'
+                            f= false
+                        }else{
+                            page+='&'
+                        }
+                        page += key+'='+options[key]
+                    }
+                    store.commit(SET_CURRENTPAGE,page)
                     /** 清空token */
                     store.commit(SET_TOKEN,"")
                     /** 跳转登录页面 */

@@ -15,7 +15,7 @@
 import MyButton  from '@/components/MyButton.vue'
 import config from '@/config/index'
 import { mapState, mapMutations } from 'vuex'
-import { SET_STATUS,SET_USER_INFO,SET_TOKEN} from '@/store/mutation-types'
+import { SET_STATUS,SET_USER_INFO,SET_TOKEN,SET_CURRENTPAGE,REMOVE_CURRENTPAGE} from '@/store/mutation-types'
 
 export default {
     components:{
@@ -40,6 +40,7 @@ export default {
             this.key = options.status
             this.current = options.status
         }
+        console.log(this.currentPage)
     },
     created() {
         if(this.status){
@@ -54,6 +55,7 @@ export default {
             'userInfo',
             'token',
             'status',
+            'currentPage',
         ])
     },
     methods: {
@@ -62,6 +64,8 @@ export default {
              setUserInfo : SET_USER_INFO,
              setToken : SET_TOKEN,
              setStatus : SET_STATUS,
+             setPage:SET_CURRENTPAGE,
+             removePage:REMOVE_CURRENTPAGE
         }),
         next(val){
             this.show = val;
@@ -93,8 +97,22 @@ export default {
                     this.setStatus("1")
                     mainUrl = "/pages/student/main"
                 }
+                var that = this
                 wx.reLaunch({
-                    url:mainUrl
+                    url:mainUrl,
+                    success:()=>{
+                        if(that.currentPage){
+                            setTimeout(()=>{
+                                    wx.navigateTo({
+                                    url:that.currentPage,
+                                    success:()=>{
+                                        that.removePage()
+                                    }
+                                })
+                            },400)
+                            
+                        }
+                    }
                 })
             })
             

@@ -5,6 +5,7 @@ const state = {
     token:'',       //token
     status:'',      //用户职业
     tabIndex:'0',    //tabIndex
-    errorImage:[],
+    errorImage:[],  //图片加载失败
+    currentPage:''  //token失效时的当前页面地址
 }
 export default state

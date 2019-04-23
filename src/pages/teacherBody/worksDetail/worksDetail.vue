@@ -64,9 +64,9 @@ export default {
             correctStudent:[],
         }
     },
-    onLoad(options){
-        if(options){
-            this.getdata(options.id)
+    onLoad({id}){
+        if(id){
+            this.getdata(id)
         }
     },
     methods:{

@@ -104,7 +104,6 @@ export default {
             this.$api.exitClass(
                 this.userData.classId
             ).then(()=>{
-                var vm = this;
                 var pages = getCurrentPages();
                 var prePage = pages[pages.length - 2];
                 setTimeout(()=>{

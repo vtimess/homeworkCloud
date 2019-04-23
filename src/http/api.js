@@ -40,6 +40,14 @@ const userZan = (params) =>http((store.state.status==1?'/s':'/t')+'/like',PUT,pa
  */
 const postDetail = (params) =>http((store.state.status==1?'/s':'/t')+'/post/'+params,GET,null,"正在加载...")
 
+/** 评论帖子api
+ */
+const rePost = (params) =>http((store.state.status==1?'/s':'/t')+'/re/post',POST,params,"正在加载...")
+
+/** 点赞评论api
+ */
+const commentZan = (params) =>http((store.state.status==1?'/s':'/t')+'/re/like',POST,params)
+
 
 
 /**
@@ -158,6 +166,8 @@ const api = {
     postZan,
     userZan,
     postDetail,
+    rePost,
+    commentZan,
     
     search,
     getProfile,

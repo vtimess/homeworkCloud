@@ -12,7 +12,7 @@
       </div>
       <div class="flex-x-y navbar">
         <li>签到</li>
-        <li>我的帖子</li>
+        <li @click="post">我的帖子</li>
         <li @click="join">加入班群</li>
       </div>
       <!-- <i-notice-bar icon="systemprompt" loop="true" >
@@ -106,6 +106,7 @@ export default {
     if(this.tabIndex == '1'){
       vm.loadStatus = true
       setTimeout(function(){
+        vm.getData()
         vm.loadStatus = false
       },2000)
     }
@@ -139,6 +140,7 @@ export default {
             }
             item.images = host+item.images
           })
+          this.page = this.page + 1
           console.log(data.data)
           this.homeworkData = data.data
           this.show = false
@@ -147,17 +149,22 @@ export default {
 
       })
     },
-    join:function(){
+    post(){
+      wx.navigateTo({
+        url:'/pages/myPost/main'
+      })
+    },
+    join(){
       wx.navigateTo({
         url:'/pages/search/main'
       })
     },
-    classgroup:function(){
+    classgroup(){
       wx.navigateTo({
         url:'/pages/classgroup/main'
       })
     },
-    goTop:function(){
+    goTop(){
       wx.pageScrollTo({
         scrollTop: 0,
         duration: 200

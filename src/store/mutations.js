@@ -25,7 +25,7 @@ const mutations={
     [types.PUSH_FORM_ID] (state,v){
         state.formId.push(v);
     },
-    [types.REMOVE_TABINDEX] (state,v){
+    [types.REMOVE_TABINDEX] (state){
         state.tabIndex = "";
     },
     [types.REMOVE_ALL_FORM_ID] (state){
@@ -41,8 +41,14 @@ const mutations={
     [types.CLEAR_ALL] (){
         store.replaceState=(state);
     },
-    [types.SET_ERROR_IMAGE](state){
-        state.errorImage="";
+    [types.SET_ERROR_IMAGE](state,v){
+        state.errorImage=v;
+    },
+    [types.SET_CURRENTPAGE](state,v){
+        state.currentPage=v;
+    },
+    [types.REMOVE_CURRENTPAGE](state){
+        state.currentPage="";
     }
 
 }
