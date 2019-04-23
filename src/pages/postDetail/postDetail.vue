@@ -35,6 +35,7 @@
                 <div class="flex-yf nav-con" @click="reply(items.username,items.id)">
                     <div class="flex-xf-yc">
                         <span>{{items.username}}</span>
+                        <img v-show="postData.userId == items.userId " style="width:64rpx;height:64rpx" src="/static/images/lz.png" >
                         <!-- <span>楼主</span> -->
                     </div>
                     <span class="text">{{replyCon?replyCon:''}}{{items.content}}</span>
@@ -48,8 +49,8 @@
                 <div class="avatar"  @click="look(items.userId)" ><avatar :src="items.avatar" size="default" ></avatar></div>
                 <div class="flex-yf nav-con" @click="reply(items.username,items.id)">
                     <div class="flex-xf-yc">
-                        <span>{{items.username}}</span>
-                        <!-- <span>楼主</span> -->
+                        <span class="name">{{items.username}}</span>
+                        <img  v-show="postData.userId == items.userId " style="width:64rpx;height:64rpx" src="/static/images/lz.png" >
                     </div>
                     <span class="text">{{items.reUsername?'回复'+items.reUsername+':':''}}{{items.content}}</span>
                 </div>
@@ -245,8 +246,10 @@ export default {
                 font-size 28rpx
                 color #707070
                 padding 0rpx 30rpx
-                span
-                    width 200rpx
+                .name
+                    padding-left 10rpx
+                    padding-right 10rpx
+                    max-width 200rpx
                     overflow hidden
                     text-overflow ellipsis
                     white-space nowrap

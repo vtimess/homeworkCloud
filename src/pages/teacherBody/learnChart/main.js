@@ -6,9 +6,13 @@ app.$mount()
 
 export default{
     config: {
-        navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: 'Chart',
-        
+        navigationBarBackgroundColor: '#32333F',
+        navigationBarTextStyle:"white",
+        backgroundTextStyle:'dark',
+        navigationBarTitleText: '成绩图表',
+        usingComponents: {
+            'ec-canvas': '/static/ec-canvas/ec-canvas'
+        }
     }
     
 }

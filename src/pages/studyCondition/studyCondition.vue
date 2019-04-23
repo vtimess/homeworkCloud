@@ -15,7 +15,7 @@
     var options = {
         
         legend: {
-            data: ['张申然']
+            data: ['平均成绩']
         },
         radar: [{
             indicator: [
@@ -46,7 +46,7 @@
             },
             data: [{
                 value: [121, 118, 130, 100, 99, 70],
-                name: '张申然',
+                name: '平均成绩',
                 label: {
                     normal: {
                         show: true,
@@ -77,6 +77,9 @@ export default {
 <style scoped>
 .canvas{
     width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translate(0%,-50%);
     height: 750rpx;
 }
 ec-canvas{

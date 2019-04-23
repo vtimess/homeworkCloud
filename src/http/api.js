@@ -18,7 +18,7 @@ const login = (url,params) => http(url,POST,params,"正在登录中...")
 
 /** 获取帖子api
  */
-const getPost = (params) => http('/s/post',GET,params,"正在加载...")
+const getPost = (params) => http((store.state.status==1?'/s':'/t')+'/post',GET,params,"正在加载...")
 
 /**
  * 查看资料api

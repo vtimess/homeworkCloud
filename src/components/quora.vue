@@ -39,7 +39,7 @@
           <i-load-more  tip="加载中" :loading="true" />
         </div>
         <loadError v-if="show" @click="getData"></loadError>
-        <div class="release">
+        <div v-if="relShow" class="release">
             <img src="/static/images/edit.png" @click="release">
         </div>
         <i-action-sheet :visible="visible" :actions="actions" show-cancel @cancel="handleCancel" @itemClick="handleClickItem" />
@@ -72,16 +72,21 @@ data(){
         size:5,
         totalPage:1,
         postList:[],
-        show:false
+        show:false,
+        relShow:false,
     
     }
 },
 computed: {
     ...mapState([   //分发store中的数据到当前组件
         'tabIndex',
+        'status'
     ])
 },
 onLoad(){
+    if(this.status  == 1){
+        this.relShow = true
+    }
     this.getData()
 },
 onPullDownRefresh(){

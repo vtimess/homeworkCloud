@@ -13,7 +13,9 @@ export default{
         enablePullDownRefresh:true,
         usingComponents: {
             "i-tab-bar": "/static/iView/tab-bar/index",
-            "i-tab-bar-item": "/static/iView/tab-bar-item/index"
+            "i-tab-bar-item": "/static/iView/tab-bar-item/index",
+            "i-avatar":"/static/iView/avatar/index",
+
         }
     }
     

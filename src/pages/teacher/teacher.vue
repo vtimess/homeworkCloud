@@ -2,7 +2,7 @@
     <div class="body">
       <div>
       <div class="mainView" v-show="tabIndex == 0" key="0">
-            <div>1</div>
+        <quora></quora>
       </div>
       <div class="mainView" v-show="tabIndex == 1" key="1">
             <classGroup></classGroup>
@@ -22,6 +22,8 @@
 <script>
 import MyCenter from '@/components/teacherCenter'
 import classGroup from '@/components/classGroup'
+import quora from '@/components/quora'
+
 
 import { mapState, mapMutations } from 'vuex'
 import { SET_STATUS,SET_TABINDEX,SET_TOKEN} from '@/store/mutation-types'
@@ -29,6 +31,7 @@ export default {
   components:{
       MyCenter,
       classGroup,
+      quora,
   },
   data () {
     return {
