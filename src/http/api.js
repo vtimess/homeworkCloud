@@ -56,7 +56,7 @@ const commentZan = (params) =>http((store.state.status==1?'/s':'/t')+'/re/like',
 
 /** 获取个人资料api
  */
-const getProfile = (params) => http('/s/info',GET,params,"数据读取中...")
+const getProfile = (params) => http('/s/info',GET,params)
 
 /** 修改个人资料api
  */
@@ -115,7 +115,7 @@ const exitClass = (params) =>http('/s/class/'+params,DELETE,null,"退出班群..
 
 /** 获取个人信息api
  */
-const getInfo = (params) => http('/t/info',GET,params,"读取中...")
+const getInfo = (params) => http('/t/info',GET,params)
 
 /** 修改个人信息api
  */

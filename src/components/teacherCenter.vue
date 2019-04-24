@@ -2,14 +2,16 @@
     <div class="self">
         <div class="head">
             <div class="flex-y user">
-                <open-data type="userAvatarUrl" class="useravatar"></open-data>
-                <open-data type="userNickName" class="username"></open-data>
-                <span class="motto">-愿望是半个生命,淡漠是半个死亡</span>
+                <img :src="userData.avatarUrl" class="useravatar">
+                <span>{{userData.name}}</span>
             </div>
             <view class="fake-searchbar" @click="navigateTo(releaseUrl)">
                 <icon type="search" size="14" color="#1D1D1D" />
                 <text class="fake-placeholder" >搜索你想知道的知识和技术</text>
             </view>
+            <div class="modifyInfo" @click="modify">
+                <img src="/static/images/modifyInfo.png" >
+            </div> 
         </div>
         <div class="navList">
             <ul class="flex-x-m">
@@ -32,6 +34,7 @@ import {CLEAR_ALL} from '../store/mutation-types'
 export default {
     data(){
         return{
+            userData:{},
             releaseUrl:'/pages/teacherBody/releaseworks/main',
             learnUrl:'/pages/teacherBody/learnChart/main',
             createUrl:'/pages/teacherBody/createClass/main',
@@ -39,10 +42,25 @@ export default {
 
         }
     },
+    onLoad(){
+        this.getData()
+    },
     methods:{
+        getData(){
+            this.$api.getInfo().then(data=>{
+                this.userData = data
+            }).catch(code=>{
+
+            })
+        },
         navigateTo(val){
             wx.navigateTo({
                 url: val
+            })
+        },
+        modify:function(){
+            wx.navigateTo({
+                url: '/pages/teacherBody/modify/main'
             })
         },
         logout(){
@@ -119,6 +137,13 @@ export default {
                 margin-left 12rpx
                 color rgba(153, 153, 153, 0.89)
                 font-size 28rpx
+        .modifyInfo
+            position absolute
+            top 130rpx
+            right 50rpx
+            img
+                width 54rpx
+                height 54rpx
     .navList
         margin-top 100rpx
         font-size 28rpx

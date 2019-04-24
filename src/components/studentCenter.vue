@@ -1,16 +1,21 @@
 <template>
     <div class="self">
         <div class="main">
-            <img class="header" :src="avatarUrl" mode="scaleToFill">
+            <img class="header" :src="userData.avatarUrl" mode="scaleToFill">
         </div>
         <div class="flex-y user">
+            <img :src="userData.avatarUrl" class="useravatar">
+            <span>{{userData.name}}</span>
+            <span class="motto">{{userData.motto?'-'+userData.motto:''}}</span>
+        </div>
+        <!-- <div class="flex-y user">
             <open-data type="userAvatarUrl" class="useravatar"></open-data>
             <open-data type="userNickName" class="username"></open-data>
             <span class="motto">-愿望是半个生命,淡漠是半个死亡</span>
-        </div>
+        </div> -->
         <div class=".flex-xc-yc praise">
             <img :src="praiseUrl">
-            <span>666</span>
+            <span>{{userData.likedNum}}</span>
         </div>
         <div class="modifyInfo" @click="modify">
             <img src="/static/images/modifyInfo.png" >
@@ -60,7 +65,7 @@ export default {
                     url:'../studyCondition/main'
                 }
             ],
-            
+            userData:{},
             smallData:[
                 {
                     name:'帮助中心',
@@ -75,15 +80,30 @@ export default {
         }
     },
     onLoad() {
-        var that = this
-        wx.getUserInfo({
-            success:function(res){
-                that.avatarUrl = res.userInfo.avatarUrl
-                console.log(that.avatarUrl)
-            }
-        })
+        this.getData()
+        // var that = this
+        // wx.getUserInfo({
+        //     success:function(res){
+        //         that.avatarUrl = res.userInfo.avatarUrl
+        //         console.log(that.avatarUrl)
+        //     }
+        // })
     },
     methods:{
+        getData(){
+            var that = this
+            this.$api.getProfile().then(data=>{
+                that.userData = data
+                console.log(data)
+            }).catch(code=>{
+                wx.getUserInfo({
+                    success:function(res){
+                        that.avatarUrl = res.userInfo.avatarUrl
+                        console.log(that.avatarUrl)
+                    }
+                })
+            })
+        },
         modify:function(){
             wx.navigateTo({
                 url: '../modifyinfo/main'
@@ -144,6 +164,7 @@ export default {
             color #fff
             font-size 30rpx
         .motto
+            text-align center
             width 360rpx
             margin-top 10rpx
             color rgba(255, 255, 255, 0.7)

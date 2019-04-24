@@ -4,7 +4,6 @@
             <img class="useravatar" :src="postData.avatar" @click="look(postData.userId)"/>
             <div class="flex-yf title">
                 <span class="name">{{postData.username}}</span>
-                <span class="motto">体育学院</span>
             </div>
         </div>
         <div class="flex-xx-yc content">
@@ -12,7 +11,6 @@
                 <div class="flex-x-y images" >
                     <img v-for="item in postData.images" :key="item" :src="item" @click="preview(item)">
                 </div>
-                
         </div>
         <div class="flex-x-sb footer">
             <div style="width:500rpx;text-overflow:ellipsis;word-wrap:break-word">{{postData.beforeTime}}</div>
@@ -54,7 +52,12 @@
                     </div>
                     <span class="text">{{items.reUsername?'回复'+items.reUsername+':':''}}{{items.content}}</span>
                 </div>
-                <img style="width:38rpx;height:38rpx" src="/static/images/like.png" @click="like(items.id)">
+                <div class="flex-xf-yc">
+                    <img v-if="items.like" style="width:38rpx;height:38rpx" src="/static/images/like_fill.png" >
+                    <img v-else style="width:38rpx;height:38rpx" src="/static/images/like.png" @click="like(items.id,indexs)">
+                    <span style="font-size:26rpx;color:#707070">{{items.likeNum}}</span>
+                </div>
+                
             </div>
         </div>
         <div style="height:100rpx"></div>
@@ -131,10 +134,12 @@ export default {
                 },500)
             })
         },
-        like(val){
+        like(val,index){
             this.$api.commentZan({
                 reId:val
             }).then(data=>{
+                this.postData.re[index].likeNum++
+                this.postData.re[index].like = true
                 wx.showToast({
                     icon:'none',
                     title:'点赞成功'

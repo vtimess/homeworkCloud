@@ -99,16 +99,16 @@ onPullDownRefresh(){
       },2000)
     }
   },
-  onReachBottom(){
-    var vm = this;
-    if(this.tabIndex == '0'){
-      vm.loadStatus = true
-      setTimeout(function(){
-          vm.getData()
-        vm.loadStatus = false
-      },2000)
-    }
-  },
+//   onReachBottom(){
+//     var vm = this;
+//     if(this.tabIndex == '0'){
+//       vm.loadStatus = true
+//       setTimeout(function(){
+//           vm.getData()
+//         vm.loadStatus = false
+//       },2000)
+//     }
+//   },
 methods:{
     getData(){
         var dateTime = new Date();

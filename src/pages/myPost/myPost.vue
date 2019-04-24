@@ -74,9 +74,7 @@ data(){
     
     }
 },
-created() {
-    
-},
+
 onLoad(){
     Object.assign(this.$data, this.$options.data())
     this.page = 0
@@ -92,16 +90,16 @@ onPullDownRefresh(){
       },2000)
     }
 },
-onReachBottom(){
-    var vm = this;
-    if(this.tabIndex == '0'){
-        vm.loadStatus = true
-        setTimeout(function(){
-            vm.getData()
-        vm.loadStatus = false
-        },2000)
-    }
-},
+// onReachBottom(){
+//     var vm = this;
+//     if(this.tabIndex == '0'){
+//         vm.loadStatus = true
+//         setTimeout(function(){
+//             vm.getData()
+//         vm.loadStatus = false
+//         },2000)
+//     }
+// },
 onShareAppMessage(){
 
 },
@@ -110,6 +108,7 @@ methods:{
         var dateTime = new Date();
         this.$api.getPost({
             page:this.page,
+            self:true,
             size:this.size
         }).then(({data})=>{
             console.log(data)
